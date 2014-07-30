@@ -7,4 +7,4 @@ RSpec::Core::RakeTask.new
 RuboCop::RakeTask.new
 YARD::Rake::YardocTask.new
 
-task default: [:spec, :rubocop, :yard]
+task default: :spec
