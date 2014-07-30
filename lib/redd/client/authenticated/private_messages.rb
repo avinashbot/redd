@@ -1,6 +1,6 @@
 module Redd
   module Client
-  	class Authenticated
+    class Authenticated
       module PrivateMessages
         def block_message(message)
           fullname = extract_fullname(message)

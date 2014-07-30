@@ -1,8 +1,8 @@
 module Redd
   module Client
-  	class Authenticated
+    class Authenticated
       module Subreddits
-				
+        
       end
     end
   end

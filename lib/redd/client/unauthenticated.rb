@@ -22,15 +22,15 @@ module Redd
       include Redd::Client::Unauthenticated::Wiki
 
       # @!attribute [r] api_endpoint
-      # 	@return [String] The site to connect to.
+      # @return [String] The site to connect to.
       attr_accessor :api_endpoint
 
       # @!attribute [r] user_agent
-      # 	@return [String] The user-agent used to communicate with reddit.
+      # @return [String] The user-agent used to communicate with reddit.
       attr_accessor :user_agent
 
       # @!attribute [r] rate_limit
-      # 	@return [#after_limit] The handler that takes care of rate limiting.
+      # @return [#after_limit] The handler that takes care of rate limiting.
       attr_accessor :rate_limit
 
       # Set up an unauthenticated connection to reddit.

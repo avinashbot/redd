@@ -1,6 +1,6 @@
 module Redd
   module Client
-  	class Authenticated
+    class Authenticated
       module Gold
         # Low-Priority
         #

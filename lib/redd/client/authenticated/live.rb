@@ -1,9 +1,9 @@
 module Redd
   module Client
-  	class Authenticated
+    class Authenticated
       module Live
-				# Low-priority
-				#
+        # Low-priority
+        #
         # When was this a thing? Let's just hope this doesn't become popular
         # that quickly before I get to it.
       end

@@ -1,8 +1,8 @@
 module Redd
   module Client
-  	class Unauthenticated
+    class Unauthenticated
       module Wiki
-				
+        
       end
     end
   end

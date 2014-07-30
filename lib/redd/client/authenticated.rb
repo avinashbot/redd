@@ -30,19 +30,19 @@ module Redd
       include Redd::Client::Authenticated::Wiki
 
       # @!attribute [r] username
-      # 	@return [String] The username of the logged-in user.
+      # @return [String] The username of the logged-in user.
       attr_reader :username
 
       # @!attribute [r] cookie
-      # 	@return [String] The cookie used to store the current session.
+      # @return [String] The cookie used to store the current session.
       attr_reader :cookie
 
       # @!attribute [r] modhash
-      # 	@return [String] The returned modhash used when making requests.
+      # @return [String] The returned modhash used when making requests.
       attr_reader :modhash
 
       # @!attribute [rw] auth_endpoint
-      #   @return [String] The site to connect to authenticate with.
+      # @return [String] The site to connect to authenticate with.
       attr_accessor :auth_endpoint
 
       # Set up an authenticated connection to reddit.
