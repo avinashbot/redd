@@ -3,17 +3,18 @@ require "redd/version"
 require "redd/rate_limit"
 require "redd/response/parse_json"
 require "redd/response/raise_error"
-require "redd/client/unauthenticated/account"
-require "redd/client/unauthenticated/links_comments"
-require "redd/client/unauthenticated/listing"
-require "redd/client/unauthenticated/subreddits"
-require "redd/client/unauthenticated/utilities"
-require "redd/client/unauthenticated/wiki"
 
 module Redd
   module Client
     # The Client used to connect without needing login credentials.
     class Unauthenticated
+      require "redd/client/unauthenticated/account"
+      require "redd/client/unauthenticated/links_comments"
+      require "redd/client/unauthenticated/listing"
+      require "redd/client/unauthenticated/subreddits"
+      require "redd/client/unauthenticated/utilities"
+      require "redd/client/unauthenticated/wiki"
+
       include Redd::Client::Unauthenticated::Account
       include Redd::Client::Unauthenticated::LinksComments
       include Redd::Client::Unauthenticated::Listing
