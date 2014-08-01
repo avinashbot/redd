@@ -59,22 +59,24 @@ Extending any ruby library, including redd is incredibly easy. Let's try this ou
    end
    ```
 
-3. Let's add the method to the Authenticated client. You can also add it to the Unauthenticated client, but since unauthenticated users can't gild, there's no point. You might also want to add the method to objects to make it easier to access.
+3. Let's add the method to the Authenticated client. You can also add it to the Unauthenticated client, but since unauthenticated users can't gild, there's no point.
    ```ruby
    Redd::Client::Authenticated.include(MyGildingExtension)
+   ```
 
-   module Redd
-     module Object
-       class Comment
-         def gild
-           # Every Redd::Object is instantiated with the client that created
-           # it, so the method can be called on the client easily, similar to
-           # praw in python.
-           client.gild(self)
-         end
-       end
+4. You might also want to add the method to objects to make it easier to access.
+   ```ruby
+   module Gildable
+     def gild
+       # Every Redd::Object is instantiated with the client that created
+       # it, so the method can be called on the client easily, similar to
+       # praw in python.
+       client.gild(self)
      end
    end
+
+   Redd::Object::Submission.include(Gildable)
+   Redd::Object::Comment.include(Gildable)
    ```
 
 ## Conventions
