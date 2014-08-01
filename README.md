@@ -8,6 +8,17 @@
 **NOTE: Major features are not implemented yet!**
 
 ---
+
+<p align="center">
+  <a href="#getting-started">Getting Started</a> |
+  <a href="#extending-redd">Extending Redd</a> |
+  <a href="#conventions">Conventions</a> |
+  <a href="#supported-rubies">Supported Rubies</a> |
+  <a href="#copyright">Copyright</a>
+</p>
+
+---
+
 ## Getting Started
 TODO: Elaborate.
 
