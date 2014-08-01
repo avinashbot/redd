@@ -5,8 +5,11 @@ module Redd
     # A comment made on links.
     class Comment < Redd::Thing
       attr_reader :created_utc
+      attr_reader :author
 
       attr_reader :edited
+      attr_reader :saved
+      attr_reader :gilded
 
       attr_reader :ups
       attr_reader :downs
@@ -14,12 +17,20 @@ module Redd
       attr_reader :likes
       attr_reader :controversiality
 
-      attr_reader :author
+      attr_reader :banned_by
+      attr_reader :approved_by
+      attr_reader :score_hidden
+      attr_reader :distinguished
+      attr_reader :num_reports
+
       attr_reader :parent_id
+      attr_reader :link_id
       attr_reader :body
       attr_reader :body_html
       attr_reader :author_flair_text
       attr_reader :author_flair_css_class
+
+      alias_method :reports_count, :num_reports
 
       def subreddit
         @subreddit ||= client.subreddit(@attributes[:subreddit])
@@ -30,7 +41,11 @@ module Redd
       end
 
       def root?
-        !parent_id || parent_id == fullname
+        !parent_id || parent_id == link_id
+      end
+
+      def gilded?
+        gilded > 0
       end
     end
   end
