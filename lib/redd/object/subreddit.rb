@@ -30,7 +30,6 @@ module Redd
       attr_reader :traffic_is_public?, :public_traffic
       attr_reader :subscribers
       attr_reader :created_utc
-      # attr_reader :public_description (backwards compat)
       attr_reader :comment_score_hide_mins
       attr_reader :type, :subreddit_type
       attr_reader :submission_type
@@ -41,6 +40,7 @@ module Redd
 
       def url
         "http://reddit.com" + @attributes[:url]
+      end
     end
   end
 end
