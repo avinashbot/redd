@@ -8,5 +8,85 @@
 **NOTE: Major features are not implemented yet!**
 
 ---
+## Getting Started
+TODO: Elaborate.
 
-## 
+```ruby
+require "redd"
+
+client = Redd.client
+redditdev = client.subreddit("redditdev")
+
+latest_post = redditdev.get_new.first
+puts latest_post.title
+```
+
+## Extending Redd
+Extending any ruby library, including redd is incredibly easy. Let's try this out by adding a gilding extension. Reddit provides an api to be able to gild posts and comments, given that you have "creddits".
+
+1. Let's start by creating a module for the methods to live in.
+   ```ruby
+   module MyGildingExtension
+   end
+   ```
+
+2. Let's add a method to gild a thing, using the [reddit api](http://www.reddit.com/dev/api#section_gold) and following the conventions.
+   ```ruby
+   module MyGildingExtension
+     def gild(thing)
+       # Redd::Client::Unauthenticated::Utilities has some pretty helpful
+       # methods.
+       fullname = extract_fullname(thing)
+
+       meth = :post
+       path = "/api/v1/gold/gild/#{fullname}"
+
+       # We're using send instead of object_from_response, because we don't
+       # expect any object from the response.
+       send(meth, path)
+     end
+   end
+   ```
+
+3. Let's add the method to the Authenticated client. You can also add it to the Unauthenticated client, but since unauthenticated users can't gild, there's no point. You might also want to add the method to objects to make it easier to access.
+   ```ruby
+   Redd::Client::Authenticated.include(MyGildingExtension)
+
+   module Redd
+     module Object
+       class Comment
+         def gild
+           # Every Redd::Object is instantiated with the client that created
+           # it, so the method can be called on the client easily, similar to
+           # praw in python.
+           client.gild(self)
+         end
+       end
+     end
+   end
+   ```
+
+## Conventions
+### Method Names
+- A method that returns a Redd::Object directly is called that in lowercase. For example, a method that returns a single `Redd::Object::Subreddit` is called `subreddit`
+- Any method that return a listing is in the format `get_[thing]s`. For example, a method that returns a listing of subreddits is named `get_subreddits`.
+
+### Methods
+- Most methods that use an http request should usually follow this convention. I haven't had time to check the methods to see if they follow this, but this should be the case
+  ```ruby
+  def subreddit(thing, options = {})
+    fullname = extract_fullname(thing)
+
+    meth = :get
+    path = "/r/ruby/about.json"
+    params = options << {additional: "options"}
+
+    object_from_response(meth, path, params)
+  end
+  ```
+
+## Supported Rubies
+TODO: Travis CI
+
+## Copyright
+Copyright (c) [Avinash Dwarapu](http://github.com/avidw) under the MIT License. See LICENSE.txt for more details.

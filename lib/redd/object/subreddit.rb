@@ -41,6 +41,26 @@ module Redd
       def url
         "http://reddit.com" + @attributes[:url]
       end
+
+      def get_hot(*args)
+        client.get_hot(display_name, *args)
+      end
+
+      def get_new(*args)
+        client.get_new(display_name, *args)
+      end
+
+      def get_random(*args)
+        client.get_random(display_name, *args)
+      end
+
+      def get_top(*args)
+        client.get_top(display_name, *args)
+      end
+
+      def get_controversial(*args)
+        client.get_controversial(display_name, *args)
+      end
     end
   end
 end
