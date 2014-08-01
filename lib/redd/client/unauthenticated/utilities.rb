@@ -1,8 +1,10 @@
 require "redd/thing"
 require "redd/object/listing"
 require "redd/object/comment"
+require "redd/object/private_message"
 require "redd/object/submission"
 require "redd/object/subreddit"
+require "redd/object/user"
 
 module Redd
   module Client
@@ -25,8 +27,12 @@ module Redd
             Redd::Object::Listing
           when "t1"
             Redd::Object::Comment
+          when "t2"
+            Redd::Object::User
           when "t3"
             Redd::Object::Submission
+          when "t4"
+            Redd::Object::PrivateMessage
           when "t5"
             Redd::Object::Subreddit
           else
