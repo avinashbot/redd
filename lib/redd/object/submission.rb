@@ -44,7 +44,7 @@ module Redd
       attr_reader :title
       attr_reader :num_comments
 
-      alias_method :nsfw?, :over18
+      alias_method :nsfw?, :over_18
       alias_method :self?, :is_self
       alias_method :comments_count, :num_comments
 

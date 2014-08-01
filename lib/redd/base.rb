@@ -40,12 +40,12 @@ module Redd
 
     private
 
-    def define_attribute_method(method)
+    def self.define_attribute_method(method)
       define_method(method) { @attributes[method] }
       memoize method
     end
 
-    def define_predicate_method(method)
+    def self.define_predicate_method(method)
       define_method(:"#{method}?") { !!@attributes[method] }
       memoize :"#{method}?"
     end
