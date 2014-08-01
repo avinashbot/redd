@@ -35,7 +35,7 @@ module Redd
       attr_reader :submission_type
 
       def created
-        Time.at(@attributes[:created])
+        @created ||= Time.at(@attributes[:created])
       end
 
       def url
