@@ -26,20 +26,21 @@ module Redd
     #   @return [String] The time when the last request took place.
     attr_reader :last_request_time
 
-    def initialize
+    # @param [Float, Integer] gap The minimum time between each request.
+    def initialize(gap = 2)
       # Some time ages ago, because we never made a request.
       @last_request_time = Time.at(0)
+      @gap = gap
     end
 
     # Sleep until 2 seconds have passed since the last request and perform the
     # given request.
     #
-    # @param [Float, Integer] gap The minimum time between each request.
     # @yield A block.
     # @return The return value of the block.
-    def after_limit(gap = 2)
+    def after_limit
       seconds_passed = Time.now - @last_request_time
-      wait_time = gap - seconds_passed
+      wait_time = @gap - seconds_passed
       sleep(wait_time) if wait_time > 0
       @last_request_time = Time.now
       yield
