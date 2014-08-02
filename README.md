@@ -83,6 +83,8 @@ Extending any ruby library, including redd is incredibly easy. Let's try this ou
 ### Method Names
 - A method that returns a Redd::Object directly is called that in lowercase. For example, a method that returns a single `Redd::Object::Subreddit` is called `subreddit`
 - Any method that return a listing is in the format `get_[thing]s`. For example, a method that returns a listing of subreddits is named `get_subreddits`.
+- An **internal** method that edits an existing object is **usually** named `edit_[thing]`. This is often used in conjuction with the "my" rule below. Some exeptions to this rule are `vote` that edit a user's vote.
+- Any method that returns something specific to the user must have "my" in the middle. For example, a method that returns a users subscribed subreddits is named `get_my_subscriptions` and a method that edits a users subscription is named `edit_my_subscription`. Note the change in singlular/plural.
 
 ### Methods
 - Most methods that use an http request should usually follow this convention. I haven't had time to check the methods to see if they follow this, but this should be the case
