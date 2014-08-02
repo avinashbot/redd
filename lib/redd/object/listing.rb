@@ -14,10 +14,15 @@ module Redd
       # @return [Array] A list of things in the listing.
       attr_reader :things
 
-      # Create a new listing with the given things.
-      # @param [Array] things A list of things to generate a Listing out of.
-      def initialize(things)
-        @things = things
+      attr_reader :kind
+      attr_reader :after
+      attr_reader :before
+
+      def initialize(listing)
+        @kind = listing[:kind]
+        @things = listing[:data][:children]
+        @after = listing[:data][:after]
+        @before = listing[:data][:before]
       end
     end
   end

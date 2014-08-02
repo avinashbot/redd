@@ -50,8 +50,8 @@ module Redd
           object = object_from_kind(body[:kind])
 
           if object == Redd::Object::Listing
-            things = objects_from_listing(body)
-            object.new(things)
+            body[:data][:children] = objects_from_listing(body)
+            object.new(body)
           else
             object.new(self, body)
           end
