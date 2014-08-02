@@ -102,4 +102,5 @@ Extending any ruby library, including redd is incredibly easy. Let's try this ou
 TODO: Travis CI
 
 ## Copyright
-Copyright (c) [Avinash Dwarapu](http://github.com/avidw) under the MIT License. See LICENSE.txt for more details.
+Copyright (c) [Avinash Dwarapu](http://github.com/avidw) under the MIT License. See LICENSE.md for more details.  
+Some code has been used from [RedditKit.rb](http://github.com/samsymons/RedditKit.rb). See RedditKit.License.md for more details.
