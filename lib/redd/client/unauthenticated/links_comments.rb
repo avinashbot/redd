@@ -17,6 +17,12 @@ module Redd
           path = "/comments/#{id}.json"
           comments_from_response(meth, path)
         end
+
+        def get_replies(comment)
+          replies = comment.attributes[:replies]
+          return [] unless replies.is_a?(Hash) and replies.has_key?(:kind)
+          object_from_body(replies)
+        end
       end
     end
   end
