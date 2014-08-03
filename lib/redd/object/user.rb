@@ -8,9 +8,13 @@ module Redd
       attr_reader :is_friend
       attr_reader :link_karma
       attr_reader :comment_karma
+      attr_reader :gold_creddits
+      attr_reader :gold_expiration
       attr_reader :is_gold
       attr_reader :is_mod
       attr_reader :has_verified_email
+      attr_reader :has_mod_mail
+      attr_reader :has_mail
 
       alias_method :has_gold, :is_gold
 

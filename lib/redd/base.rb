@@ -28,7 +28,6 @@ module Redd
       nil
     end
 
-
     # @param client The client to use when making requests with this object.
     #   This is similar to reddit_session in praw.
     # @param [Hash] attributes

@@ -1,7 +1,7 @@
 module Redd
   module Client
     class Authenticated
-      module Accounts
+      module Account
         def me
           meth = :get
           path = "/api/me.json"
