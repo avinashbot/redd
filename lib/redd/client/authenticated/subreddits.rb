@@ -25,6 +25,7 @@ module Redd
 
         def edit_subscription(action, subreddit)
           fullname = extract_fullname(subreddit)
+
           meth = :post
           path = "/api/subscribe"
           params = {action: action, sr: fullname}

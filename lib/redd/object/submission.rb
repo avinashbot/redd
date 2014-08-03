@@ -52,6 +52,10 @@ module Redd
         @subreddit ||= client.subreddit(@attributes[:subreddit])
       end
 
+      def comments
+        @comments ||= client.get_comments(id)
+      end
+
       def created
         @created ||= Time.at(@attributes[:created])
       end

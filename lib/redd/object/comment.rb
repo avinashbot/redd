@@ -32,6 +32,10 @@ module Redd
 
       alias_method :reports_count, :num_reports
 
+      def replies
+        @replies ||= client.send(:object_from_body, @attributes[:replies]) || []
+      end
+
       def subreddit
         @subreddit ||= client.subreddit(@attributes[:subreddit])
       end

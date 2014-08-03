@@ -9,6 +9,14 @@ module Redd
           path = "/api/info.json"
           object_from_response(meth, path, params)
         end
+
+        def get_comments(submission)
+          id = extract_id(submission)
+
+          meth = :get
+          path = "/comments/#{id}.json"
+          comments_from_response(meth, path)
+        end
       end
     end
   end

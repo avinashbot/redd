@@ -12,12 +12,16 @@ module Redd
       module Utilities
         private
 
+        def extract_attribute(object, attribute)
+          object.send(attribute) if object.respond_to?(attribute)
+        end
+
         def extract_fullname(object)
           object.is_a?(String) ? object : extract_attribute(object, :fullname)
         end
 
-        def extract_attribute(object, attribute)
-          object.send(attribute) if object.respond_to?(attribute)
+        def extract_id(object)
+          object.is_a?(String) ? object : extract_attribute(object, :id)
         end
 
         # @todo "more"
@@ -42,11 +46,12 @@ module Redd
 
         def objects_from_listing(thing)
           thing[:data][:children].map do |child|
-            get_object_from_body(child)
+            object_from_body(child)
           end
         end
 
-        def get_object_from_body(body)
+        def object_from_body(body)
+          return nil unless body.is_a?(Hash) && body.has_key?(:kind)
           object = object_from_kind(body[:kind])
 
           if object == Redd::Object::Listing
@@ -57,9 +62,14 @@ module Redd
           end
         end
 
+        def comments_from_response(*args)
+          body = request(*args).body[1]
+          object_from_body(body)
+        end
+
         def object_from_response(*args)
           body = request(*args).body
-          get_object_from_body(body)
+          object_from_body(body)
         end
       end
     end
