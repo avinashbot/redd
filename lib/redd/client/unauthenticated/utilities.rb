@@ -24,6 +24,7 @@ module Redd
               # Set the latest comment.
               params[:before] = objects.first.fullname
               # Run the loop for each of the new comments accessed.
+              # I should probably add it to some sort of Set to avoid duplicates.
               objects.reverse_each { |object| block.call(object) }
             end
           end

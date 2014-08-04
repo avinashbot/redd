@@ -51,6 +51,10 @@ module Redd
       def gilded?
         gilded > 0
       end
+
+      def reply(text)
+        client.reply(self, text)
+      end
     end
   end
 end
