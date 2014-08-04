@@ -11,7 +11,6 @@
 <p align="center">
   <a href="#getting-started">Getting Started</a> |
   <a href="#extending-redd">Extending Redd</a> |
-  <a href="#conventions">Conventions</a> |
   <a href="#supported-rubies">Supported Rubies</a> |
   <a href="#copyright">Copyright</a>
 </p>
@@ -100,27 +99,6 @@ Extending any ruby library, including redd is incredibly easy. Let's try this ou
    Redd::Object::Submission.include(Gildable)
    Redd::Object::Comment.include(Gildable)
    ```
-
-## Conventions
-### Method Names
-- A method that returns a Redd::Object directly is called that in lowercase. For example, a method that returns a single `Redd::Object::Subreddit` is called `subreddit`
-- Any method that return a listing is in the format `get_[thing]s`. For example, a method that returns a listing of subreddits is named `get_subreddits`.
-- An **internal** method that edits an existing object is **usually** named `edit_[thing]`. Some exeptions to this rule are `vote` that edit a user's vote.
-- Any method that returns something specific to the user must have "my" in the middle. For example, a method that returns a users subscribed subreddits is named `get_my_subscriptions`.
-
-### Methods
-- Most methods that use an http request should usually follow this convention. I haven't had time to check the methods to see if they follow this, but this should be the case
-  ```ruby
-  def subreddit(thing, options = {})
-    fullname = extract_fullname(thing)
-
-    meth = :get
-    path = "/r/ruby/about.json"
-    params = options << {additional: "options"}
-
-    object_from_response(meth, path, params)
-  end
-  ```
 
 ## Supported Rubies
 TODO: Travis CI
