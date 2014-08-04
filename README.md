@@ -106,3 +106,7 @@ TODO: Travis CI
 ## Copyright
 Copyright (c) [Avinash Dwarapu](http://github.com/avidw) under the MIT License. See LICENSE.md for more details.  
 Some code has been used from [RedditKit.rb](http://github.com/samsymons/RedditKit.rb). See RedditKit.LICENSE.md for more details.
+
+---
+
+Redd not your cup of tea? Check out [RedditKit.rb](http://github.com/samsymons/RedditKit.rb)!
