@@ -4,8 +4,7 @@
   <a href="https://gemnasium.com/avidw/redd"><img src="https://gemnasium.com/avidw/redd.svg" alt="Dependency Status"></a>
 </p>
 
-**redd** is an API wrapper for [reddit](http://reddit.com/dev/api) written in ruby that focuses on being *simple and extensible*.  
-**NOTE: Major features are not implemented yet!**
+**redd** is an API wrapper for [reddit](http://reddit.com/dev/api) written in ruby that focuses on being *simple and extensible*.
 
 ---
 
@@ -20,17 +19,40 @@
 ---
 
 ## Getting Started
-TODO: Elaborate.
+Ruby and redd make creating reddit bots accessible and fun. To demonstrate, let's create a simple bot in three steps that responds to "Hello?" with "World!". *Note: this is just a tutorial; although you're welcome to take it on a test drive on a testing subreddit, don't actually host this bot.*
 
-```ruby
-require "redd"
+1. **Installing**  
+   You can either install the gem directly by running `gem install redd` or by placing the gem into your `Gemfile` and running `bundle install`.
+   ```ruby
+   source "https://rubygems.org"
+   gem "redd"
+   
+   # or if you're feeling adventurous
+   gem "redd", github: "avidw/redd"
+   ```
 
-client = Redd.client
-redditdev = client.subreddit("redditdev")
+2. **Setting Up**  
+   Let's load up redd and create a client for us to work with. (The username and password aren't real!)
+   ```ruby
+   require "redd"
+   #=> true
+   
+   r = Redd.client "HelloWorldBot", "hunter2"
+   # => #<Redd::Client::Authenticated:0xY4D4y4D4y4dA ...
+   
+   # This is generally a good thing to do:
+   r.user_agent = "HelloWorldBot v1.0 (Redd), written by /u/Mustermind"
+   ```
 
-latest_post = redditdev.get_new.first
-puts latest_post.title
-```
+3. **Scouting**  
+   Redd has a really cool method similar to praw's `helpers.comment_stream` that "streams" comments to you while avoiding duplicates. You won't have to take care of rate-limiting either; Redd `sleep`s after requests to avoid ratelimit errors. If you want to write a rate limiting class yourself, take a look at `lib/redd/rate_limit.rb`
+   ```ruby
+   r.comment_stream "test" do |comment|
+     if comment.body =~ /^Hello\?$/i
+       comment.reply "World!"
+     end
+   end
+   ```
 
 ## Extending Redd
 Extending any ruby library, including redd is incredibly easy. Let's try this out by adding a gilding extension. Reddit provides an api to be able to gild posts and comments, given that you have "creddits".
