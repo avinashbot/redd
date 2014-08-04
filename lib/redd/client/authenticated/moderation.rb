@@ -12,6 +12,40 @@ module Redd
           post "/api/remove", id: fullname
         end
 
+        def distinguish(thing, how = :yes)
+          fullname = extract_fullname(thing)
+          post "/api/distinguish", api_type: "json", id: fullname, how: how
+        end
+
+        def undistinguish(thing)
+          distinguish(thing, :no)
+        end
+
+        def accept_moderator_invite(subreddit)
+          name = extract_attribute(subreddit, :display_name)
+          post, "/r/#{name}/api/accept_moderator_invite", api_type: "json"
+        end
+
+        def leave_contributor_status(subreddit)
+          fullname = extract_fullname(subreddit)
+          post "/api/leavecontributor", id: fullname
+        end
+
+        def leave_moderator_status(subreddit)
+          fullname = extract_fullname(subreddit)
+          post "/api/leavemoderator", id: fullname
+        end
+
+        def ignore_reports(thing)
+          fullname = extract_fullname(subreddit)
+          post "/api/ignore_reports", id: fullname
+        end
+
+        def unignore_reports(thing)
+          fullname = extract_fullname(subreddit)
+          post "/api/unignore_reports", id: fullname
+        end
+
         def get_reports(*args)
           get_submissions(:reports, *args)
         end
