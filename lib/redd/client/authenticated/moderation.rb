@@ -23,7 +23,7 @@ module Redd
 
         def accept_moderator_invite(subreddit)
           name = extract_attribute(subreddit, :display_name)
-          post, "/r/#{name}/api/accept_moderator_invite", api_type: "json"
+          post "/r/#{name}/api/accept_moderator_invite", api_type: "json"
         end
 
         def leave_contributor_status(subreddit)

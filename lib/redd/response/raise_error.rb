@@ -10,8 +10,7 @@ module Redd
         @app.call(faraday).on_complete do |env|
           error = Redd::Error.from_response(env)
           if error
-            info = Redd::Error.parse_error(env[:body])
-            fail error, info
+            fail error, env
           end
         end
       end

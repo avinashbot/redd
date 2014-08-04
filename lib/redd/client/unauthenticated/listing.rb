@@ -27,6 +27,10 @@ module Redd
           get_listing(:controversial, *args)
         end
 
+        def get_comments(*args)
+          get_listing(:comments, *args)
+        end
+
         private
 
         def get_listing(type, subreddit = nil, params = {})

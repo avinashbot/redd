@@ -11,6 +11,24 @@ module Redd
   module Client
     class Unauthenticated
       module Utilities
+        def comment_stream(*args, &block)
+          submission_stream(:comments, *args, &block)
+        end
+
+        def submission_stream(listing, subreddit = "all", params = {}, &block)
+          loop do
+            # Get the latest comments from the subreddit. By the way, this line
+            #   is the one where the sleeping/rate-limiting happens.
+            objects = get_listing(listing, subreddit, params)
+            unless objects.empty?
+              # Set the latest comment.
+              params[:before] = objects.first.fullname
+              # Run the loop for each of the new comments accessed.
+              objects.each { |object| block.call(object) }
+            end
+          end
+        end
+
         private
 
         def extract_attribute(object, attribute)
