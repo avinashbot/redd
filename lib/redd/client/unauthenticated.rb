@@ -76,10 +76,10 @@ module Redd
       # @param [#to_sym] method The HTTP verb to use.
       # @param [String] path The path under the api endpoint to request from.
       # @param [Hash] params The additional parameters to send (defualt: {}).
-      # @return [Faraday::Response] A Faraday Response.
+      # @return [String] The response body.
       def request(method, path, params = {})
         rate_limit.after_limit do
-          connection.send(method.to_sym, path, params)
+          connection.send(method.to_sym, path, params).body
         end
       end
 

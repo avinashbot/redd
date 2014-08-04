@@ -4,22 +4,12 @@ module Redd
       module Moderation
         def approve(thing)
           fullname = extract_fullname(thing)
-
-          meth = :post
-          path = "/api/approve"
-          params = {id: fullname}
-
-          send(meth, path, params)
+          post "/api/approve", id: fullname
         end
 
         def remove(thing)
           fullname = extract_fullname(thing)
-
-          meth = :post
-          path = "/api/remove"
-          params = {id: fullname}
-
-          send(meth, path, params)
+          post "/api/remove", id: fullname
         end
 
         def get_reports(*args)
@@ -40,14 +30,12 @@ module Redd
 
         private
 
-        def get_submissions(type, subreddit = nil, options = {})
+        def get_submissions(type, subreddit = nil, params = {})
           subreddit_name = extract_attribute(subreddit, :display_name)
-
-          meth = :get
           path = "/about/#{type}.json"
           path = path.prepend("/r/#{subreddit_name}") if subreddit_name
 
-          object_from_response(meth, path, params)
+          object_from_response :get, path, params
         end
       end
     end

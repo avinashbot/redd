@@ -3,23 +3,16 @@ module Redd
     class Unauthenticated
       module Subreddits
         def subreddit(title)
-          meth = :get
-          path = "/r/#{title}/about.json"
-          object_from_response(meth, path)
+          object_from_response :get, "/r/#{title}/about.json"
         end
 
         def get_subreddits(where = :popular, params = {})
-          meth = :get
-          path = "/subreddits/#{where}.json"
-          object_from_response(meth, path, params)
+          object_from_response :get, "/subreddits/#{where}.json", params
         end
 
         def search_subreddits(query, params = {})
-          meth = :get
-          path = "/subreddits/search.json"
           params << {q: query}
-
-          object_from_response(meth, path, params)
+          object_from_response :get, "/subreddits/search.json", params
         end
       end
     end

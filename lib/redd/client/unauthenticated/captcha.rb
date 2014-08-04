@@ -3,18 +3,11 @@ module Redd
     class Unauthenticated
       module Captcha
         def needs_captcha?
-          meth = :get
-          path = "/api/needs_captcha.json"
-
-          send(meth, path).body
+          get "/api/needs_captcha.json"
         end
 
         def new_captcha
-          meth = :post
-          path = "/api/new_captcha"
-          params = {api_type: "json"}
-
-          response = send(meth, path, params).body
+          response = get "/api/new_captcha", api_type: "json"
           response[:json][:data][:iden]
         end
 

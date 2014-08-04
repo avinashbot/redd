@@ -5,17 +5,12 @@ module Redd
         # @note Reddit does accept a subreddit, but with fullnames and urls, I
         #   assumed that was unnecessary.
         def get_info(params = {})
-          meth = :get
-          path = "/api/info.json"
-          object_from_response(meth, path, params)
+          object_from_response :get, "/api/info.json"
         end
 
         def get_comments(submission)
           id = extract_id(submission)
-
-          meth = :get
-          path = "/comments/#{id}.json"
-          comments_from_response(meth, path)
+          comments_from_response :get, "/comments/#{id}.json"
         end
 
         def get_replies(comment)

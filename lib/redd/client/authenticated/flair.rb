@@ -2,23 +2,22 @@ module Redd
   module Client
     class Authenticated
       module Flair
-        def get_flair_list(subreddit = nil, options = {})
+        def get_flair_list(subreddit = nil, params = {})
           name = extract_attribute(subreddit, :display_name) if subreddit
 
-          meth = :get
           path = "/api/flairlist.json"
           path = path.prepend("/r/#{name}") if name
-          params = options
 
-          send(meth, path, params).body[:users]
+          get(path, params)[:users]
         end
 
+        # @see http://ruby-doc.org/core-1.9.3/String.html#method-i-casecmp
         def get_flair(user, subreddit = nil)
           username = extract_attribute(user, :name)
           options = {name: username}
 
-          flair = get_flair_list(subreddit, options)[0]
-          flair if flair[:user].downcase === username.downcase
+          flair = get_flair_list(subreddit, options).first
+          flair if flair[:user].casecmp(username.downcase) == 0
         end
       end
     end
