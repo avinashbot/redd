@@ -6,11 +6,11 @@ module Redd
           meth = :post
           path = "/api/login"
           params = {
-            api_type: "json", user: username,
-            passwd: password, rem: remember
+            
           }
-          response = send(meth, path, params)
-          data = response.body[:json][:data]
+          response = post "/api/login",
+            api_type: "json", user: username, passwd: password, rem: remember
+          data = response[:json][:data]
 
           require "redd/client/authenticated"
           Redd::Client::Authenticated.new(data[:cookie], data[:modhash])
