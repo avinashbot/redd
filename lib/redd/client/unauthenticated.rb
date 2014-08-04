@@ -13,6 +13,7 @@ module Redd
       require "redd/client/unauthenticated/links_comments"
       require "redd/client/unauthenticated/listing"
       require "redd/client/unauthenticated/live"
+      require "redd/client/unauthenticated/moderation"
       require "redd/client/unauthenticated/subreddits"
       require "redd/client/unauthenticated/utilities"
       require "redd/client/unauthenticated/wiki"
@@ -22,6 +23,7 @@ module Redd
       include Redd::Client::Unauthenticated::LinksComments
       include Redd::Client::Unauthenticated::Listing
       include Redd::Client::Unauthenticated::Live
+      include Redd::Client::Unauthenticated::Moderation
       include Redd::Client::Unauthenticated::Subreddits
       include Redd::Client::Unauthenticated::Utilities
       include Redd::Client::Unauthenticated::Wiki

@@ -14,18 +14,22 @@ module Redd
         private
 
         def extract_attribute(object, attribute)
-          object.send(attribute) if object.respond_to?(attribute)
+          case object
+          when ::String
+            object
+          else
+          	object.send(attribute)
+          end
         end
 
         def extract_fullname(object)
-          object.is_a?(String) ? object : extract_attribute(object, :fullname)
+          extract_attribute(object, :fullname)
         end
 
         def extract_id(object)
-          object.is_a?(String) ? object : extract_attribute(object, :id)
+          extract_attribute(object, :id)
         end
 
-        # @todo "more"
         def object_from_kind(kind) # rubocop:disable Style/MethodLength
           case kind
           when "Listing"

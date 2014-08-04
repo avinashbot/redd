@@ -33,9 +33,12 @@ module Redd
         private
 
         def get_listing(type, subreddit = nil, params = {})
+          subreddit_name = extract_attribute(subreddit, :display_name)
+
           meth = :get
           path = "/#{type}.json"
-          path = path.prepend("/r/#{subreddit}") if subreddit
+          path = path.prepend("/r/#{subreddit_name}") if subreddit_name
+
           object_from_response(meth, path, params)
         end
       end

@@ -44,7 +44,7 @@ module Redd
           params = {id: fullname}
 
           send(meth, path, params)
-      end
+        end
 
         def unhide(thing)
           fullname = extract_fullname(thing)
