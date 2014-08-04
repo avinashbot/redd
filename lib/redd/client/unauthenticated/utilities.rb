@@ -1,6 +1,7 @@
 require "redd/thing"
 require "redd/object/listing"
 require "redd/object/comment"
+require "redd/object/more_comments"
 require "redd/object/private_message"
 require "redd/object/submission"
 require "redd/object/subreddit"
@@ -29,6 +30,8 @@ module Redd
           case kind
           when "Listing"
             Redd::Object::Listing
+          when "more"
+            Redd::Object::MoreComments
           when "t1"
             Redd::Object::Comment
           when "t2"

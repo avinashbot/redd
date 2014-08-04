@@ -9,15 +9,19 @@ module Redd
     # The Client used to connect without needing login credentials.
     class Unauthenticated
       require "redd/client/unauthenticated/account"
+      require "redd/client/unauthenticated/captcha"
       require "redd/client/unauthenticated/links_comments"
       require "redd/client/unauthenticated/listing"
+      require "redd/client/unauthenticated/live"
       require "redd/client/unauthenticated/subreddits"
       require "redd/client/unauthenticated/utilities"
       require "redd/client/unauthenticated/wiki"
 
       include Redd::Client::Unauthenticated::Account
+      include Redd::Client::Unauthenticated::Captcha
       include Redd::Client::Unauthenticated::LinksComments
       include Redd::Client::Unauthenticated::Listing
+      include Redd::Client::Unauthenticated::Live
       include Redd::Client::Unauthenticated::Subreddits
       include Redd::Client::Unauthenticated::Utilities
       include Redd::Client::Unauthenticated::Wiki
