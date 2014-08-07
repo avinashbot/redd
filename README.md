@@ -68,7 +68,7 @@ Ruby and redd make creating reddit bots accessible and fun. To demonstrate, let'
    rescue Redd::Error => e
      status = e.message.status
      # 5-something errors are usually errors on reddit's end.
-     raise e unless status.to_s.start_with? "5"
+     raise e unless (500...600).include?(status)
    end
    ```
 
@@ -89,12 +89,9 @@ Extending any ruby library, including redd is incredibly easy. Let's try this ou
        # methods.
        fullname = extract_fullname(thing)
 
-       meth = :post
-       path = "/api/v1/gold/gild/#{fullname}"
-
-       # We're using send instead of object_from_response, because we don't
+       # We're using post instead of object_from_response, because we don't
        # expect any object from the response.
-       send(meth, path)
+       post "/api/v1/gold/gild/#{fullname}"
      end
    end
    ```
