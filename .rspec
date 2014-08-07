@@ -1,2 +1,4 @@
 --color
+--warnings
 --format documentation
+--require spec_helper

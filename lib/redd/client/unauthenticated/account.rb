@@ -3,11 +3,6 @@ module Redd
     class Unauthenticated
       module Account
         def login(username, password, remember = false)
-          meth = :post
-          path = "/api/login"
-          params = {
-            
-          }
           response = post "/api/login",
             api_type: "json", user: username, passwd: password, rem: remember
           data = response[:json][:data]
