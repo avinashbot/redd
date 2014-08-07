@@ -15,17 +15,17 @@ module Redd
           submission_stream(:comments, *args, &block)
         end
 
-        def submission_stream(listing, subreddit = "all", params = {}, &block)
+        def submission_stream(listing, subreddit = nil, params = {}, &block)
           loop do
             # Get the latest comments from the subreddit. By the way, this line
             #   is the one where the sleeping/rate-limiting happens.
             objects = get_listing(listing, subreddit, params)
             unless objects.empty?
-              # Set the latest comment.
-              params[:before] = objects.first.fullname
               # Run the loop for each of the new comments accessed.
               # I should probably add it to some sort of Set to avoid duplicates.
               objects.reverse_each { |object| block.call(object) }
+              # Set the latest comment.
+              params[:before] = objects.first.fullname
             end
           end
         end

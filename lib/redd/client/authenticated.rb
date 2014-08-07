@@ -74,8 +74,8 @@ module Redd
       def connection
         @connection ||= Faraday.new(url: api_endpoint) do |faraday|
           faraday.use Faraday::Request::UrlEncoded
-          faraday.use Redd::Response::ParseJson
           faraday.use Redd::Response::RaiseError
+          faraday.use Redd::Response::ParseJson
           faraday.adapter Faraday.default_adapter
 
           faraday.headers["User-Agent"] = user_agent

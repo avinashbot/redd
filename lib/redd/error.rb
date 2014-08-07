@@ -4,7 +4,7 @@ module Redd
       # @note I ripped off RedditKit.rb :|
       def from_response(response) # rubocop:disable Style/CyclomaticComplexity Style/MethodLength
         status = response[:status]
-        body = parse_error(response[:body])
+        body = parse_error(response[:body]).to_s
         case status
         when 200
           case body
@@ -53,7 +53,7 @@ module Redd
         if body.key?(:json) && body[:json].key?(:errors)
           body[:json][:errors].first
         elsif body.key?(:jquery)
-          body[:jquery].to_s
+          body[:jquery]
         end
       end
     end
@@ -78,7 +78,13 @@ module Redd
 
     class PermissionDenied < Error; end
 
-    class RateLimited < Error; end
+    class RateLimited < Error
+      attr_reader :time
+
+      def initialize(time = 0)
+        @time = time
+      end
+    end
 
     class RequestError < Error; end
 
