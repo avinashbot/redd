@@ -4,7 +4,7 @@ module Redd
     # Faraday Middleware that parses JSON using Oj.
     class ParseJson < Faraday::Middleware
       dependency do
-        require "oj" unless defined?(::Oj)
+        require "multi_json" unless defined?(::MultiJson)
       end
 
       # Call the middleware.
@@ -22,8 +22,8 @@ module Redd
       # @param [String] body The JSON string to parse.
       # @return [Hash] A symbolized parsed JSON hash.
       def parse(body)
-        Oj.load(body, symbol_keys: true)
-      rescue Oj::ParseError
+        MultiJson.load(body, symbolize_keys: true)
+      rescue MultiJson::ParseError
         body
       end
     end
