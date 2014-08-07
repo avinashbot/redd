@@ -53,7 +53,7 @@ Ruby and redd make creating reddit bots accessible and fun. To demonstrate, let'
    end
    ```
 
-4. **Just in Case**
+4. **Just in Case**  
    It's also a good idea to escape some common errors from reddit in case they happen:
    ```ruby
    begin
