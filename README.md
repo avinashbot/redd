@@ -18,7 +18,7 @@
 ---
 
 ## Getting Started
-Ruby and redd make creating reddit bots accessible and fun. To demonstrate, let's create a simple bot in three steps that responds to "Hello?" with "World!". *Note: this is just a tutorial; although you're welcome to take it on a test drive on a testing subreddit, don't actually host this bot.*
+Ruby and redd make creating reddit bots accessible and fun. To demonstrate, let's create a simple bot in four steps that responds to "Hello?" with "World!". *Note: this is just a tutorial; although you're welcome to take it on a test drive on a testing subreddit, don't actually host this bot.*
 
 1. **Installing**  
    You can either install the gem directly by running `gem install redd` or by placing the gem into your `Gemfile` and running `bundle install`.
@@ -50,6 +50,25 @@ Ruby and redd make creating reddit bots accessible and fun. To demonstrate, let'
      if comment.body =~ /^Hello\?$/i
        comment.reply "World!"
      end
+   end
+   ```
+
+4. **Just in Case**  
+   It's also a good idea to escape some common errors from reddit in case they happen:
+   ```ruby
+   begin
+     r.comment_stream "test" do |comment|
+       if comment.body =~ /^Hello\?$/i
+         comment.reply "World!"
+       end
+     end
+   rescue Redd::Error::RateLimited => e
+     time_left = e.time
+     sleep(time_left)
+   rescue Redd::Error => e
+     status = e.message.status
+     # 5-something errors are usually errors on reddit's end.
+     raise e unless status.to_s.start_with? "5"
    end
    ```
 
