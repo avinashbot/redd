@@ -80,7 +80,6 @@ module Redd
 
     class RateLimited < Error
       attr_reader :time
-
       def initialize(time = 0)
         @time = time
       end

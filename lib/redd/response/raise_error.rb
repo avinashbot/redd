@@ -14,7 +14,7 @@ module Redd
               seconds = env[:body][:json][:ratelimit]
               fail error.new(seconds), env
             else
-            	fail error, env
+              fail error, env
             end
           end
         end
