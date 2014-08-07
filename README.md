@@ -1,7 +1,7 @@
 <p align="center">
   <img src="github/redd.png?raw=true" alt="redd"><br>
   <a href="http://badge.fury.io/rb/redd"><img src="https://badge.fury.io/rb/redd.svg" alt="Gem Version" height="18"></a>
-  <a href="https://gemnasium.com/avidw/redd"><img src="https://gemnasium.com/avidw/redd.svg" alt="Dependency Status"></a>
+  <a href="https://travis-ci.org/avidw/redd"><img src="https://travis-ci.org/avidw/redd.svg?branch=master" alt="Build Status"></a>
 </p>
 
 **redd** is an API wrapper for [reddit](http://reddit.com/dev/api) written in ruby that focuses on being *simple and extensible*.
@@ -117,7 +117,11 @@ Extending any ruby library, including redd is incredibly easy. Let's try this ou
    ```
 
 ## Supported Rubies
-TODO: Travis CI
+This gem aims to work on the following rubies:
+
+MRI: **1.9.3** - **2.1.2**  
+JRuby: **1.7.x**  
+Rubinius: **2.x.x**
 
 ## Copyright
 Copyright (c) [Avinash Dwarapu](http://github.com/avidw) under the MIT License. See LICENSE.md for more details.  
