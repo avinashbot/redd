@@ -45,6 +45,10 @@ module Redd
       # @return [String] The site to connect to authenticate with.
       attr_accessor :auth_endpoint
 
+      def self.new_from_credentials(username, password, options = {})
+        Redd::Client::Unauthenticated.new.login(username, password, options)
+      end
+
       # Set up an authenticated connection to reddit.
       #
       # @param [String] cookie The cookie to use when sending a request.
@@ -68,20 +72,13 @@ module Redd
 
       private
 
-      # Gets the Faraday connection or creates one if it doesn't exist yet.
-      #
-      # @return [Faraday] A new Faraday connection.
-      def connection
-        @connection ||= Faraday.new(url: api_endpoint) do |faraday|
-          faraday.use Faraday::Request::UrlEncoded
-          faraday.use Redd::Response::RaiseError
-          faraday.use Redd::Response::ParseJson
-          faraday.adapter Faraday.default_adapter
-
-          faraday.headers["User-Agent"] = user_agent
-          faraday.headers["Cookie"] = "reddit_session=#{cookie}"
-          faraday.headers["X-Modhash"] = modhash
-        end
+      # @return [Hash] The headers that are sent with every request.
+      def headers
+        @headers ||= {
+          "User-Agent" => @user_agent,
+          "Cookie" => "reddit_session=#{@cookie}",
+          "X-Modhash" => @modhash
+        }
       end
     end
   end

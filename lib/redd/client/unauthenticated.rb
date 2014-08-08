@@ -57,6 +57,11 @@ module Redd
 
       private
 
+      # @return [Hash] The headers that are sent with every request.
+      def headers
+        @headers ||= {"User-Agent" => @user_agent}
+      end
+
       # Gets the Faraday connection or creates one if it doesn't exist yet.
       #
       # @return [Faraday] A new Faraday connection.
@@ -67,7 +72,7 @@ module Redd
           faraday.use Redd::Response::ParseJson
           faraday.adapter Faraday.default_adapter
 
-          faraday.headers["User-Agent"] = user_agent
+          faraday.headers = headers
         end
       end
 

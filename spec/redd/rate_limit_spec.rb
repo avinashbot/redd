@@ -10,7 +10,7 @@ describe Redd::RateLimit do
     expect(end_time - start_time).to be_within(0.1).of(2)
   end
 
-  it "doesn't wait if two seconds have already passed since last request" do
+  it "doesn't wait if two seconds have passed since last request" do
     rate_limit.after_limit {  }
     sleep(2)
     start_time = Time.now
