@@ -53,7 +53,7 @@ module Redd
       end
 
       def comments
-        @comments ||= client.get_comments(id)
+        @comments ||= client.submission_comments(id)
       end
 
       def created
