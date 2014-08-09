@@ -3,10 +3,7 @@ module Redd
     class Authenticated
       module Account
         def me
-          meth = :get
-          path = "/api/me.json"
-
-          object_from_response(meth, path)
+          object_from_response :get, "/api/me.json"
         end
       end
     end

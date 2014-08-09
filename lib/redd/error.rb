@@ -20,41 +20,41 @@ module Redd
         when 200
           case body
           when /WRONG_PASSWORD/i
-            InvalidCredentials
+            Redd::Error::InvalidCredentials
           when /BAD_CAPTCHA/i
-            InvalidCaptcha
+            Redd::Error::InvalidCaptcha
           when /RATELIMIT/i
-            RateLimited
+            Redd::Error::RateLimited
           when /BAD_CSS_NAME/i
-            InvalidClassName
+            Redd::Error::InvalidClassName
           when /TOO_OLD/i
-            Archived
+            Redd::Error::Archived
           when /TOO_MUCH_FLAIR_CSS/i
-            TooManyClassNames
+            Redd::Error::TooManyClassNames
           when /USER_REQUIRED/i
-            AuthenticationRequired
+            Redd::Error::AuthenticationRequired
           end
         when 400
-          BadRequest
+          Redd::Error::BadRequest
         when 403
           case body
           when /USER_REQUIRED/i
-            AuthenticationRequired
+            Redd::Error::AuthenticationRequired
           else
-            PermissionDenied
+            Redd::Error::PermissionDenied
           end
         when 404
-          NotFound
+          Redd::Error::NotFound
         when 409
-          Conflict
+          Redd::Error::Conflict
         when 500
-          InternalServerError
+          Redd::Error::InternalServerError
         when 502
-          BadGateway
+          Redd::Error::BadGateway
         when 503
-          ServiceUnavailable
+          Redd::Error::ServiceUnavailable
         when 504
-          TimedOut
+          Redd::Error::TimedOut
         end
       end
 

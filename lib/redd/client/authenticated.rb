@@ -41,14 +41,6 @@ module Redd
       # @return [String] The returned modhash used when making requests.
       attr_reader :modhash
 
-      # @!attribute [rw] auth_endpoint
-      # @return [String] The site to connect to authenticate with.
-      attr_accessor :auth_endpoint
-
-      def self.new_from_credentials(username, password, options = {})
-        Redd::Client::Unauthenticated.new.login(username, password, options)
-      end
-
       # Set up an authenticated connection to reddit.
       #
       # @param [String] cookie The cookie to use when sending a request.
@@ -66,8 +58,7 @@ module Redd
 
         @rate_limit = options[:rate_limit] || Redd::RateLimit.new
         @user_agent = options[:user_agent] || "Redd/Ruby, v#{Redd::VERSION}"
-        @api_endpoint = options[:api_endpoint] || "http://www.reddit.com/"
-        @auth_endpoint = options[:auth_endpoint] || "https://ssl.reddit.com/"
+        @api_endpoint = options[:api_endpoint] || "https://www.reddit.com/"
       end
 
       private

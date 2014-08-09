@@ -52,7 +52,7 @@ module Redd
       def initialize(options = {})
         @rate_limit = options[:rate_limit] || Redd::RateLimit.new
         @user_agent = options[:user_agent] || "Redd/Ruby, v#{Redd::VERSION}"
-        @api_endpoint = options[:api_endpoint] || "http://www.reddit.com/"
+        @api_endpoint = options[:api_endpoint] || "https://www.reddit.com/"
       end
 
       private
