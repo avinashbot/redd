@@ -11,7 +11,7 @@ module Redd
         def wikipage(page, subreddit = nil, params = {})
           path = "/wiki/#{page}.json"
           path.prepend("/r/#{subreddit}") if subreddit
-          get path, params
+          object_from_response :get, path, params
         end
       end
     end

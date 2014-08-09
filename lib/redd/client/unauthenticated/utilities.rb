@@ -6,6 +6,7 @@ require "redd/object/private_message"
 require "redd/object/submission"
 require "redd/object/subreddit"
 require "redd/object/user"
+require "redd/object/wiki_page"
 
 module Redd
   module Client
@@ -65,6 +66,8 @@ module Redd
             Redd::Object::PrivateMessage
           when "t5"
             Redd::Object::Subreddit
+          when "wikipage"
+            Redd::Object::WikiPage
           else
             Redd::Thing
           end
