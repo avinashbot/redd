@@ -1,5 +1,16 @@
 module Redd
   class Error < StandardError
+
+    attr_reader :code
+    attr_reader :headers
+    attr_reader :body
+
+    def initialize(env)
+      @code = env.status
+      @headers = env.response_headers
+      @body = env.body
+    end
+
     class << self
       # @note I ripped off RedditKit.rb :|
       def from_response(response) # rubocop:disable Style/CyclomaticComplexity Style/MethodLength
@@ -80,7 +91,11 @@ module Redd
 
     class RateLimited < Error
       attr_reader :time
-      def initialize(time = 0)
+
+      def initialize(env, time)
+        @code = env.status
+        @headers = env.response_headers
+        @body = env.body
         @time = time
       end
     end

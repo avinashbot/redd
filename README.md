@@ -66,7 +66,7 @@ Ruby and redd make creating reddit bots accessible and fun. To demonstrate, let'
      time_left = e.time
      sleep(time_left)
    rescue Redd::Error => e
-     status = e.message.status
+     status = e.code
      # 5-something errors are usually errors on reddit's end.
      raise e unless (500...600).include?(status)
    end
