@@ -99,6 +99,8 @@ module Redd
           vote(thing, 0)
         end
 
+        alias_method :clear_vote, :unvote
+
         private
 
         def vote(thing, direction)
