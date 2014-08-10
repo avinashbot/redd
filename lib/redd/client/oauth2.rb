@@ -10,10 +10,6 @@ module Redd
       include Redd::Client::OAuth2::Authorization
       include Redd::Client::OAuth2::Identity
 
-      # @!attribute [r] api_endpoint
-      # @return [String] The site to make oauth requests with.
-      attr_accessor :api_endpoint
-
       # @!attribute [r] auth_endpoint
       # @return [String] The site to connect to authenticate with.
       attr_accessor :auth_endpoint
@@ -29,6 +25,10 @@ module Redd
       # @!attribute [rw] access_token
       # @return [String] The access token used to make requests.
       attr_accessor :access_token
+
+      # @!attribute [rw] refresh_token
+      # @return [String] The token used to refresh the access token.
+      attr_accessor :refresh_token
 
       def initialize(client_id, secret, redirect_uri, options = {})
         @client_id = client_id
@@ -50,15 +50,18 @@ module Redd
           faraday.adapter Faraday.default_adapter
 
           faraday.headers["Authorization"] = "bearer #{access_token}"
+          faraday.headers["User-Agent"] = "Redd/Ruby, v#{Redd::VERSION}"
         end
       end
 
       def auth_connection
         @auth_connection ||= Faraday.new(url: auth_endpoint) do |faraday|
           faraday.use Faraday::Request::UrlEncoded
+          faraday.use Redd::Response::RaiseError
           faraday.use Redd::Response::ParseJson
-          faraday.basic_auth(@client_id, @secret)
           faraday.adapter Faraday.default_adapter
+
+          faraday.basic_auth(@client_id, @secret)
         end
       end
     end

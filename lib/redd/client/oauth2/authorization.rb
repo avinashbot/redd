@@ -22,8 +22,21 @@ module Redd
             grant_type: "authorization_code", code: code,
             redirect_uri: @redirect_uri
 
-          @access_token = response.body[:access_token] if set_token
-          response.body
+          body = response.body
+          @access_token = body[:access_token] if set_token
+          @refresh_token = body[:refresh_token] if body[:refresh_token]
+          body
+        end
+
+        def refresh_access_token(
+          refresh_token = @refresh_token, set_token = true
+        )
+          response = auth_connection.post "/api/v1/access_token",
+            grant_type: "refresh_token", refresh_token: refresh_token
+
+          body = response.body
+          @access_token = body[:access_token] if set_token
+          body
         end
       end
     end
