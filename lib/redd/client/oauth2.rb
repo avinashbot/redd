@@ -61,11 +61,6 @@ module Redd
           faraday.adapter Faraday.default_adapter
         end
       end
-
-      # @return [Hash] The headers that are sent with every request.
-      def headers
-        @headers ||= {}
-      end
     end
   end
 end
