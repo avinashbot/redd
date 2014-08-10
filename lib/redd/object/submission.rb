@@ -4,6 +4,19 @@ module Redd
   module Object
     # A submission made in a subreddit.
     class Submission < Redd::Thing
+      require "redd/thing/editable"
+      require "redd/thing/hideable"
+      require "redd/thing/moderatable"
+      require "redd/thing/reportable"
+      require "redd/thing/saveable"
+      require "redd/thing/voteable"
+
+      include Redd::Thing::Editable
+      include Redd::Thing::Hideable
+      include Redd::Thing::Moderatable
+      include Redd::Thing::Saveable
+      include Redd::Thing::Voteable
+
       attr_reader :created_utc
       attr_reader :author
 

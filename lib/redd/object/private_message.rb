@@ -3,6 +3,10 @@ require "redd/thing"
 module Redd
   module Object
     class PrivateMessage < Redd::Thing
+      require "redd/thing/inboxable"
+
+      include Redd::Thing::Inboxable
+
       attr_reader :created_utc
       attr_reader :body
       attr_reader :body_html

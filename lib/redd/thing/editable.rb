@@ -9,6 +9,7 @@ module Redd
 
       def edit(text)
         client.edit(self, text)
+      end
     end
   end
 end

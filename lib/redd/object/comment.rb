@@ -4,6 +4,18 @@ module Redd
   module Object
     # A comment made on links.
     class Comment < Redd::Thing
+      require "redd/thing/editable"
+      require "redd/thing/inboxable"
+      require "redd/thing/moderatable"
+      require "redd/thing/reportable"
+      require "redd/thing/voteable"
+
+      include Redd::Thing::Editable
+      include Redd::Thing::Inboxable
+      include Redd::Thing::Moderatable
+      include Redd::Thing::Reportable
+      include Redd::Thing::Voteable
+
       attr_reader :created_utc
       attr_reader :author
 
@@ -50,10 +62,6 @@ module Redd
 
       def gilded?
         gilded > 0
-      end
-
-      def reply(text)
-        client.reply(self, text)
       end
     end
   end

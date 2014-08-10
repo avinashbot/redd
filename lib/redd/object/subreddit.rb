@@ -5,6 +5,10 @@ module Redd
     # A comment made on links.
     # @note This model can sure benefit from some lazy-loading...
     class Subreddit < Redd::Thing
+      require "redd/thing/messageable"
+
+      include Redd::Thing::Messageable
+
       attr_reader :display_name
       attr_reader :title
 

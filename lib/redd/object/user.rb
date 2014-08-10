@@ -3,6 +3,10 @@ require "redd/thing"
 module Redd
   module Object
     class User < Redd::Thing
+      require "redd/thing/messageable"
+
+      include Redd::Thing::Messageable
+
       attr_reader :created_utc
       attr_reader :name
       attr_reader :is_friend
