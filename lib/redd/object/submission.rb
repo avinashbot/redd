@@ -17,7 +17,6 @@ module Redd
       include Redd::Thing::Saveable
       include Redd::Thing::Voteable
 
-      attr_reader :created_utc
       attr_reader :author
 
       attr_reader :edited
@@ -70,7 +69,7 @@ module Redd
       end
 
       def created
-        @created ||= Time.at(@attributes[:created])
+        @created ||= Time.at(@attributes[:created_utc])
       end
 
       def permalink

@@ -7,7 +7,6 @@ module Redd
 
       include Redd::Thing::Inboxable
 
-      attr_reader :created_utc
       attr_reader :body
       attr_reader :body_html
       attr_reader :subreddit
@@ -24,7 +23,7 @@ module Redd
       alias_method :to, :author
 
       def created
-        @created ||= Time.at(@attributes[:created])
+        @created ||= Time.at(@attributes[:created_utc])
       end
 
       def replies

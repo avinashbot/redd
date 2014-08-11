@@ -7,7 +7,6 @@ module Redd
 
       include Redd::Thing::Messageable
 
-      attr_reader :created_utc
       attr_reader :name
       attr_reader :is_friend
       attr_reader :link_karma
@@ -23,7 +22,7 @@ module Redd
       alias_method :has_gold, :is_gold
 
       def created
-        @created ||= Time.at(@attributes[:created])
+        @created ||= Time.at(@attributes[:created_utc])
       end
 
       def fullname

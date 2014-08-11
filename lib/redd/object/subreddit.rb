@@ -33,7 +33,6 @@ module Redd
       attr_reader :accounts_active
       attr_reader :public_traffic
       attr_reader :subscribers
-      attr_reader :created_utc
       attr_reader :comment_score_hide_mins
       attr_reader :subreddit_type
       attr_reader :submission_type
@@ -44,7 +43,7 @@ module Redd
       alias_method :type, :subreddit_type
 
       def created
-        @created ||= Time.at(@attributes[:created])
+        @created ||= Time.at(@attributes[:created_utc])
       end
 
       def url
