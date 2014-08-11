@@ -1,3 +1,5 @@
+require "redd/oauth2_access"
+
 module Redd
   module Client
     class OAuth2
@@ -17,26 +19,29 @@ module Redd
           "#{path}?#{string_query}"
         end
 
-        def request_access_token(code, set_token = true)
+        def request_access_token(code, set_access = true)
           response = auth_connection.post "/api/v1/access_token",
             grant_type: "authorization_code", code: code,
             redirect_uri: @redirect_uri
 
-          body = response.body
-          @access_token = body[:access_token] if set_token
-          @refresh_token = body[:refresh_token] if body[:refresh_token]
-          body
+          access = Redd::OAuth2Access.new(response.body)
+          @access = access if set_access
+          access
         end
 
-        def refresh_access_token(
-          refresh_token = @refresh_token, set_token = true
-        )
+        def refresh_access_token(access = nil, set_access = true)
+          refresh_token = extract_attribute(access, :refresh_token)
           response = auth_connection.post "/api/v1/access_token",
             grant_type: "refresh_token", refresh_token: refresh_token
 
-          body = response.body
-          @access_token = body[:access_token] if set_token
-          body
+          case access
+          when Redd::OAuth2Access
+            access.refresh(response.body)
+          when ::String
+            new_access = Redd::OAuth2Access.new(response.body)
+            @access = new_access if set_access
+            new_access
+          end
         end
       end
     end

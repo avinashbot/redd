@@ -22,13 +22,9 @@ module Redd
       # @return [String] The exact redirect_uri of the oauth application.
       attr_reader :redirect_uri
 
-      # @!attribute [rw] access_token
-      # @return [String] The access token used to make requests.
-      attr_accessor :access_token
-
-      # @!attribute [rw] refresh_token
-      # @return [String] The token used to refresh the access token.
-      attr_accessor :refresh_token
+      # @!attribute [rw] access
+      # @return [String] The access info used to make requests.
+      attr_accessor :access
 
       def initialize(client_id, secret, redirect_uri, options = {})
         @client_id = client_id
@@ -42,7 +38,7 @@ module Redd
 
       private
 
-      def connection(access_token = @access_token)
+      def connection(access_token = @access.access_token)
         @connection ||= Faraday.new(url: api_endpoint) do |faraday|
           faraday.use Faraday::Request::UrlEncoded
           faraday.use Redd::Response::RaiseError
