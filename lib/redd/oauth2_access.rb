@@ -17,7 +17,12 @@ module Redd
       @refresh_token = response[:refresh_token]
       @scope = response[:scope].split(",").map { |s| s.to_sym }
       @duration = @refresh_token ? :permanent : :temporary
-      @expires_at = Time.now + response[:expires_in]
+      @expires_at =
+        if response[:expires_at]
+          Time.at(response[:expires_at])
+        else	            
+          Time.now + response[:expires_in]
+        end
     end
 
     def refresh(response)
@@ -35,7 +40,7 @@ module Redd
         access_token: @access_token,
         refresh_token: @refresh_token,
         scope: @scope.join(","),
-        expires_in: (@expires_at - Time.now).to_i
+        expires_at: @expires_at.to_i
       )
     end
 
