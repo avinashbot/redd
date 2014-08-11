@@ -41,6 +41,10 @@ module Redd
       # @return [String] The returned modhash used when making requests.
       attr_reader :modhash
 
+      def new_from_credentials(username, password, options = {})
+        Redd::Client::Unauthenticated.new.login(username, password, options)
+      end
+
       # Set up an authenticated connection to reddit.
       #
       # @param [String] cookie The cookie to use when sending a request.
