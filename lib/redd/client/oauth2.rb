@@ -36,6 +36,12 @@ module Redd
         @auth_endpoint = options[:auth_endpoint] || "https://ssl.reddit.com/"
       end
 
+      def with_access(access)
+        new_instance = dup
+        new_instance.access = access
+        yield new_instance
+      end
+
       private
 
       def connection(access_token = @access.access_token)
