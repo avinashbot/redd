@@ -6,22 +6,25 @@ module Redd
     include Memoizable
 
     # @!attribute [r] attributes
-    # @return [Hash] A list of attributes returned by reddit for this object.
+    #   @return [Hash] A list of attributes returned by reddit for this object.
     attr_reader :attributes
     alias_method :to_h, :attributes
 
     # @!attribute [r] client
-    # @return The client instance used to make requests with this object.
+    #   @return The client instance used to make requests with this object.
     attr_reader :client
 
-    # Define and memoize the method that returns a key from the
-    # attributes hash.
+    # Define and memoize the method that returns a key from the attributes
+    # hash.
+    #
     # @param [Symbol, String] attr The attribute to construct a method out of.
     def self.attr_reader(attr)
       define_attribute_method(attr)
       define_predicate_method(attr)
     end
 
+    # @param method [#to_sym] An attribute of the class
+    # @return The attribute requested
     def [](method)
       send(method.to_sym)
     rescue NoMethodError
@@ -37,11 +40,14 @@ module Redd
       @attributes[:kind] = attributes[:kind]
     end
 
+    # Create a new method with the given name that accesses the @attributes.
     def self.define_attribute_method(method)
       define_method(method) { @attributes[method] }
       memoize method
     end
 
+    # Create a new method with the given name that accesses the @attributes.
+    # @return [Boolean]
     def self.define_predicate_method(method)
       define_method(:"#{method}?") { !!@attributes[method] }
       memoize :"#{method}?"

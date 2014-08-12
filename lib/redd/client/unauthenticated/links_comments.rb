@@ -2,17 +2,34 @@ module Redd
   module Client
     class Unauthenticated
       module LinksComments
+        # @param params [Hash] A hash of parameters to send to reddit.
+        # @option params [String] :id The fullname of a thing.
+        # @option params [String] :url The url of a thing. If an id is also
+        #   provided, the id will take precedence.
+        # @return [Redd::Object::Submission, Redd::Object::Comment] The object.
+        #
         # @note Reddit does accept a subreddit, but with fullnames and urls, I
         #   assumed that was unnecessary.
         def get_info(params = {})
-          object_from_response :get, "/api/info.json", params
+          object = object_from_response :get, "/api/info.json", params
+          object.first
         end
 
+        # Get the comments for a submission.
+        #
+        # @param submission [String, Redd::Object::Submission] The submission
+        #   to get the comments for.
+        # @return [Redd::Object::Listing] A listing of comments.
         def submission_comments(submission)
           id = extract_id(submission)
           comments_from_response :get, "/comments/#{id}.json"
         end
 
+        # Get the replies for a comment.
+        #
+        # @param comment [String, Redd::Object::Submission] The comment to get
+        #   the replies for.
+        # @return [Redd::Object::Listing] A listing of comments.
         def get_replies(comment)
           replies = comment.attributes[:replies]
           return [] unless replies.is_a?(Hash) && replies.key?(:kind)

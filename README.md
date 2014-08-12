@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="github/redd.png?raw=true" alt="redd"><br>
+  <img src="https://i.imgur.com/2JfE4M1.png" alt="redd"><br>
   <a href="http://badge.fury.io/rb/redd"><img src="https://badge.fury.io/rb/redd.svg" alt="Gem Version" height="18"></a>
   <a href="https://travis-ci.org/avidw/redd"><img src="https://travis-ci.org/avidw/redd.svg?branch=master" alt="Build Status"></a>
 </p>
