@@ -23,8 +23,8 @@ module Redd
         # @param params [Hash] A list of params to send with the request.
         #
         # @see #get_listing
-        %i(hot new random top controversial comments).each do |sort|
-          define_method "get_#{sort}" do |subreddit = nil, params = {}|
+        %w(hot new random top controversial comments).each do |sort|
+          define_method :"get_#{sort}" do |subreddit = nil, params = {}|
             get_listing(sort, subreddit, params)
           end
         end
