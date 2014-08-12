@@ -1,6 +1,7 @@
 module Redd
   module Client
     class Authenticated
+      # Methods to interact with subreddits
       module Subreddits
         def subscribe(subreddit)
           edit_subscription(:sub, subreddit)

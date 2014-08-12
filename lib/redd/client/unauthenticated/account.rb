@@ -1,10 +1,14 @@
 module Redd
   module Client
     class Unauthenticated
+      # Methods for managing accounts.
       module Account
         def login(username, password, remember = false, options = {})
           response = post "/api/login",
-            api_type: "json", user: username, passwd: password, rem: remember
+                          api_type: "json",
+                          user: username,
+                          passwd: password,
+                          rem: remember
           data = response[:json][:data]
 
           require "redd/client/authenticated"

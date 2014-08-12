@@ -1,6 +1,7 @@
 module Redd
   module Client
     class Unauthenticated
+      # Methods that deal with subreddit styles
       module Moderation
         def stylesheet_url(subreddit = nil)
           path = "/stylesheet"

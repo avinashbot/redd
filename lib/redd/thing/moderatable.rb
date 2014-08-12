@@ -2,6 +2,7 @@ require "redd/thing"
 
 module Redd
   class Thing
+    # A Redd::Object that can be moderated
     module Moderatable
       def approve
         client.approve(self)

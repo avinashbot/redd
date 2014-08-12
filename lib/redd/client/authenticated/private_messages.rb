@@ -1,6 +1,7 @@
 module Redd
   module Client
     class Authenticated
+      # Methods for sending and reading private messages
       module PrivateMessages
         def block_message(message)
           fullname = extract_fullname(message)

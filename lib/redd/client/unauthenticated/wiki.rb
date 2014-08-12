@@ -1,6 +1,7 @@
 module Redd
   module Client
     class Unauthenticated
+      # Methods to interact with subreddit wikis
       module Wiki
         def get_wikipages(subreddit = nil)
           path = "/wiki/pages.json"

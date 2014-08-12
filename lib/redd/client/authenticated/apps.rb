@@ -1,6 +1,7 @@
 module Redd
   module Client
     class Authenticated
+      # Methods to interact with OAuth2 Apps
       module Apps
         # Low-Priority
         #

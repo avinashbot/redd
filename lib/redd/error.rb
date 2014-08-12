@@ -1,6 +1,6 @@
 module Redd
+  # An error from reddit
   class Error < StandardError
-
     attr_reader :code
     attr_reader :headers
     attr_reader :body
@@ -12,8 +12,8 @@ module Redd
     end
 
     class << self
-      # @note I ripped off RedditKit.rb :|
-      def from_response(response) # rubocop:disable Style/CyclomaticComplexity Style/MethodLength
+      # rubocop:disable Style/CyclomaticComplexity, Style/MethodLength
+      def from_response(response)
         status = response[:status]
         body = parse_error(response[:body]).to_s
         case status
@@ -57,6 +57,7 @@ module Redd
           Redd::Error::TimedOut
         end
       end
+      # rubocop:enable Style/CyclomaticComplexity, Style/MethodLength
 
       def parse_error(body)
         return nil unless body.is_a?(Hash)
@@ -89,6 +90,7 @@ module Redd
 
     class PermissionDenied < Error; end
 
+    # Raised when the client needs to wait before making another request
     class RateLimited < Error
       attr_reader :time
 

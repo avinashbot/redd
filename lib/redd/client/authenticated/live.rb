@@ -1,6 +1,7 @@
 module Redd
   module Client
     class Authenticated
+      # Methods to interact with /r/live threads
       module Live
         # Low-priority
         #

@@ -2,6 +2,7 @@ require "redd/thing"
 
 module Redd
   class Thing
+    # A Redd::Object that can be voted on
     module Voteable
       def upvote
         client.upvote(self)
@@ -16,7 +17,6 @@ module Redd
       end
 
       alias_method :clear_vote, :unvote
-
     end
   end
 end

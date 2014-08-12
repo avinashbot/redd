@@ -1,6 +1,7 @@
 module Redd
   module Client
     class Unauthenticated
+      # Methods that return a listing
       module Listing
         def by_id(*fullnames)
           names = fullnames.join(",")

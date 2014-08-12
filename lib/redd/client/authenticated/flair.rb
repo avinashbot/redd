@@ -1,6 +1,7 @@
 module Redd
   module Client
     class Authenticated
+      # Methods to interact with link and user flairs.
       module Flair
         def get_flair_list(subreddit, params = {})
           name = extract_attribute(subreddit, :display_name)
@@ -22,10 +23,7 @@ module Redd
 
         def set_flair(subreddit, user_or_link, text = "", css_class = "")
           name = extract_attribute(subreddit, :display_name)
-
-          path = "/api/flair"
-          path = path.prepend("/r/#{name}")
-          params = {api_type: "json", text: text, css_class: css_class}
+          path = "/r/#{name}/api/flair"
 
           case user_or_link
           when Redd::Object::User
@@ -36,7 +34,7 @@ module Redd
             fail "You should provide a User or Submission object."
           end
 
-          post path, params
+          post path, api_type: "json", text: text, css_class: css_class
         end
       end
     end

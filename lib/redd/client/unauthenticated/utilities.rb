@@ -11,6 +11,7 @@ require "redd/object/wiki_page"
 module Redd
   module Client
     class Unauthenticated
+      # Non-API methods that make life easier
       module Utilities
         def comment_stream(*args, &block)
           submission_stream(:comments, *args, &block)
@@ -23,7 +24,7 @@ module Redd
             objects = get_listing(listing, subreddit, params)
             unless objects.empty?
               # Run the loop for each of the new comments accessed.
-              # I should probably add it to some sort of Set to avoid duplicates.
+              # I should probably add it to a Set to avoid duplicates.
               objects.reverse_each { |object| block.call(object) }
               # Set the latest comment.
               params[:before] = objects.first.fullname
@@ -38,7 +39,7 @@ module Redd
           when ::String
             object
           else
-          	object.send(attribute)
+            object.send(attribute)
           end
         end
 
@@ -50,7 +51,8 @@ module Redd
           extract_attribute(object, :id)
         end
 
-        def object_from_kind(kind) # rubocop:disable Style/MethodLength
+        # rubocop:disable Style/MethodLength, Style/CyclomaticComplexity
+        def object_from_kind(kind)
           case kind
           when "Listing"
             Redd::Object::Listing
@@ -72,6 +74,7 @@ module Redd
             Redd::Thing
           end
         end
+        # rubocop:enable Style/MethodLength, Style/CyclomaticComplexity
 
         def objects_from_listing(thing)
           thing[:data][:children].map do |child|
@@ -80,7 +83,7 @@ module Redd
         end
 
         def object_from_body(body)
-          return nil unless body.is_a?(Hash) && body.has_key?(:kind)
+          return nil unless body.is_a?(Hash) && body.key?(:kind)
           object = object_from_kind(body[:kind])
 
           if object == Redd::Object::Listing

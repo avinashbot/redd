@@ -8,7 +8,8 @@ module Redd
       # @param faraday
       def call(faraday)
         @app.call(faraday).on_complete do |env|
-          if error = Redd::Error.from_response(env)
+          error = Redd::Error.from_response(env)
+          if error
             if error == Redd::Error::RateLimited
               time = env.body[:json][:ratelimit]
               fail error.new(env, time)

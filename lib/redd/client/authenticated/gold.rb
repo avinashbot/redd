@@ -1,6 +1,7 @@
 module Redd
   module Client
     class Authenticated
+      # Methods to gild a user, link or comment
       module Gold
         # Low-Priority
         #

@@ -1,6 +1,7 @@
 module Redd
   module Client
     class OAuth2
+      # Methods to interact with the user logged-in via OAuth2
       module Identity
         def me
           response = get "/api/v1/me.json"

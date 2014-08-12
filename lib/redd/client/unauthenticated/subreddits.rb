@@ -1,6 +1,7 @@
 module Redd
   module Client
     class Unauthenticated
+      # Methods that deal with subreddits
       module Subreddits
         def subreddit(title)
           object_from_response :get, "/r/#{title}/about.json"

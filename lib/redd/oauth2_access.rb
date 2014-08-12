@@ -1,6 +1,7 @@
 require "multi_json"
 
 module Redd
+  # A container for the client's access to their account via OAuth2
   class OAuth2Access
     attr_reader :access_token
 
@@ -20,7 +21,7 @@ module Redd
       @expires_at =
         if response[:expires_at]
           Time.at(response[:expires_at])
-        else	            
+        else
           Time.now + response[:expires_in]
         end
     end

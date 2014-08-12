@@ -15,7 +15,7 @@ module Redd
 
         def get_replies(comment)
           replies = comment.attributes[:replies]
-          return [] unless replies.is_a?(Hash) and replies.has_key?(:kind)
+          return [] unless replies.is_a?(Hash) && replies.key?(:kind)
           object_from_body(replies)
         end
 
@@ -30,8 +30,10 @@ module Redd
               get_info(id: parent_id).first.link_id
             end
 
-          response = post "/api/morechildren", api_type: "json",
-            link_id: link_id, children: morecomments.children.join(",")
+          response = post "/api/morechildren",
+                          api_type: "json",
+                          link_id: link_id,
+                          children: morecomments.children.join(",")
           comments = response[:json][:data][:things]
 
           # No idea how to increase the depth of the comments.

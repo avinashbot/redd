@@ -37,8 +37,6 @@ module Redd
       @attributes[:kind] = attributes[:kind]
     end
 
-    private
-
     def self.define_attribute_method(method)
       define_method(method) { @attributes[method] }
       memoize method

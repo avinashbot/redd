@@ -2,6 +2,7 @@ require "redd/thing"
 
 module Redd
   module Object
+    # The model for a reddit user
     class User < Redd::Thing
       require "redd/thing/messageable"
 

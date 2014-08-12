@@ -1,17 +1,13 @@
 module Redd
   module Client
     class Authenticated
+      # Methods to deal with comments and links
       module LinksComments
         def submit(
           title, kind, text_or_url, captcha = nil, identifier = nil,
           options = {}
         )
-          # Set required parameters
-          params = {
-            api_type: "json", extension: "json", title: title, kind: kind
-          }
 
-          # Set url or selftext depending on kind
           case kind.to_sym
           when :self
             params[:text] = text_or_url
@@ -19,10 +15,10 @@ module Redd
             params[:url] = text_or_url
           end
 
-          # Optional captcha
+          params = {
+            api_type: "json", extension: "json", title: title, kind: kind
+          }
           params << {captcha: captcha, iden: identifier} if captcha
-
-          # Fill in the rest of the options
           params << options
 
           post "/api/submit", params
@@ -44,8 +40,9 @@ module Redd
         # @todo return the edited object.
         def edit(thing, text)
           fullname = extract_fullname(thing)
-          post "/api/editusertext",
-            api_type: "json", text: text, thing_id: fullname
+          post "/api/editusertext", api_type: "json",
+                                    thing_id: fullname,
+                                    text: text
         end
 
         def hide(thing)

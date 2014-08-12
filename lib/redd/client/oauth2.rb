@@ -44,14 +44,14 @@ module Redd
 
       private
 
-      def connection(access_token = @access.access_token)
+      def connection
         @connection ||= Faraday.new(url: api_endpoint) do |faraday|
           faraday.use Faraday::Request::UrlEncoded
           faraday.use Redd::Response::RaiseError
           faraday.use Redd::Response::ParseJson
           faraday.adapter Faraday.default_adapter
 
-          faraday.headers["Authorization"] = "bearer #{access_token}"
+          faraday.headers["Authorization"] = "bearer #{@access.access_token}"
           faraday.headers["User-Agent"] = "Redd/Ruby, v#{Redd::VERSION}"
         end
       end

@@ -2,6 +2,7 @@ require "redd/thing"
 
 module Redd
   module Object
+    # The model for private messages
     class PrivateMessage < Redd::Thing
       require "redd/thing/inboxable"
 
@@ -20,7 +21,7 @@ module Redd
       attr_reader :author
 
       alias_method :from, :author
-      alias_method :to, :author
+      alias_method :to, :dest
 
       def created
         @created ||= Time.at(@attributes[:created_utc])

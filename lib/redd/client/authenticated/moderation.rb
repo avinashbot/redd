@@ -1,6 +1,7 @@
 module Redd
   module Client
     class Authenticated
+      # Methods for moderating subreddits
       module Moderation
         def approve(thing)
           fullname = extract_fullname(thing)
@@ -37,12 +38,12 @@ module Redd
         end
 
         def ignore_reports(thing)
-          fullname = extract_fullname(subreddit)
+          fullname = extract_fullname(thing)
           post "/api/ignore_reports", id: fullname
         end
 
         def unignore_reports(thing)
-          fullname = extract_fullname(subreddit)
+          fullname = extract_fullname(thing)
           post "/api/unignore_reports", id: fullname
         end
 
