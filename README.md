@@ -36,20 +36,16 @@ Ruby and redd make creating reddit bots accessible and fun. To demonstrate, let'
    require "redd"
    #=> true
    
-   r = Redd.client "HelloWorldBot", "hunter2"
+   r = Redd.client "HelloWorldBot", "hunter2",
+                    user_agent: "HelloWorldBot v1.0 by /u/you"
    # => #<Redd::Client::Authenticated:0xY4D4y4D4y4dA ...
-   
-   # This is generally a good thing to do:
-   r.user_agent = "HelloWorldBot v1.0 (Redd), written by /u/Mustermind"
    ```
 
 3. **Scouting**  
    Redd has a really cool method similar to praw's `helpers.comment_stream` that "streams" comments to you while avoiding duplicates. You won't have to take care of rate-limiting either; Redd `sleep`s after requests to avoid ratelimit errors. If you want to write a rate limiting class yourself, take a look at `lib/redd/rate_limit.rb`
    ```ruby
    r.comment_stream "test" do |comment|
-     if comment.body =~ /^Hello\?$/i
-       comment.reply "World!"
-     end
+     comment.reply "World!" if comment.body =~ /^Hello\?$/i
    end
    ```
 
@@ -58,9 +54,7 @@ Ruby and redd make creating reddit bots accessible and fun. To demonstrate, let'
    ```ruby
    begin
      r.comment_stream "test" do |comment|
-       if comment.body =~ /^Hello\?$/i
-         comment.reply "World!"
-       end
+       comment.reply "World!" if comment.body =~ /^Hello\?$/i
      end
    rescue Redd::Error::RateLimited => e
      time_left = e.time
