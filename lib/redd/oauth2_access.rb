@@ -39,6 +39,7 @@ module Redd
 
     # Refresh the object with the new response.
     # This happens when a new access token is requested using a request token.
+    # @param response [Hash] The new response body.
     def refresh(response)
       @access_token = response[:access_token]
       @expires_at = Time.now + response[:expires_in]

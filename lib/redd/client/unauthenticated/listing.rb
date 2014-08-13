@@ -35,14 +35,15 @@ module Redd
         #
         # @param type [:hot, :new, :random, :top, :controversial, :comments]
         #   The type of listing to return 
-        # @param subreddit [Redd::Object::Subreddit] The subreddit to query.
+        # @param subreddit [Redd::Object::Subreddit, String] The subreddit to
+        #   query.
         # @param params [Hash] A list of params to send with the request.
         # @option params [String] :after Return results after the given
         #   fullname.
         # @option params [String] :before Return results before the given
         #   fullname.
-        # @option params [Integer] :count The number of items already seen in
-        #   the listing.
+        # @option params [Integer] :count (0) The number of items already seen
+        #   in the listing.
         # @option params [1..100] :limit (25) The maximum number of things to
         #   return.
         # @option params [:hour, :day, :week, :month, :year, :all] :t The
