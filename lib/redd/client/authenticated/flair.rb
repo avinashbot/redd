@@ -16,8 +16,6 @@ module Redd
         #   in the listing.
         # @option params [1..1000] :limit (25) The maximum number of things to
         #   return.
-        # @option params [:hour, :day, :week, :month, :year, :all] :t The
-        #   time period to consider when sorting.
         # @return [Array<Hash>] An array of users.
         def get_flair_list(subreddit, params = {})
           name = extract_attribute(subreddit, :display_name)
@@ -32,7 +30,7 @@ module Redd
         #
         # @param subreddit [Redd::Object::Subreddit, String] The subreddit to
         #   find the user in.
-        # @param subreddit [Redd::Object::User, String] The user to find.
+        # @param user [Redd::Object::User, String] The user to find.
         # @return [Hash, nil] Flair info about the user or nil if nobody was
         #   found.
         def get_flair(subreddit, user)

@@ -5,7 +5,20 @@ module Redd
     class OAuth2
       # Methods for obtaining an access token
       module Authorization
-        def auth_url(scope = ["identity"], duration = "temporary", state = "x")
+        # Build an authorization url to redirect the user to.
+        #
+        # @param scope [Array<String>] The access scopes to request from the
+        #   user.
+        # @param duration [:temporary, :permanent] The duration of your access
+        #   to the user's account.
+        # @param state [String] A random string to check later.
+        # @return [String] The url.
+        #
+        # @note The access tokens from both duration last only an hour, but you
+        #   also get a refresh token when the duration is permanent.
+        # @note You may be tempted to let the state remain "x", but seriously,
+        #   use this; it helps prevent against CSRF attacks.
+        def auth_url(scope = ["identity"], duration = :temporary, state = "x")
           path = "https://ssl.reddit.com/api/v1/authorize"
           query = {
             client_id: @client_id,
@@ -19,6 +32,13 @@ module Redd
           "#{path}?#{string_query}"
         end
 
+        # Request an access token from the code that is sent with the redirect.
+        #
+        # @param code [String] The code that was sent in the GET request.
+        # @param set_access [Boolean] Whether to automatically use this token
+        #   for all future requests with this client.
+        # @return [Redd::OAuth2Access] A package of the necessary information
+        #   to access the user's information.
         def request_access_token(code, set_access = true)
           response = auth_connection.post "/api/v1/access_token",
                                           grant_type: "authorization_code",
@@ -30,15 +50,25 @@ module Redd
           access
         end
 
-        def refresh_access_token(access = nil, set_access = true)
-          refresh_token = extract_attribute(access, :refresh_token)
+        # Obtain a new access token using a refresh token.
+        #
+        # @param token [Redd::OAuth2Access, String, nil] The refresh token or
+        #   OAuth2Access. If none is provided, it'll refresh the one the client
+        #   is currently using.
+        # @param set_access [Boolean] Whether to automatically use this token
+        #   for all future requests with this client.
+        # @return [Redd::OAuth2Access] The refreshed information.
+        def refresh_access_token(token = nil, set_access = true)
+          refresh_token = extract_attribute(token, :refresh_token)
           response = auth_connection.post "/api/v1/access_token",
                                           grant_type: "refresh_token",
                                           refresh_token: refresh_token
 
-          case access
-          when Redd::OAuth2Access
+          case token
+          when nil
             access.refresh(response.body)
+          when Redd::OAuth2Access
+            token.refresh(response.body)
           when ::String
             new_access = Redd::OAuth2Access.new(response.body)
             @access = new_access if set_access

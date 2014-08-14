@@ -60,6 +60,10 @@ module Redd
       alias_method :self?, :is_self
       alias_method :comments_count, :num_comments
 
+      def subreddit_name
+        @subreddit_name ||= @attributes[:subreddit]
+      end
+
       def subreddit
         @subreddit ||= client.subreddit(@attributes[:subreddit])
       end
