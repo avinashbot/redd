@@ -4,7 +4,8 @@
   <a href="https://travis-ci.org/avidw/redd"><img src="https://travis-ci.org/avidw/redd.svg?branch=master" alt="Build Status"></a>
 </p>
 
-**redd** is an API wrapper for [reddit](http://reddit.com/dev/api) written in ruby that focuses on being *simple and extensible*.
+**redd** is an API wrapper for [reddit](http://reddit.com/dev/api) written in ruby that focuses on being *simple and extensible*.  
+Check out the latest documentation on [RubyDoc](http://rubydoc.info/github/avidw/redd/master/frames).
 
 ---
 
