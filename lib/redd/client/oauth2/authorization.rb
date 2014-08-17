@@ -40,7 +40,7 @@ module Redd
         #   for all future requests with this client.
         # @return [Redd::OAuth2Access] A package of the necessary information
         #   to access the user's information.
-        def request_access_token(code, set_access = true)
+        def request_access(code, set_access = true)
           response = auth_connection.post "/api/v1/access_token",
                                           grant_type: "authorization_code",
                                           code: code,
@@ -59,7 +59,7 @@ module Redd
         # @param set_access [Boolean] Whether to automatically use this token
         #   for all future requests with this client.
         # @return [Redd::OAuth2Access] The refreshed information.
-        def refresh_access_token(token = nil, set_access = true)
+        def refresh_access(token = nil, set_access = true)
           refresh_token = extract_attribute(token, :refresh_token)
           response = auth_connection.post "/api/v1/access_token",
                                           grant_type: "refresh_token",
