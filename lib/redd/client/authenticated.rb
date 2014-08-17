@@ -41,7 +41,8 @@ module Redd
       # @return [String] The returned modhash used when making requests.
       attr_reader :modhash
 
-      def new_from_credentials(username, password, options = {})
+      def self.new_from_credentials(username, password, options = {})
+        @username = username
         Redd::Client::Unauthenticated.new.login(username, password, options)
       end
 

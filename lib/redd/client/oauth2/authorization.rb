@@ -7,7 +7,7 @@ module Redd
       module Authorization
         # Build an authorization url to redirect the user to.
         #
-        # @param scope [Array<String>] The access scopes to request from the
+        # @param scopes [Array<String>] The access scopes to request from the
         #   user.
         # @param duration [:temporary, :permanent] The duration of your access
         #   to the user's account.
@@ -18,14 +18,15 @@ module Redd
         #   also get a refresh token when the duration is permanent.
         # @note You may be tempted to let the state remain "x", but seriously,
         #   use this; it helps prevent against CSRF attacks.
-        def auth_url(scope = ["identity"], duration = :temporary, state = "x")
+        def auth_url(scopes = ["identity"], duration = :temporary, state = "x")
           path = "https://ssl.reddit.com/api/v1/authorize"
+          scope = scopes.is_a?(Array) ? scopes.join(",") : scopes
           query = {
             client_id: @client_id,
             redirect_uri: @redirect_uri,
             response_type: "code",
             state: state,
-            scope: scope.join(","),
+            scope: scope,
             duration: duration
           }
           string_query = query.map { |key, value| "#{key}=#{value}" }.join("&")
