@@ -38,14 +38,17 @@ module Redd
         # @param code [String] The code that was sent in the GET request.
         # @param set_access [Boolean] Whether to automatically use this token
         #   for all future requests with this client.
-        # @return [Redd::OAuth2Access] A package of the necessary information
-        #   to access the user's information.
+        # @return [Redd::OAuth2Access, nil] A package of the necessary
+        #   information to access the user's information or nil if there was
+        #   an error.
+        # @todo Custom Errors for OAuth2
         def request_access(code, set_access = true)
           response = auth_connection.post "/api/v1/access_token",
                                           grant_type: "authorization_code",
                                           code: code,
                                           redirect_uri: @redirect_uri
 
+          return nil if response.body.key?(error)
           access = Redd::OAuth2Access.new(response.body)
           @access = access if set_access
           access
