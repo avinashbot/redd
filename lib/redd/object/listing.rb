@@ -19,7 +19,7 @@ module Redd
       attr_reader :before
 
       def initialize(listing)
-        @kind = listing[:kind]
+        @kind = "Listing"
         @things = listing[:data][:children]
         @after = listing[:data][:after]
         @before = listing[:data][:before]
