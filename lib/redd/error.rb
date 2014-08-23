@@ -19,6 +19,20 @@ module Redd
         case status
         when 200
           case body
+          when /ACCESS_DENIED/i
+            Redd::Error::OAuth2AccessDenied
+          when /UNSUPPORTED_RESPONSE_TYPE/i
+            Redd::Error::InvalidResponseType
+          when /UNSUPPORTED_GRANT_TYPE/i
+            Redd::Error::InvalidGrantType
+          when /INVALID_SCOPE/i
+            Redd::Error::InvalidScope
+          when /INVALID_REQUEST/i
+            Redd::Error::InvalidRequest
+          when /NO_TEXT/i
+            Redd::Error::NoTokenGiven
+          when /INVALID_GRANT/i
+            Redd::Error::ExpiredCode
           when /WRONG_PASSWORD/i
             Redd::Error::InvalidCredentials
           when /BAD_CAPTCHA/i
@@ -36,6 +50,8 @@ module Redd
           end
         when 400
           Redd::Error::BadRequest
+        when 401
+          Redd::Error::InvalidOAuth2Credentials
         when 403
           case body
           when /USER_REQUIRED/i
@@ -66,50 +82,73 @@ module Redd
           body[:json][:errors].first
         elsif body.key?(:jquery)
           body[:jquery]
+        elsif body.key?(:error)
+          body[:error]
+        elsif body.key?(:code) && body[:code] == "NO_TEXT"
+          "NO_TEXT"
         end
       end
     end
-
-    class AuthenticationRequired < Error; end
-
-    class InvalidCaptcha < Error; end
-
-    class BadGateway < Error; end
-
-    class InvalidMultiredditName < Error; end
-
-    class Conflict < Error; end
-
-    class InternalServerError < Error; end
-
-    class InvalidClassName < Error; end
-
-    class InvalidCredentials < Error; end
-
-    class NotFound < Error; end
-
-    class PermissionDenied < Error; end
-
-    # Raised when the client needs to wait before making another request
-    class RateLimited < Error
-      attr_reader :time
-
-      def initialize(env, time)
-        @code = env.status
-        @headers = env.response_headers
-        @body = env.body
-        @time = time
-      end
-    end
-
-    class RequestError < Error; end
-
-    class ServiceUnavailable < Error; end
-
-    class TooManyClassNames < Error; end
-
-    class Archived < Error; end
-
-    class TimedOut < Error; end
   end
+
+  class NoTokenGiven < Error; end
+
+  class ExpiredCode < Error; end
+
+  class InvalidGrantType < Error; end
+
+  class InvalidOAuth2Credentials < Error; end
+
+  class OAuth2AccessDenied < Error; end
+
+  class InvalidResponseType < Error; end
+
+  class InvalidScope < Error; end
+
+  class InvalidRequest < Error; end
+
+  class AuthenticationRequired < Error; end
+
+  class InvalidCaptcha < Error; end
+
+  class BadGateway < Error; end
+
+  class BadRequest < Error; end
+
+  class InvalidMultiredditName < Error; end
+
+  class Conflict < Error; end
+
+  class InternalServerError < Error; end
+
+  class InvalidClassName < Error; end
+
+  class InvalidCredentials < Error; end
+
+  class NotFound < Error; end
+
+  class PermissionDenied < Error; end
+
+  # Raised when the client needs to wait before making another request
+  class RateLimited < Error
+    attr_reader :time
+
+    def initialize(env, time)
+      @code = env.status
+      @headers = env.response_headers
+      @body = env.body
+      @time = time
+    end
+  end
+
+  class RequestError < Error; end
+
+  class ServiceUnavailable < Error; end
+
+  class TooManyClassNames < Error; end
+
+  class Archived < Error; end
+
+  class TimedOut < Error; end
+end
 end
