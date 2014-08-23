@@ -79,6 +79,30 @@ module Redd
             new_access
           end
         end
+
+        # Dispose of an access or refresh token when you're done with it.
+        #
+        # @param access [Redd::OAuth2Access, String] The token to revoke.
+        # @param remove_refresh_token [Boolean] Whether you intend to revoke a
+        #   refresh token.
+        def revoke_access(access, remove_refresh_token = nil)
+          token = 
+          if remove_refresh_token
+            extract_attribute(access, :refresh_token)
+          else
+            extract_attribute(access, :access_token)
+          end
+
+          params = {token: token}
+
+          if remove_refresh_token
+            params[:token_type_hint] = true
+          elsif remove_refresh_token == false
+            params[:token_type_hint] = false
+          end
+
+          auth_connection.post "/api/v1/revoke_token", params
+        end
       end
     end
   end
