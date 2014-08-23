@@ -48,7 +48,6 @@ module Redd
                                           code: code,
                                           redirect_uri: @redirect_uri
 
-          return nil if response.body.key?(:error)
           access = Redd::OAuth2Access.new(response.body)
           @access = access if set_access
           access
