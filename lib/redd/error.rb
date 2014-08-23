@@ -151,4 +151,3 @@ module Redd
 
   class TimedOut < Error; end
 end
-end
