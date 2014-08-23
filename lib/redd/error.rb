@@ -89,65 +89,65 @@ module Redd
         end
       end
     end
-  end
 
-  class NoTokenGiven < Error; end
+    class NoTokenGiven < Error; end
 
-  class ExpiredCode < Error; end
+    class ExpiredCode < Error; end
 
-  class InvalidGrantType < Error; end
+    class InvalidGrantType < Error; end
 
-  class InvalidOAuth2Credentials < Error; end
+    class InvalidOAuth2Credentials < Error; end
 
-  class OAuth2AccessDenied < Error; end
+    class OAuth2AccessDenied < Error; end
 
-  class InvalidResponseType < Error; end
+    class InvalidResponseType < Error; end
 
-  class InvalidScope < Error; end
+    class InvalidScope < Error; end
 
-  class InvalidRequest < Error; end
+    class InvalidRequest < Error; end
 
-  class AuthenticationRequired < Error; end
+    class AuthenticationRequired < Error; end
 
-  class InvalidCaptcha < Error; end
+    class InvalidCaptcha < Error; end
 
-  class BadGateway < Error; end
+    class BadGateway < Error; end
 
-  class BadRequest < Error; end
+    class BadRequest < Error; end
 
-  class InvalidMultiredditName < Error; end
+    class InvalidMultiredditName < Error; end
 
-  class Conflict < Error; end
+    class Conflict < Error; end
 
-  class InternalServerError < Error; end
+    class InternalServerError < Error; end
 
-  class InvalidClassName < Error; end
+    class InvalidClassName < Error; end
 
-  class InvalidCredentials < Error; end
+    class InvalidCredentials < Error; end
 
-  class NotFound < Error; end
+    class NotFound < Error; end
 
-  class PermissionDenied < Error; end
+    class PermissionDenied < Error; end
 
-  # Raised when the client needs to wait before making another request
-  class RateLimited < Error
-    attr_reader :time
+    # Raised when the client needs to wait before making another request
+    class RateLimited < Error
+      attr_reader :time
 
-    def initialize(env, time)
-      @code = env.status
-      @headers = env.response_headers
-      @body = env.body
-      @time = time
+      def initialize(env, time)
+        @code = env.status
+        @headers = env.response_headers
+        @body = env.body
+        @time = time
+      end
     end
+
+    class RequestError < Error; end
+
+    class ServiceUnavailable < Error; end
+
+    class TooManyClassNames < Error; end
+
+    class Archived < Error; end
+
+    class TimedOut < Error; end
   end
-
-  class RequestError < Error; end
-
-  class ServiceUnavailable < Error; end
-
-  class TooManyClassNames < Error; end
-
-  class Archived < Error; end
-
-  class TimedOut < Error; end
 end
