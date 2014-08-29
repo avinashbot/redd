@@ -37,8 +37,7 @@ Ruby and redd make creating reddit bots accessible and fun. To demonstrate, let'
    require "redd"
    #=> true
    
-   r = Redd.client "HelloWorldBot", "hunter2",
-                    user_agent: "HelloWorldBot v1.0 by /u/you"
+   r = Redd::Client::Authenticated.new_from_credentials "HelloWorldBot", "hunter2", user_agent: "HelloWorldBot v1.0 by /u/you"
    # => #<Redd::Client::Authenticated:0xY4D4y4D4y4dA ...
    ```
 
@@ -46,7 +45,7 @@ Ruby and redd make creating reddit bots accessible and fun. To demonstrate, let'
    Redd has a really cool method similar to praw's `helpers.comment_stream` that "streams" comments to you while avoiding duplicates. You won't have to take care of rate-limiting either; Redd `sleep`s after requests to avoid ratelimit errors. If you want to write a rate limiting class yourself, take a look at `lib/redd/rate_limit.rb`
    ```ruby
    r.comment_stream "test" do |comment|
-     comment.reply "World!" if comment.body =~ /^Hello\?$/i
+      comment.reply "World!" if comment.body =~ /^Hello\?$/i
    end
    ```
 
@@ -54,16 +53,16 @@ Ruby and redd make creating reddit bots accessible and fun. To demonstrate, let'
    It's also a good idea to escape some common errors from reddit in case they happen:
    ```ruby
    begin
-     r.comment_stream "test" do |comment|
-       comment.reply "World!" if comment.body =~ /^Hello\?$/i
-     end
-   rescue Redd::Error::RateLimited => e
-     time_left = e.time
-     sleep(time_left)
-   rescue Redd::Error => e
-     status = e.code
-     # 5-something errors are usually errors on reddit's end.
-     raise e unless (500...600).include?(status)
+      r.comment_stream "test" do |comment|
+        comment.reply "World!" if comment.body =~ /^Hello\?$/i
+      end
+    rescue Redd::Error::RateLimited => e
+      time_left = e.time
+      sleep(time_left)
+    rescue Redd::Error => e
+      status = e.code
+      # 5-something errors are usually errors on reddit's end.
+      raise e unless (500...600).include?(status)
    end
    ```
 
@@ -79,15 +78,15 @@ Extending any ruby library, including redd is incredibly easy. Let's try this ou
 2. Let's add a method to gild a thing, using the [reddit api](http://www.reddit.com/dev/api#section_gold) and following the conventions.
    ```ruby
    module MyGildingExtension
-     def gild(thing)
-       # Redd::Client::Unauthenticated::Utilities has some pretty helpful
-       # methods.
-       fullname = extract_fullname(thing)
+      def gild(thing)
+        # Redd::Client::Unauthenticated::Utilities has some pretty helpful
+        # methods.
+        fullname = extract_fullname(thing)
 
-       # We're using post instead of object_from_response, because we don't
-       # expect any object from the response.
-       post "/api/v1/gold/gild/#{fullname}"
-     end
+        # We're using post instead of object_from_response, because we don't
+        # expect any object from the response.
+        post "/api/v1/gold/gild/#{fullname}"
+      end
    end
    ```
 
@@ -99,12 +98,12 @@ Extending any ruby library, including redd is incredibly easy. Let's try this ou
 4. You might also want to add the method to objects to make it easier to access.
    ```ruby
    module Gildable
-     def gild
-       # Every Redd::Object is instantiated with the client that created
-       # it, so the method can be called on the client easily, similar to
-       # praw in python.
-       client.gild(self)
-     end
+      def gild
+        # Every Redd::Object is instantiated with the client that created
+        # it, so the method can be called on the client easily, similar to
+        # praw in python.
+        client.gild(self)
+      end
    end
 
    Redd::Object::Submission.include(Gildable)
