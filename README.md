@@ -207,6 +207,9 @@ Extending any ruby library, including redd is incredibly easy. Let's try this ou
    Redd::Object::Comment.include(Gildable)
    ```
 
+#### Contributing
+Please do. If you would like to become a contributor, do ask.
+
 ## Supported Rubies
 This gem aims to work on the following rubies:
 
