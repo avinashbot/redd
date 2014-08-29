@@ -1,4 +1,4 @@
-The error and base files would have been impossible if it weren't for @samsymons :)
+The error and base files would have been impossible if it weren't for [@samsymons](https://github.com/samsymons) :)
 
 ---
 
