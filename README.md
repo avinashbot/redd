@@ -69,7 +69,7 @@ Ruby and redd make creating reddit bots accessible and fun. To demonstrate, let'
    ```
 
 ## OAuth2
-Redd also provides a wrapper to connect to reddit via OAuth2. The client's methods are similar to the authenticated client, given that you have the required scopes. Refer to [reddit's api](https://www.reddit.com/dev/api/oauth) for the various scopes. Getting it running is really simple and can even be used to integrate reddit's features into a [Rails](https://github.com/rails/rails) application. Another plus is that logging in via OAuth2 lets you make twice as many requests without hitting a rate limit (1/second). Let's try logging into reddit with [**sinatra**](http://www.sinatrarb.com/).
+Redd also provides a wrapper to connect to reddit via OAuth2. The client's methods are similar to the authenticated client, given that you have the required scopes. Refer to [reddit's api](https://www.reddit.com/dev/api/oauth) for the various scopes. Getting it running is really simple and can even be used to integrate reddit's features into a [**Rails**](https://github.com/rails/rails) application. Another plus is that logging in via OAuth2 lets you make twice as many requests without hitting a rate limit (1/second). Let's try logging into reddit with [**sinatra**](http://www.sinatrarb.com/).
 
 The first thing you need to do is to create an OAuth2 application in reddit [**here**](https://ssl.reddit.com/prefs/apps). For more information, refer to [**"Getting Started"**](https://github.com/reddit/reddit/wiki/OAuth2#getting-started) on reddit's wiki. 
 
@@ -129,6 +129,7 @@ If you want longer control of users' accounts for background tasks like auto-sav
 
 ```ruby
 client = Redd::Client::OAuth2.new("sa_xTDcJ3dWz0w", "very-sensitive-secret", "http://localhost:8080/auth/reddit/redirect")
+state = SecureRandom.urlsafe_base64
 auth_url = client.auth_url(["identity"], :permanent, state)
 ```
 
@@ -141,15 +142,18 @@ access = client.request_access(params[:code])
 client.refresh_access(access) if access.expired?
 ```
 
-Now if you are running a web application, you can't just store access tokens in memory. `Redd::OAuth2Access` offers a couple of methods for serializing the access to json and retrieving it.
+Now if you are running a web application, you can't just store access tokens in memory. `Redd::OAuth2Access` offers a couple of methods for serializing the access to JSON and retrieving it.
 
 ```ruby
 json = access.to_json
-current_user.update(access: json) # Rails
-redis.set("some-token", json)     # Redis
+current_user.update!(access: json) # Rails
+redis.set("some-token", json)      # Redis
 
 # After some time
 access = Redd::OAuth2Access.from_json(current_user.access)
+client.with_access(access) do |authenticated_client|
+  authenticated_client.do_whatever_redd_client_can_do
+end
 ```
 
 #### Who, me?
