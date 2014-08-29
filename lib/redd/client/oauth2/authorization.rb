@@ -95,9 +95,9 @@ module Redd
           params = {token: token}
 
           if remove_refresh_token
-            params[:token_type_hint] = true
+            params[:token_type_hint] = :refresh_token
           elsif remove_refresh_token == false
-            params[:token_type_hint] = false
+            params[:token_type_hint] = :access_token
           end
 
           auth_connection.post "/api/v1/revoke_token", params
