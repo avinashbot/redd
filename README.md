@@ -5,12 +5,14 @@
 </p>
 
 **redd** is an API wrapper for [reddit](http://reddit.com/dev/api) written in ruby that focuses on being *simple and extensible*.  
-Check out the latest documentation on [RubyDoc](http://rubydoc.info/github/avidw/redd/master/frames).
+
+**Check out the latest documentation on [RubyDoc](http://rubydoc.info/github/avidw/redd/master/frames).**
 
 ---
 
 <p align="center">
   <a href="#getting-started">Getting Started</a> |
+  <a href="#oauth2">OAuth2!</a> |
   <a href="#extending-redd">Extending Redd</a> |
   <a href="#supported-rubies">Supported Rubies</a> |
   <a href="#copyright">Copyright</a>
@@ -65,6 +67,61 @@ Ruby and redd make creating reddit bots accessible and fun. To demonstrate, let'
       raise e unless (500...600).include?(status)
    end
    ```
+
+## OAuth2
+Redd also provides a wrapper to connect to reddit via OAuth2. The client's methods are similar to the authenticated client, given that you have the required scopes. Refer to [reddit's api](https://www.reddit.com/dev/api/oauth) for the various scopes. Getting it running is really simple and can even be used to integrate reddit's features into a [Rails](https://github.com/rails/rails) application. Let's try logging into reddit with [**sinatra**](http://www.sinatrarb.com/).
+
+The first thing you need to do is to create an OAuth2 application in reddit [**here**](https://ssl.reddit.com/prefs/apps). For more information, refer to [**"Getting Started"**](https://github.com/reddit/reddit/wiki/OAuth2#getting-started) on reddit's wiki. 
+
+Note: Although I enter the client id and secret in the code directly, I recommend you store them in environment variables or a **`.env`** file and load it with [**dotenv**](https://github.com/bkeepers/dotenv).
+
+```ruby
+# config.ru
+
+require "./connect_to_reddit"
+run ConnectToReddit
+```
+
+```ruby
+# connect_to_reddit.rb
+
+require "sinatra/base"
+require "redd"
+
+class ConnectToReddit < Sinatra::Base
+  configure do
+    enable :sessions
+
+    # If you're on Rails, you can replace the fixed url with a named one (e.g. redirect_url).
+    set :client, Redd::Client::OAuth2.new("sa_xTDcJ3dWz0w", "very-sensitive-secret", "http://localhost:8080/auth/reddit/redirect")
+  end
+
+  get "/auth/reddit" do
+    # Make use of the state!
+    # SecureRandom, which is included in Ruby, helps create a url-safe random string.
+    state = SecureRandom.urlsafe_base64
+    session[:state] = state
+    redirect settings.client.auth_url(["identity"], :temporary, state)
+  end
+
+  get "/auth/reddit/redirect" do
+    raise "Your state doesn't match!" unless session[:state] == params[:state]
+
+    access = settings.client.request_access(params[:code])
+    me = settings.client.with_access(access) { |client| client.me }
+
+    # Now use the Redd::Object::User object to create a user, maybe assign some
+    # sort of token to remember their session.
+    redirect to("/success")
+  end
+end
+```
+
+Now let's run the application:
+
+```shell
+$ rackup -p 8000
+```
 
 ## Extending Redd
 Extending any ruby library, including redd is incredibly easy. Let's try this out by adding a gilding extension. Reddit provides an api to be able to gild posts and comments, given that you have "creddits".
