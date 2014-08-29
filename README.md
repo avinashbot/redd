@@ -12,7 +12,7 @@
 
 <p align="center">
   <a href="#getting-started">Getting Started</a> |
-  <a href="#oauth2">OAuth2!</a> |
+  <a href="#oauth2">OAuth2</a> |
   <a href="#extending-redd">Extending Redd</a> |
   <a href="#supported-rubies">Supported Rubies</a> |
   <a href="#copyright">Copyright</a>
@@ -69,7 +69,7 @@ Ruby and redd make creating reddit bots accessible and fun. To demonstrate, let'
    ```
 
 ## OAuth2
-Redd also provides a wrapper to connect to reddit via OAuth2. The client's methods are similar to the authenticated client, given that you have the required scopes. Refer to [reddit's api](https://www.reddit.com/dev/api/oauth) for the various scopes. Getting it running is really simple and can even be used to integrate reddit's features into a [Rails](https://github.com/rails/rails) application. Let's try logging into reddit with [**sinatra**](http://www.sinatrarb.com/).
+Redd also provides a wrapper to connect to reddit via OAuth2. The client's methods are similar to the authenticated client, given that you have the required scopes. Refer to [reddit's api](https://www.reddit.com/dev/api/oauth) for the various scopes. Getting it running is really simple and can even be used to integrate reddit's features into a [Rails](https://github.com/rails/rails) application. Another plus is that logging in via OAuth2 lets you make twice as many requests without hitting a rate limit (1/second). Let's try logging into reddit with [**sinatra**](http://www.sinatrarb.com/).
 
 The first thing you need to do is to create an OAuth2 application in reddit [**here**](https://ssl.reddit.com/prefs/apps). For more information, refer to [**"Getting Started"**](https://github.com/reddit/reddit/wiki/OAuth2#getting-started) on reddit's wiki. 
 
@@ -120,7 +120,7 @@ end
 Now let's run the application:
 
 ```shell
-$ rackup -p 8000
+$ rackup -p 8080
 ```
 
 ## Extending Redd
