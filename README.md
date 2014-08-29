@@ -1,8 +1,9 @@
 <p align="center">
   <img src="https://i.imgur.com/2JfE4M1.png" alt="redd"><br>
   <a href="https://rubygems.org/gems/redd"><img src="http://img.shields.io/gem/v/redd.svg?style=flat-square" alt="Gem Version"></a>
-  <a href="https://rubygems.org/gems/redd"><img src="http://img.shields.io/gem/dt/redd.svg?style=flat-square" alt="Gem Downloads"></a>
   <a href="https://travis-ci.org/avidw/redd"><img src="http://img.shields.io/travis/avidw/redd.svg?style=flat-square" alt="Build Status"></a>
+  <a href="https://rubygems.org/gems/redd"><img src="http://img.shields.io/badge/license-MIT-blue.svg?style=flat-square" alt="MIT License"></a>
+  <a href="https://rubygems.org/gems/redd"><img src="http://img.shields.io/gem/dt/redd.svg?style=flat-square" alt="Gem Downloads"></a>
 </p>
 
 **redd** is an API wrapper for [reddit](http://reddit.com/dev/api) written in ruby that focuses on being *simple and extensible*.  
