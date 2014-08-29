@@ -107,6 +107,7 @@ class ConnectToReddit < Sinatra::Base
   get "/auth/reddit/redirect" do
     raise "Your state doesn't match!" unless session[:state] == params[:state]
 
+    # access is a Redd::OAuth2Access object.
     access = settings.client.request_access(params[:code])
     me = settings.client.with_access(access) { |client| client.me }
 
@@ -121,6 +122,41 @@ Now let's run the application:
 
 ```shell
 $ rackup -p 8080
+```
+
+#### Remember Me
+If you want longer control of users' accounts for background tasks like auto-saving to a users' account behind the scenes or not have to ask your user to go through reddit every time, you can choose to have a permanent access by changing the second parameter of `auth_url`.
+
+```ruby
+client = Redd::Client::OAuth2.new("sa_xTDcJ3dWz0w", "very-sensitive-secret", "http://localhost:8080/auth/reddit/redirect")
+auth_url = client.auth_url(["identity"], :permanent, state)
+```
+
+The access will still only last one hour, but you can refresh the access whenever you want.
+
+```ruby
+access = client.request_access(params[:code])
+
+# 1 hour or more later
+client.refresh_access(access) if access.expired?
+```
+
+Now if you are running a web application, you can't just store access tokens in memory. `Redd::OAuth2Access` offers a couple of methods for serializing the access to json and retrieving it.
+
+```ruby
+json = access.to_json
+current_user.update(access: json) # Rails
+redis.set("some-token", json)     # Redis
+
+# After some time
+access = Redd::OAuth2Access.from_json(current_user.access)
+```
+
+#### Who, me?
+You can also revoke access tokens after the user has logged out to make sure the tokens can't be used for malicious purposes. 
+```ruby
+also_revoke_refresh_token = true
+client.revoke_access(access, also_revoke_refresh_token)
 ```
 
 ## Extending Redd
