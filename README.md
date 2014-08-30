@@ -46,7 +46,7 @@ Ruby and redd make creating reddit bots accessible and fun. To demonstrate, let'
    ```
 
 3. **Scouting**  
-   Redd has a really cool method similar to praw's `helpers.comment_stream` that "streams" comments to you while avoiding duplicates. You won't have to take care of rate-limiting either; Redd `sleep`s after requests to avoid ratelimit errors. If you want to write a rate limiting class yourself, take a look at `lib/redd/rate_limit.rb`
+   Redd has a really cool method similar to praw's `helpers.comment_stream` that "streams" comments to you while avoiding duplicates. You won't have to take care of rate-limiting either; Redd `sleep`s after requests to avoid ratelimit errors. If you want to write a rate limiting class yourself, take a look at [`lib/redd/rate_limit.rb`](https://github.com/avidw/redd/blob/master/lib/redd/rate_limit.rb#L2-L23)
    ```ruby
    r.comment_stream "test" do |comment|
       comment.reply "World!" if comment.body =~ /^Hello\?$/i
