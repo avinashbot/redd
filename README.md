@@ -7,7 +7,6 @@
 </p>
 
 **redd** is an API wrapper for [reddit](http://reddit.com/dev/api) written in ruby that focuses on being *simple and extensible*.  
-
 **Check out the latest documentation on [RubyDoc](http://rubydoc.info/github/avidw/redd/master/frames).**
 
 ---
@@ -27,6 +26,7 @@ Ruby and redd make creating reddit bots accessible and fun. To demonstrate, let'
 
 1. **Installing**  
    You can either install the gem directly by running `gem install redd` or by placing the gem into your `Gemfile` and running `bundle install`.
+
    ```ruby
    source "https://rubygems.org"
    gem "redd"
@@ -37,6 +37,7 @@ Ruby and redd make creating reddit bots accessible and fun. To demonstrate, let'
 
 2. **Setting Up**  
    Let's load up redd and create a client for us to work with. (The username and password aren't real!)
+
    ```ruby
    require "redd"
    #=> true
@@ -47,6 +48,7 @@ Ruby and redd make creating reddit bots accessible and fun. To demonstrate, let'
 
 3. **Scouting**  
    Redd has a really cool method similar to praw's `helpers.comment_stream` that "streams" comments to you while avoiding duplicates. You won't have to take care of rate-limiting either; Redd `sleep`s after requests to avoid ratelimit errors. If you want to write a rate limiting class yourself, take a look at [`lib/redd/rate_limit.rb`](https://github.com/avidw/redd/blob/master/lib/redd/rate_limit.rb#L2-L23)
+
    ```ruby
    r.comment_stream "test" do |comment|
       comment.reply "World!" if comment.body =~ /^Hello\?$/i
@@ -55,6 +57,7 @@ Ruby and redd make creating reddit bots accessible and fun. To demonstrate, let'
 
 4. **Just in Case**  
    It's also a good idea to escape some common errors from reddit in case they happen:
+
    ```ruby
    begin
       r.comment_stream "test" do |comment|
@@ -159,7 +162,8 @@ end
 ```
 
 #### Who, me?
-You can also revoke access tokens after the user has logged out to make sure the tokens can't be used for malicious purposes. 
+You can also revoke access tokens after the user has logged out to make sure the tokens can't be used for malicious purposes.
+
 ```ruby
 also_revoke_refresh_token = true
 client.revoke_access(access, also_revoke_refresh_token)
@@ -169,12 +173,14 @@ client.revoke_access(access, also_revoke_refresh_token)
 Extending any ruby library, including redd is incredibly easy. Let's try this out by adding a gilding extension. Reddit provides an api to be able to gild posts and comments, given that you have "creddits".
 
 1. Let's start by creating a module for the methods to live in.
+
    ```ruby
    module MyGildingExtension
    end
    ```
 
 2. Let's add a method to gild a thing, using the [reddit api](http://www.reddit.com/dev/api#section_gold) and following the conventions.
+
    ```ruby
    module MyGildingExtension
       def gild(thing)
@@ -190,11 +196,13 @@ Extending any ruby library, including redd is incredibly easy. Let's try this ou
    ```
 
 3. Let's add the method to the Authenticated client. You can also add it to the Unauthenticated client, but since unauthenticated users can't gild, there's no point.
+
    ```ruby
    Redd::Client::Authenticated.include(MyGildingExtension)
    ```
 
 4. You might also want to add the method to objects to make it easier to access.
+
    ```ruby
    module Gildable
       def gild
