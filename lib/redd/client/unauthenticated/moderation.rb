@@ -7,7 +7,7 @@ module Redd
         # @param subreddit [Redd::Object::Subreddit, String] The subreddit to
         #   query.
         # @return [String] The url for the subreddit's css stylesheet.
-        def stylesheet_url(subreddit = nil)
+        def stylesheet(subreddit = nil)
           name = extract_attribute(subreddit, :display_name)
           path = "/stylesheet"
           path = path.prepend("/r/#{name}") if subreddit
