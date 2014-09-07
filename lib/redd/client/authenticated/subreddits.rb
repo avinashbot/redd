@@ -71,6 +71,18 @@ module Redd
           Redd::Object::Listing.new(data: {children: things})
         end
 
+        def edit_stylesheet(subreddit, contents, reason = nil)
+          name = extract_attribute(subreddit, :display_name)
+          path = "/r/#{name}/api/subreddit_stylesheet"
+          params = {
+            api_type: "json",
+            op: "save",
+            stylesheet_contents: contents
+          }
+          params.reason = reason if reason
+          post(path, params)
+        end
+
         private
 
         # Subscribe or unsubscribe to a subreddit.

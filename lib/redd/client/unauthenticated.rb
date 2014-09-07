@@ -1,4 +1,5 @@
 require "faraday"
+require "faraday_middleware"
 require "redd/version"
 require "redd/rate_limit"
 require "redd/response/parse_json"
@@ -70,6 +71,7 @@ module Redd
           faraday.use Faraday::Request::UrlEncoded
           faraday.use Redd::Response::RaiseError
           faraday.use Redd::Response::ParseJson
+          faraday.use FaradayMiddleware::FollowRedirects
           faraday.adapter Faraday.default_adapter
 
           faraday.headers = headers

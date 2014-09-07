@@ -3,6 +3,7 @@ module Redd
     class Unauthenticated
       # Methods that deal with subreddit styles
       module Moderation
+
         # @param subreddit [Redd::Object::Subreddit, String] The subreddit to
         #   query.
         # @return [String] The url for the subreddit's css stylesheet.
@@ -11,15 +12,9 @@ module Redd
           path = "/stylesheet"
           path = path.prepend("/r/#{name}") if subreddit
 
-          get(path).headers[:location]
+          get(path)
         end
 
-        # @param subreddit [Redd::Object::Subreddit, String] The subreddit to
-        #   query.
-        # @return [String] The css stylesheet for the subreddit.
-        def stylesheet(subreddit = nil)
-          get stylesheet_url(subreddit)
-        end
       end
     end
   end
