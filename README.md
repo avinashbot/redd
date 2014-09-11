@@ -14,7 +14,8 @@
 <p align="center">
   <a href="#getting-started">Getting Started</a> |
   <a href="#oauth2">OAuth2</a> |
-  <a href="#extending-redd">Extending Redd / Contributing</a> |
+  <a href="#extending-redd">Extending Redd</a> |
+  <a href="#contributing">Contributing</a> |
   <a href="#supported-rubies">Supported Rubies</a> |
   <a href="#copyright">Copyright</a>
 </p>
@@ -217,8 +218,8 @@ Extending any ruby library, including redd is incredibly easy. Let's try this ou
    Redd::Object::Comment.include(Gildable)
    ```
 
-#### Contributing
-Create a pull request and go nuts.
+## Contributing
+[Fork the repository](https://github.com/avidw/redd/fork), [create a pull request](https://github.com/avidw/redd/compare) and [go nuts](https://i.imgur.com/lz7hOlC.jpg).
 
 ## Supported Rubies
 This gem aims to work on the following rubies:
