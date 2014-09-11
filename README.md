@@ -14,7 +14,7 @@
 <p align="center">
   <a href="#getting-started">Getting Started</a> |
   <a href="#oauth2">OAuth2</a> |
-  <a href="#extending-redd">Extending Redd</a> |
+  <a href="#extending-redd">Extending Redd / Contributing</a> |
   <a href="#supported-rubies">Supported Rubies</a> |
   <a href="#copyright">Copyright</a>
 </p>
