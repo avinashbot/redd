@@ -95,12 +95,12 @@ module Redd
         end
 
         def comments_from_response(*args)
-          body = request(*args)[1]
+					body = request(*args).body[1]
           object_from_body(body)
         end
 
         def object_from_response(*args)
-          body = request(*args)
+					body = request(*args).body
           object_from_body(body)
         end
       end

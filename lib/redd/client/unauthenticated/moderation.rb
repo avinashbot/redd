@@ -7,11 +7,11 @@ module Redd
         #   query.
         # @return [String] The url for the subreddit's css stylesheet.
         def stylesheet_url(subreddit = nil)
-          name = extract_attribute(subreddit, :display_name)
+          name = extract_attribute(subreddit, :display_name) if subreddit
           path = "/stylesheet"
           path = path.prepend("/r/#{name}") if subreddit
 
-          get(path).headers[:location]
+					request(:get, path).headers[:location]
         end
 
         # @param subreddit [Redd::Object::Subreddit, String] The subreddit to
