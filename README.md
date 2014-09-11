@@ -218,7 +218,7 @@ Extending any ruby library, including redd is incredibly easy. Let's try this ou
    ```
 
 #### Contributing
-Please do. If you would like to become a contributor, do ask.
+Create a pull request and go nuts.
 
 ## Supported Rubies
 This gem aims to work on the following rubies:
