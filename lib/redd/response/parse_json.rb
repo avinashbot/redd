@@ -1,3 +1,5 @@
+require "faraday_middleware"
+
 module Redd
   # The module that contains middleware that alters the Faraday response.
   module Response

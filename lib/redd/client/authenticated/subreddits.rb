@@ -79,8 +79,8 @@ module Redd
             op: "save",
             stylesheet_contents: contents
           }
-          params.reason = reason if reason
-          post(path, params)
+          params[:reason] = reason if reason
+          post path, params
         end
 
         private

@@ -1,3 +1,4 @@
+require "faraday_middleware"
 require "redd/error"
 
 module Redd

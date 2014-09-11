@@ -1,5 +1,4 @@
 require "faraday"
-require "faraday_middleware"
 require "redd/version"
 require "redd/rate_limit"
 require "redd/response/parse_json"
@@ -65,13 +64,12 @@ module Redd
 
       # Gets the Faraday connection or creates one if it doesn't exist yet.
       #
-      # @return [Faraday] A new Faraday connection.
+			# @return [Faraday] A new or existing Faraday connection.
       def connection
         @connection ||= Faraday.new(url: api_endpoint) do |faraday|
           faraday.use Faraday::Request::UrlEncoded
           faraday.use Redd::Response::RaiseError
           faraday.use Redd::Response::ParseJson
-          faraday.use FaradayMiddleware::FollowRedirects
           faraday.adapter Faraday.default_adapter
 
           faraday.headers = headers
@@ -82,36 +80,36 @@ module Redd
       #
       # @param [#to_sym] method The HTTP verb to use.
       # @param [String] path The path under the api endpoint to request from.
-      # @param [Hash] params The additional parameters to send (defualt: {}).
-      # @return [String] The response body.
+      # @param [Hash] params The additional parameters to send.
+			# @return [Faraday::Response] The faraday response.
       def request(method, path, params = {})
         rate_limit.after_limit do
-          connection.send(method.to_sym, path, params).body
+          connection.send(method.to_sym, path, params)
         end
       end
 
       # Performs a GET request via {#request}.
       # @see #request
       def get(*args)
-        request(:get, *args)
+        request(:get, *args).body
       end
 
       # Performs a POST request via {#request}.
       # @see #request
       def post(*args)
-        request(:post, *args)
+        request(:post, *args).body
       end
 
       # Performs a PUT request via {#request}.
       # @see #request
       def put(*args)
-        request(:put, *args)
+        request(:put, *args).body
       end
 
       # Performs a DELETE request via {#request}.
       # @see #request
       def delete(*args)
-        request(:delete, *args)
+        request(:delete, *args).body
       end
     end
   end
