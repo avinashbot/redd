@@ -4,12 +4,14 @@ module Redd
   module Object
     # A comment made on links.
     class Comment < Redd::Thing
+      require "redd/thing/commentable"
       require "redd/thing/editable"
       require "redd/thing/inboxable"
       require "redd/thing/moderatable"
       require "redd/thing/reportable"
       require "redd/thing/voteable"
 
+      include Redd::Thing::Commentable
       include Redd::Thing::Editable
       include Redd::Thing::Inboxable
       include Redd::Thing::Moderatable
@@ -43,12 +45,17 @@ module Redd
 
       alias_method :reports_count, :num_reports
 
-      def replies
-        @replies ||= client.get_replies(self)
+      def comments
+        @comments ||= client.get_replies(self)
       end
+      alias_method :replies, :comments
 
       def subreddit
         @subreddit ||= client.subreddit(@attributes[:subreddit])
+      end
+
+      def submission
+        @submission ||= client.get_info(id: link_id).first
       end
 
       def created

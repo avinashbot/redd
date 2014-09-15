@@ -21,7 +21,7 @@ module Redd
 
     # @return [String] The fullname of the thing.
     def fullname
-      @fullname ||= (attributes[:name] || "#{kind}_#{id}")
+      @fullname ||= "#{kind}_#{id}"
     end
   end
 end
