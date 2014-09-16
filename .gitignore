@@ -9,15 +9,6 @@
 /test/version_tmp/
 /tmp/
 
-## Working on Codio!
-# Seriously, it's free and it's awesome.
-.codio
-
-## Specific to RubyMotion:
-.dat*
-.repl_history
-build/
-
 ## Documentation cache and generated files:
 /.yardoc/
 /_yardoc/
@@ -36,3 +27,7 @@ Gemfile.lock
 
 # unless supporting rvm < 1.11.0 or doing something fancy, ignore this:
 .rvmrc
+
+# Ignore VCR cassettes. It helps for testing quickly, but we want to test
+# against the latest API.
+/spec/cassettes

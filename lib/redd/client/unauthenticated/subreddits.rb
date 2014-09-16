@@ -11,8 +11,7 @@ module Redd
         end
 
         # Get a list of subreddits sorted by the given parameter.
-        # @param where [:subscriber, :contributor, :moderator, :popular, :new]
-        #   The type of subreddits to look for.
+        # @param where [:popular, :new] The type of subreddits to look for.
         # @param params [Hash] A hash of parameters to send with the request.
         # @option params [String] :after Return results after the given
         #   fullname.
