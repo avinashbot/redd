@@ -16,6 +16,7 @@ module Redd
       require "redd/client/unauthenticated/moderation"
       require "redd/client/unauthenticated/subreddits"
       require "redd/client/unauthenticated/utilities"
+      require "redd/client/unauthenticated/users"
       require "redd/client/unauthenticated/wiki"
 
       include Redd::Client::Unauthenticated::Account
@@ -26,6 +27,7 @@ module Redd
       include Redd::Client::Unauthenticated::Moderation
       include Redd::Client::Unauthenticated::Subreddits
       include Redd::Client::Unauthenticated::Utilities
+      include Redd::Client::Unauthenticated::Users
       include Redd::Client::Unauthenticated::Wiki
 
       # @!attribute [r] api_endpoint

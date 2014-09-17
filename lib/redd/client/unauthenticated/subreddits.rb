@@ -40,7 +40,7 @@ module Redd
         #   return.
         # @return [Redd::Object::Listing] A listing of subreddits.
         def search_subreddits(query, params = {})
-          params << {q: query}
+          params[:q] = query
           object_from_response :get, "/subreddits/search.json", params
         end
       end

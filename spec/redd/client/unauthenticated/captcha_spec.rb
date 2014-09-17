@@ -3,7 +3,7 @@ require "uri"
 describe Redd::Client::Unauthenticated::Captcha do
   describe "#needs_captcha?" do
     it "returns a boolean" do
-      expect(unauthenticated_client.needs_captcha?).to eq(true).or eq(false)
+      expect(unauthenticated_client.needs_captcha?).to be(true).or be(false)
     end
   end
 
