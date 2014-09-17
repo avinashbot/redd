@@ -12,7 +12,7 @@ module Redd
         # Create a new captcha identifier.
         # @return [String] The identifier.
         def new_captcha
-          response = get "/api/new_captcha", api_type: "json"
+          response = post "/api/new_captcha", api_type: "json"
           response[:json][:data][:iden]
         end
 
