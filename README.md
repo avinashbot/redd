@@ -221,6 +221,8 @@ Extending any ruby library, including redd is incredibly easy. Let's try this ou
 ## Contributing
 [Fork the repository](https://github.com/avidw/redd/fork), [create a pull request](https://github.com/avidw/redd/compare) and [go nuts](https://i.imgur.com/lz7hOlC.jpg).
 
+ *You don't have to run the tests, Travis CI will automatically do that with my testing subreddit and account when you submit a pull request.*
+
 ## Supported Rubies
 This gem aims to work on the following rubies:
 
