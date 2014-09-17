@@ -20,6 +20,7 @@ module Redd
         # Get the appropriate listing.
         # @param subreddit [Redd::Object::Subreddit] The subreddit to query.
         # @param params [Hash] A list of params to send with the request.
+        # @return [Redd::Object::Listing]
         #
         # @see #get_listing
         %w(hot new top controversial comments).each do |sort|

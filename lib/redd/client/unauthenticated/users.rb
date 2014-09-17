@@ -22,6 +22,7 @@ module Redd
         # Get the appropriate listing.
         # @param user [Redd::Object::User] The user to query.
         # @param params [Hash] A list of params to send with the request.
+        # @return [Redd::Object::Listing]
         #
         # @see #get_user_listing
         %w(
