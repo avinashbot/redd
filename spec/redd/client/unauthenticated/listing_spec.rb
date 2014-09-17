@@ -13,11 +13,11 @@ describe Redd::Client::Unauthenticated::Listing do
     end
   end
 
-  describe "#hot, #new, #top, #controversial" do
+  describe "#get_hot, #get_new, #get_op, #get_controversial" do
     it "returns a listing of submissions only"
   end
 
-  describe "#comments" do
+  describe "#get_comments" do
     it "returns a listing of comments only"
   end
 end
