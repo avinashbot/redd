@@ -1,3 +1,5 @@
+require "redd/client/unauthenticated"
+
 module Redd
   module Client
     # The class that handles requests when authenticated using a username and
