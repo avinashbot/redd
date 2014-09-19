@@ -75,7 +75,9 @@ Ruby and redd make creating reddit bots accessible and fun. To demonstrate, let'
    ```
 
 ## OAuth2
-Redd also provides a wrapper to connect to reddit via OAuth2. The client's methods are similar to the authenticated client, given that you have the required scopes. Refer to [reddit's api](https://www.reddit.com/dev/api/oauth) for the various scopes. Getting it running is really simple and can even be used to integrate reddit's features into a [**Rails**](https://github.com/rails/rails) application. Another plus is that logging in via OAuth2 lets you make twice as many requests without hitting a rate limit (1/second). Let's try logging into reddit with [**sinatra**](http://www.sinatrarb.com/).
+Redd also provides a wrapper to connect to reddit via OAuth2 for both the `authorization_code` and `password` grants with the `Redd::Client::OAuth2` and `Redd::Client::OAuth2Script` clients. The clients' methods are similar to the authenticated client, given that you have the required scopes. Refer to [reddit's api](https://www.reddit.com/dev/api/oauth) for the various scopes. Getting OAuth2 running is easy and can even be used to integrate reddit's features into a [**Rails**](https://github.com/rails/rails) application. Another plus is that logging in via OAuth2 lets you make twice as many requests without hitting a rate limit (1/second). Let's try logging into reddit with [**sinatra**](http://www.sinatrarb.com/).
+
+*If you're using the `OAuth2Script` client, you don't have to do all this work. For the `password` grant, you can just jump straight to `request_access` without having to get a code, which is pretty sweet.*
 
 The first thing you need to do is to create an OAuth2 application in reddit [**here**](https://ssl.reddit.com/prefs/apps). For more information, refer to [**"Getting Started"**](https://github.com/reddit/reddit/wiki/OAuth2#getting-started) on reddit's wiki. 
 
