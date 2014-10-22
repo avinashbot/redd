@@ -23,18 +23,10 @@ module Redd
         # @param identifier [String] The identifier for the captcha if one
         #   is required.
         def compose_message(to, subject, text, captcha = nil, identifier = nil)
-          params[:to] = 
-            case to
-            when Redd::Object::User
-              to.name
-            when Redd::Object::Subreddit
-              to.display_name
-            when String
-              to
-            end
-
           params = {api_type: "json", subject: subject, text: text}
           params << {captcha: captcha, iden: identifier} if captcha
+          params[:to] = extract_attribute(to, :name) ||
+                        extract_attribute(to, :display_name)
 
           post "/api/compose", params
         end
