@@ -52,6 +52,7 @@ module Redd
         def set_flair(subreddit, user_or_link, text = "", css_class = "")
           name = extract_attribute(subreddit, :display_name)
           path = "/r/#{name}/api/flair"
+          params = {api_type: "json", text: text, css_class: css_class}
 
           case user_or_link
           when Redd::Object::User
@@ -62,7 +63,7 @@ module Redd
             fail "You should provide a User or Submission object."
           end
 
-          post path, api_type: "json", text: text, css_class: css_class
+          post path, params
         end
       end
     end
