@@ -31,22 +31,26 @@ module Redd
           post "/api/compose", params
         end
 
-        # Mark a message as read.
+        # Mark one or more messages as read.
         #
-        # @param message [Redd::Object::PrivateMessage, String] The message
+        # @param message [Redd::Object::PrivateMessage, String, Array<Redd::Object::PrivateMessage, String>] The message
         #   to mark as read.
-        def mark_as_read(message)
-          fullname = extract_fullname(message)
-          post "/api/read_message", id: fullname
+        def mark_as_read(messages)
+          messages = Array(messages)
+
+          fullnames = messages.map { |message| extract_fullname(message) }
+          post "/api/read_message", id: fullnames.join(',')
         end
 
-        # Mark a message as unread.
+        # Mark one or more messages as unread.
         #
-        # @param message [Redd::Object::PrivateMessage, String] The message
+        # @param message [Redd::Object::PrivateMessage, String, Array<Redd::Object::PrivateMessage, String>] The message
         #   to mark as unread.
-        def mark_as_unread(message)
-          fullname = extract_fullname(message)
-          post "/api/unread_message", id: fullname
+        def mark_as_unread(messages)
+          messages = Array(messages)
+
+          fullnames = messages.map { |message| extract_fullname(message) }
+          post "/api/unread_message", id: fullnames.join(',')
         end
 
         # Return a list of a user's private messages.
