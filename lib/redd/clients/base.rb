@@ -8,6 +8,13 @@ require_relative "../access"
 module Redd
   module Clients
     class Base
+      %w(utilities).each do |mixin_name|
+        class_name = name.split("::").last.downcase
+        camel_case = mixin_name.split("_").map(&:capitalize).join
+        require_relative "#{class_name}/#{mixin_name}"
+        include const_get(camel_case)
+      end
+
       # @!attribute [r] user_agent
       # @return [String] The user-agent used to communicate with reddit.
       attr_reader :user_agent
@@ -58,7 +65,6 @@ module Redd
       # @param [String] path The path under the api_endpoint to request.
       # @param [Hash] params The parameters to send with the request.
       # @return [String] The response body.
-      # @see #request
       [:get, :post, :put, :delete].each do |meth|
         define_method(meth) do |path, params = {}|
           @rate_limit.after_limit do
