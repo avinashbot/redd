@@ -13,7 +13,7 @@ module Redd
       #
       # @param [Clients::Base] client The client instance.
       # @param [Hash] body The response body.
-      def initialize(body = {}, client = Redd.client)
+      def initialize(client, body = {})
         @client = client
         merge_body!(body)
       end

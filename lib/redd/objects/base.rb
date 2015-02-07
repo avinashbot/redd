@@ -20,7 +20,7 @@ module Redd
 
       # @param [Clients::Base] client The client instance.
       # @param [Hash] attributes A hash of attributes.
-      def initialize(attributes = {}, client = Redd.client)
+      def initialize(client, attributes = {})
         @client = client
         super(attributes)
       end
