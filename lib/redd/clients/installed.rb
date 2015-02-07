@@ -30,12 +30,12 @@ module Redd
         }
 
         url = URI.join(auth_endpoint, "/api/v1/authorize")
-        url.query = query.to_a
+        url.query = URI.encode_www_form(query)
         url.to_s
       end
 
       def authorize!(fragment)
-        parsed = CGI::parse(fragment)
+        parsed = CGI.parse(fragment)
         @access = Access.new(
           access_token: parsed[:access_token].first,
           expires_in: parsed[:expires_in].first,

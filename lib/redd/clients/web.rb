@@ -31,7 +31,7 @@ module Redd
         }
 
         url = URI.join(auth_endpoint, "/api/v1/authorize")
-        url.query = query.to_a
+        url.query = URI.encode_www_form(query)
         url.to_s
       end
 
