@@ -1,0 +1,3 @@
+#!/usr/bin/env ruby
+require "redd/cli"
+Redd::CLI::Main.start(ARGV)

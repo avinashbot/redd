@@ -1,0 +1,9 @@
+language: ruby
+before_install:
+  - gem install bundler
+rvm:
+  - ruby-2
+  - ruby-2.1.0
+  - rbx-2
+  # Uncomment when it is released.
+  # - jruby-9000
