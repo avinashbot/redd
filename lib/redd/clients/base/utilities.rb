@@ -49,6 +49,12 @@ module Redd
           raise error, "Redd doesn't know about the `#{kind}` kind!"
         end
 
+        def flatten_body(body)
+          data = body[:data]
+          data[:kind] = body[:kind]
+          data
+        end
+
         def objects_from_listing(listing)
           listing[:data][:children].map do |child|
             object_from_body(child)
@@ -74,7 +80,8 @@ module Redd
               after: body[:data][:after]
             )
           else
-            object.new(self, body[:data])
+            flat = flatten_body(body)
+            object.new(self, flat)
           end
         end
       end
