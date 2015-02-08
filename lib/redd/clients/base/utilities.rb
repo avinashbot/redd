@@ -74,7 +74,7 @@ module Redd
               after: body[:data][:after]
             )
           else
-            object.from_response(self, body)
+            object.new(self, body[:data])
           end
         end
       end
