@@ -1,31 +1,27 @@
-# Redd
+### Naming:
 
-TODO: Write a gem description
-
-## Installation
-
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'redd'
+**Special**:
+```
+Base#get_hot
+Base#get_new
 ```
 
-And then execute:
+**Object from attribute**:
+```
+Base#user_from_name
+Base#subreddit_from_name
+Base#submission_from_fname
+```
 
-    $ bundle
+**None of the above, but special to user**:
+```
+Base#my_friends
+Base#my_subreddits()
+```
 
-Or install it yourself as:
-
-    $ gem install redd
-
-## Usage
-
-TODO: Write usage instructions here
-
-## Contributing
-
-1. Fork it ( https://github.com/[my-github-username]/redd/fork )
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create a new Pull Request
+**Permanent actions**:
+```
+Editable#edit!(...)
+Editable#hide!
+Editable#delete!
+```
