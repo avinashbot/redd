@@ -8,7 +8,10 @@ require_relative "../access"
 module Redd
   module Clients
     class Base
-      %w(utilities returns_user).each do |mixin_name|
+      %w(
+        utilities
+        identity
+      ).each do |mixin_name|
         camel_case = mixin_name.split("_").map(&:capitalize).join
         require_relative "base/#{mixin_name}"
         include const_get(camel_case)
