@@ -7,6 +7,8 @@ require_relative "../access"
 
 module Redd
   module Clients
+    # The basic client to inherit from. Don't use this directly, prefer
+    # {Redd.it}
     class Base
       %w(
         utilities
@@ -40,7 +42,7 @@ module Redd
       # @return [Access] The access object to make API requests with.
       attr_accessor :access
 
-      # Set up an unauthenticated connection to reddit.
+      # Create a Client.
       #
       # @param [Hash] options The options to create the client with.
       # @param options [String] :user_agent The User-Agent string to use in the
@@ -51,7 +53,7 @@ module Redd
       #   with.
       # @param options [String] :api_endpoint The main domain to make requests
       #   with.
-      # @note It's generally a good idea to stick with https.
+      # @note HTTPS is mandatory for OAuth2.
       def initialize(**options)
         @user_agent = options[:user_agent] || "Redd/Ruby, v#{Redd::VERSION}"
         @rate_limit = options[:rate_limit] || RateLimit.new(1)
@@ -60,17 +62,17 @@ module Redd
         @access = Access.new(expires_at: Time.at(0))
       end
 
-      # @!method get
-      # @!method post
-      # @!method put
-      # @!method patch
-      # @!method delete
+      # @!method get(path, params = {})
+      # @!method post(path, params = {})
+      # @!method put(path, params = {})
+      # @!method patch(path, params = {})
+      # @!method delete(path, params = {})
       #
       # Sends the request to the given path with the given params and return
       # the body of the response.
       # @param [String] path The path under the api_endpoint to request.
       # @param [Hash] params The parameters to send with the request.
-      # @return [String] The response body.
+      # @return [Faraday::Response] The response.
       [:get, :post, :put, :patch, :delete].each do |meth|
         define_method(meth) do |path, params = {}|
           @rate_limit.after_limit do
@@ -80,16 +82,22 @@ module Redd
         end
       end
 
+      # @param [Access] access The access to use.
+      # @yield The client with the given access.
       def with(access)
         new_instance = dup
         new_instance.access = access
         yield new_instance
       end
 
+      # @return [String] The url to redirect the user to for permissions.
       def auth_url
         fail NotImplementedError, "Try Redd.it(...)"
       end
 
+      # Contact reddit and gain access to their API
+      # @return [Access] The access given by reddit.
+      # @note The returned access is automatically set as the current one.
       def authorize!
         fail NotImplementedError, "Try Redd.it(...)"
       end
@@ -110,7 +118,7 @@ module Redd
         @default_params ||= {api_type: "json"}
       end
 
-      # @return [Hash] A hash of default headers.
+      # @return [Hash] A hash of the headers used.
       def default_headers
         {
           "User-Agent" => @user_agent,

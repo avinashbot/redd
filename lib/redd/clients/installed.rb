@@ -10,7 +10,6 @@ module Redd
       # @!attribute [r] redirect_uri
       attr_reader :redirect_uri
 
-      # Set up an unauthenticated connection to reddit.
       # @param [Hash] options The options to create the client with.
       # @see {Redd.it}
       def initialize(client_id, redirect_uri, **options)
@@ -19,13 +18,17 @@ module Redd
         super(**options)
       end
 
-      def auth_url(state, scopes = ["identity"], duration = :temporary)
+      # @param [String] state A random string to double-check later.
+      # @param [Array<String>] scope The scope to request access to.
+      # @param [:temporary, :permanent] duration
+      # @return [String] The url to redirect the user to.
+      def auth_url(state, scope = ["identity"], duration = :temporary)
         query = {
           response_type: "token",
           client_id: @client_id,
           redirect_uri: @redirect_uri,
           state: state,
-          scope: scopes.join(","),
+          scope: scope.join(","),
           duration: duration
         }
 
@@ -34,6 +37,9 @@ module Redd
         url.to_s
       end
 
+      # Authorize using the url fragment.
+      # @param [String] fragment The part of the url after the "#".
+      # @return [Access] The access given by reddit.
       def authorize!(fragment)
         parsed = CGI.parse(fragment)
         @access = Access.new(

@@ -33,6 +33,11 @@ module Redd
           object.respond_to?(property) ? object.send(property) : object.to_s
         end
 
+        # Request and create an object from the response.
+        # @param [Symbol] meth The method to use.
+        # @param [String] path The path to visit.
+        # @param [Hash] params The data to send with the request.
+        # @return [Objects::Base] The object returned from the request.
         def request_object(meth, path, params = {})
           body = send(meth, path, params).body
           object_from_body(body)
@@ -49,12 +54,17 @@ module Redd
           raise error, "Redd doesn't know about the `#{kind}` kind!"
         end
 
+        # Take a multilevel body ({kind: "tx", data: {...}}) and flatten it
+        # into something like {kind: "tx", ...}
+        # @param [Hash] The response body.
         def flatten_body(body)
           data = body[:data]
           data[:kind] = body[:kind]
           data
         end
 
+        # Take a listing hash and return its children in object form.
+        # @return [Array<Objects::Base>]
         def objects_from_listing(listing)
           listing[:data][:children].map do |child|
             object_from_body(child)
@@ -65,7 +75,7 @@ module Redd
         # body.
         # @todo Polymorphism, somehow
         #
-        # @param [String] body A JSON hash.
+        # @param [Hash] body A JSON hash.
         # @return [Objects::Thing, Objects::Listing]
         # rubocop:disable Metrics/MethodLength
         def object_from_body(body)

@@ -9,7 +9,6 @@ module Redd
       # @!attribute [r] username
       attr_reader :username
 
-      # Set up an unauthenticated connection to reddit.
       # @param [Hash] options The options to create the client with.
       # @see {Redd.it}
       def initialize(client_id, secret, username, password, **options)
@@ -20,6 +19,8 @@ module Redd
         super(**options)
       end
 
+      # Authorize using the given data.
+      # @return [Access] The access given by reddit.
       def authorize!
         response = auth_connection.post(
           "/api/v1/access_token",

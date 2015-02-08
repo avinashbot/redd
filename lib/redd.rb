@@ -33,7 +33,7 @@ module Redd
   #   @param [String] redirect_uri The exact uri you provided to reddit.
   #   @param [Hash] kwargs The keyword arguments provided to the client.
   #
-  # @return [Client] The authorized client.
+  # @return [Clients::Base] The authorized client.
   def self.it(type, *args, **kwargs)
     types = {
       installed: Clients::Installed,

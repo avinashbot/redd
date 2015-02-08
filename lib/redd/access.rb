@@ -4,19 +4,19 @@ module Redd
   # A container for the client's access to their account via OAuth2
   class Access
     # @!attribute [r] access_token
-    #   @return [String] The access token used to access the users account.
+    # @return [String] The access token used to access the users account.
     attr_reader :access_token
 
     # @!attribute [r] refresh_token
-    #   @return [String, nil] The refresh token, if the access was permanent.
+    # @return [String, nil] The refresh token, if the access was permanent.
     attr_reader :refresh_token
 
     # @!attribute [r] scope
-    #   @return [Array] The scope that the client is allowed to access.
+    # @return [Array] The scope that the client is allowed to access.
     attr_reader :scope
 
     # @!attribute [r] expires_at
-    #   @return [Time] The time when the access token expires.
+    # @return [Time] The time when the access token expires.
     attr_reader :expires_at
 
     # @param [String] body The response body containing the required info.
@@ -67,7 +67,7 @@ module Redd
 
     # Create a new instance of the class from the JSON returned from #to_json
     # @param [String] json
-    # @return [OAuth2Access]
+    # @return [Access]
     def self.from_json(json)
       hash = MultiJson.load(json, symbolize_keys: true)
       new(hash)

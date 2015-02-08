@@ -1,9 +1,9 @@
 # The main Redd module.
 module Redd
   # The class that handles rate limiting for reddit. reddit does supply
-  # X-Ratelimit headers but only when logged in and using those headers instead
-  # would just lead to short bursts, so it's better to go at a constant speed
-  # and space out requests every 1 seconds.
+  # X-Ratelimit headers but using those headers instead would just lead to
+  # short bursts, so it's better to go at a constant speed and space out
+  # requests every second.
   #
   # If you'd rather have short bursts or no rate limiting at all, it's easy to
   # write one yourself. A rate limiting class is any class that has an
@@ -19,16 +19,13 @@ module Redd
   #   end
   #
   #   client = Redd.it(..., rate_limit: IWantToGetIPBanned.new)
-  #
-  # @note The class itself doesn't perform the rate limiting but only acts
-  #   as an updatable container for the values.
   class RateLimit
     # @!attribute [r] last_request_time
-    #   @return [Time] The time when the last request took place.
+    # @return [Time] The time when the last request took place.
     attr_reader :last_request_time
 
     # @!attribute [rw] gap
-    #   @return [Integer, Float] The minimum time between requests.
+    # @return [Integer, Float] The minimum time between requests.
     attr_accessor :gap
 
     # @param [Float, Integer] gap The minimum time between each request.

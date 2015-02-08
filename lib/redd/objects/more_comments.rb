@@ -16,7 +16,8 @@ module Redd
 
       # @!attribute [r] link_id
       # @return [String] The id of the link, which is necessary to expand the
-      #   object. This isn't provided by reddit, so the client should take care
+      #   object.
+      # @note The id isn't provided by reddit, so the client should take care
       #   of adding this.
       attr_reader :link_id
 
