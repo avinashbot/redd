@@ -10,6 +10,7 @@ module Redd
     class Base
       %w(
         utilities
+        account
         identity
       ).each do |mixin_name|
         camel_case = mixin_name.split("_").map(&:capitalize).join
@@ -60,6 +61,7 @@ module Redd
       # @!method get
       # @!method post
       # @!method put
+      # @!method patch
       # @!method delete
       #
       # Sends the request to the given path with the given params and return
@@ -67,7 +69,7 @@ module Redd
       # @param [String] path The path under the api_endpoint to request.
       # @param [Hash] params The parameters to send with the request.
       # @return [String] The response body.
-      [:get, :post, :put, :delete].each do |meth|
+      [:get, :post, :put, :patch, :delete].each do |meth|
         define_method(meth) do |path, params = {}|
           @rate_limit.after_limit do
             final_params = default_params.merge(params)
