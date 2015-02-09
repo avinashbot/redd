@@ -29,7 +29,7 @@ module Redd
       # @param [Symbol] new_name The alias.
       # @param [Symbol] old_name The existing property.
       def self.alias_property(new_name, old_name)
-        define_method(new_name) { old_name }
+        define_method(new_name) { send(old_name) }
       end
     end
   end

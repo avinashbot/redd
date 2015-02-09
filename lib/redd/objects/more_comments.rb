@@ -2,12 +2,13 @@ module Redd
   module Objects
     # The model for a morecomments object
     class MoreComments < Array
-      KIND = "more"
+      KIND = "more".freeze
 
       # @!attribute [r] count
-      # @return [Integer] The number of children to the comment. This would
-      #   normally be the size of the children array, but there might be more
-      #   comments generated before expansion or they aren't shown.
+      # @return [Integer] The number of children to the comment.
+      # @note This would normally be the size of the children array, but there
+      #   might be more comments generated before expansion or they aren't
+      #   shown.
       attr_reader :count
 
       # @!attribute [r] parent_id
@@ -21,15 +22,8 @@ module Redd
       #   of adding this.
       attr_reader :link_id
 
-      def initialize(
-        client, children = [],
-        count: children.size, parent_id: nil, link_id: nil
-      )
-        concat(children)
-        @client = client
-        @count = count
-        @parent_id = parent_id
-        @link_id = link_id
+      def initialize(client, data, link_id = "")
+        fail NotImplementedError
       end
 
       def kind

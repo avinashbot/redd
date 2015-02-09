@@ -17,7 +17,7 @@ module Redd
 
       # @return [String] The fullname of the thing.
       def fullname
-        self[:fullname] || "#{kind}_#{id}"
+        self[:name] || "#{kind}_#{id}"
       end
 
       private

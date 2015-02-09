@@ -43,6 +43,19 @@ module Redd
           object_from_body(body)
         end
 
+        # Create an object instance with the correct attributes when given a
+        # body.
+        #
+        # @param [Hash] body A JSON hash.
+        # @return [Objects::Thing, Objects::Listing]
+        # rubocop:disable Metrics/MethodLength
+        def object_from_body(body)
+          return nil unless body.is_a?(Hash) && body.key?(:kind)
+          object = object_from_kind(body[:kind])
+          flat = flatten_body(body)
+          object.new(self, flat)
+        end
+
         private
 
         # @param [String] kind A kind in the format /t[1-5]/.
@@ -61,38 +74,6 @@ module Redd
           data = body[:data]
           data[:kind] = body[:kind]
           data
-        end
-
-        # Take a listing hash and return its children in object form.
-        # @return [Array<Objects::Base>]
-        def objects_from_listing(listing)
-          listing[:data][:children].map do |child|
-            object_from_body(child)
-          end
-        end
-
-        # Create an object instance with the correct attributes when given a
-        # body.
-        # @todo Polymorphism, somehow
-        #
-        # @param [Hash] body A JSON hash.
-        # @return [Objects::Thing, Objects::Listing]
-        # rubocop:disable Metrics/MethodLength
-        def object_from_body(body)
-          return nil unless body.is_a?(Hash) && body.key?(:kind)
-          object = object_from_kind(body[:kind])
-
-          case object
-          when Objects::Listing
-            object.new(
-              objects_from_listing(body),
-              before: body[:data][:before],
-              after: body[:data][:after]
-            )
-          else
-            flat = flatten_body(body)
-            object.new(self, flat)
-          end
         end
       end
     end
