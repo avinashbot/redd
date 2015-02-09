@@ -6,7 +6,9 @@ module Redd
     # @see http://www.reddit.com/dev/api#fullnames
     class Thing < Base
       # Load up all the possible mixins for the thing.
-      Dir.glob("./thing/*.rb") { |file| require(file) }
+      Dir[File.join(File.dirname(__FILE__), "thing", "*.rb")].each do |file|
+        require(file)
+      end
 
       # Check for equality.
       # @param other The other object.

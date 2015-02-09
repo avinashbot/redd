@@ -7,7 +7,13 @@ module Redd
         #   the fullname.
         def from_id(*fnames)
           names = fnames.join(",")
-          request_object(:get, "/by_id/#{names}")
+          request_object(:get, "/api/info", id: names)
+        end
+
+        # @param [String] url The url of the thing.
+        # @return [Objects::Thing] The thing.
+        def from_url(url)
+          request_object(:get, "/api/info", url: url)
         end
 
         # @param [String] name The username.
