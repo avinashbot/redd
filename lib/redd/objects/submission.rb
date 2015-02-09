@@ -4,7 +4,7 @@ module Redd
   module Objects
     # A submission made in a subreddit.
     class Submission < Thing
-      # include Editable
+      include Editable
       # include Hideable
       # include Saveable
       # include Votable

@@ -17,8 +17,8 @@ module Redd
         private_messages
         read
       ).each do |mixin_name|
-        camel_case = mixin_name.split("_").map(&:capitalize).join
         require_relative "base/#{mixin_name}"
+        camel_case = mixin_name.split("_").map(&:capitalize).join
         include const_get(camel_case)
       end
 

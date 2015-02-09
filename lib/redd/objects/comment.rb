@@ -4,7 +4,7 @@ module Redd
   module Objects
     # A comment that can be made on a link.
     class Comment < Thing
-      # include Editable
+      include Editable
       # include Inboxable
       # include Saveable
       # include Votable
