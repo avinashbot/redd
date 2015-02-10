@@ -25,3 +25,12 @@ Editable#edit!(...)
 Editable#hide!
 Editable#delete!
 ```
+
+**Models**:
+```
+User#created => 1230120884.0
+User#get_created => #<Time:...>
+
+Submission#subreddit => "picturegame"
+Submission#get_subreddit => #<Redd::Objects::Subreddit:...>
+```
