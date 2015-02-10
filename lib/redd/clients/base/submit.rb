@@ -9,12 +9,7 @@ module Redd
         # @param text [String] The text to comment.
         # @return [Objects::Thing] The created reply.
         def add_comment(thing, text)
-          response = post(
-            "/api/comment",
-            api_type: "json",
-            text: text,
-            thing_id: thing.fullname
-          )
+          response = post("/api/comment", text: text, thing_id: thing.fullname)
           object_from_body(response.body[:json][:data][:things][0])
         end
       end

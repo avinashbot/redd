@@ -9,7 +9,7 @@ module Redd
         end
 
         # Unhide a previously hidden link.
-        def unhide(thing)
+        def unhide
           post("/api/unhide", id: fullname)
         end
       end

@@ -7,7 +7,7 @@ module Redd
         # @param text [String] The new text.
         # @return [Redd::Thing] The edited thing.
         def edit(text)
-          response = post("/api/editusertext", thing_id: fullname, text: text)
+          post("/api/editusertext", thing_id: fullname, text: text)
           self[(self.is_a?(Submission) ? :selftext : :body)] = text
           self
         end
