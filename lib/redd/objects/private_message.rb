@@ -8,10 +8,6 @@ module Redd
 
       alias_property :from, :author
       alias_property :to, :dest
-
-      def created
-        @created ||= Time.at(self[:created_utc])
-      end
     end
   end
 end

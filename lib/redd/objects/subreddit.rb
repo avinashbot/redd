@@ -9,14 +9,6 @@ module Redd
       alias_property :users_online, :accounts_active
       alias_property :type, :subreddit_type
       alias_property :times_gilded, :gilded
-
-      def created
-        @created ||= Time.at(self[:created_utc])
-      end
-
-      def url
-        @url ||= "http://reddit.com" + self[:url]
-      end
     end
   end
 end
