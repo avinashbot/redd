@@ -5,9 +5,9 @@ module Redd
     # A submission made in a subreddit.
     class Submission < Thing
       include Editable
-      # include Hideable
+      include Hideable
       # include Saveable
-      # include Votable
+      include Votable
 
       alias_property :nsfw?, :over_18
       alias_property :self?, :is_self

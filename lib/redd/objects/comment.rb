@@ -5,9 +5,9 @@ module Redd
     # A comment that can be made on a link.
     class Comment < Thing
       include Editable
-      # include Inboxable
+      include Inboxable
       # include Saveable
-      # include Votable
+      include Votable
 
       alias_property :reports_count, :num_reports
     end

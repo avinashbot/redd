@@ -14,9 +14,9 @@ module Redd
       extend Forwardable
       def_delegators :@client, :get, :post, :put, :delete
 
-      # @!attribute [rw] client
+      # @!attribute [r] client
       # @return [Clients::Base] The client that used to make requests.
-      attr_accessor :client
+      attr_reader :client
 
       # @param [Clients::Base] client The client instance.
       # @param [Hash] attributes A hash of attributes.
