@@ -15,8 +15,8 @@ module Redd
         account
         identity
         privatemessages
-        submit
         read
+        submit
         wikiread
       ).each do |mixin_name|
         require_relative "base/#{mixin_name}"
