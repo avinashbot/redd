@@ -18,6 +18,7 @@ module Redd
         #   despite it having been posted there before (you monster).
         # @param [Boolean] sendreplies Whether to send the replies to your
         #   inbox.
+        # @return [Objects::Thing] The returned result (url, id and name).
         def submit(
           subreddit, title, captcha = nil, identifier = nil, text: nil,
           url: nil, resubmit: false, sendreplies: true
@@ -26,14 +27,15 @@ module Redd
           params = {
             extension: "json", title: title,
             resubmit: resubmit, sendreplies: sendreplies,
-            sr: extract_attribute(subreddit, :display_name)
+            sr: property(subreddit, :display_name)
           }
 
           params << {captcha: captcha, iden: identifier} if captcha
-          params[:kind], params[:url] = :self, text if text
+          params[:kind], params[:text] = :self, text if text
           params[:kind], params[:url] = :link, url if url
 
-          post("/api/submit", params)
+          response = post("/api/submit", params)
+          Objects::Thing.new(self, response.body)
         end
 
         # Add a comment to a link, reply to a comment or reply to a message.
