@@ -26,13 +26,6 @@ module Redd
           "t5"       => Objects::Subreddit
         }
 
-        # Get a given property of a given object.
-        # @param [Objects::Base, String] object The object with the property.
-        # @param [Symbol] property The property to get.
-        def property(object, property)
-          object.respond_to?(property) ? object.send(property) : object.to_s
-        end
-
         # Request and create an object from the response.
         # @param [Symbol] meth The method to use.
         # @param [String] path The path to visit.
@@ -58,13 +51,11 @@ module Redd
 
         private
 
-        # @param [String] kind A kind in the format /t[1-5]/.
-        # @return [Objects::Thing, Objects::Listing] The appropriate object for
-        #   a given kind. Raises an error if one isn't found.
-        def object_from_kind(kind)
-          OBJECT_KINDS.fetch(kind)
-        rescue KeyError => error
-          raise error, "Redd doesn't know about the `#{kind}` kind!"
+        # Get a given property of a given object.
+        # @param [Objects::Base, String] object The object with the property.
+        # @param [Symbol] property The property to get.
+        def property(object, property)
+          object.respond_to?(property) ? object.send(property) : object.to_s
         end
 
         # Take a multilevel body ({kind: "tx", data: {...}}) and flatten it
@@ -75,6 +66,15 @@ module Redd
           data = body[:data]
           data[:kind] = body[:kind]
           data
+        end
+
+        # @param [String] kind A kind in the format /t[1-5]/.
+        # @return [Objects::Thing, Objects::Listing] The appropriate object for
+        #   a given kind. Raises an error if one isn't found.
+        def object_from_kind(kind)
+          OBJECT_KINDS.fetch(kind)
+        rescue KeyError => error
+          raise error, "Redd doesn't know about the `#{kind}` kind!"
         end
       end
     end
