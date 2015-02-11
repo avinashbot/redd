@@ -54,7 +54,7 @@ module Redd
             listing = send(meth, *args, **params)
             # Run the loop for each of the item in the listing
             listing.reverse_each do |thing|
-              yield thing if bset.enq?(thing.fullname)
+              yield thing if bset.enqueue?(thing.fullname)
             end
             # Set the latest comment.
             before = listing.first.fullname unless listing.empty?

@@ -35,7 +35,7 @@ module Redd
           params[:kind], params[:url] = :link, url if url
 
           response = post("/api/submit", params)
-          Objects::Thing.new(self, response.body)
+          Objects::Thing.new(self, response.body[:json][:data])
         end
 
         # Add a comment to a link, reply to a comment or reply to a message.

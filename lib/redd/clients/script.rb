@@ -32,24 +32,6 @@ module Redd
 
         @access = Access.new(response.body)
       end
-
-      private
-
-      # @return [Faraday::Connection] A new or existing connection.
-      def auth_connection
-        @auth_connection ||= Faraday.new(
-          @auth_endpoint,
-          headers: auth_headers,
-          builder: middleware
-        )
-      end
-
-      def auth_headers
-        {
-          "User-Agent" => @user_agent,
-          "Authorization" => Faraday.basic_auth(@client_id, @secret)
-        }
-      end
     end
   end
 end

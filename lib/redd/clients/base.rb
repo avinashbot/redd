@@ -106,15 +106,42 @@ module Redd
         fail NotImplementedError, "Try Redd.it(...)"
       end
 
+      # Obtain a new access token using a refresh token.
+      # @return [Access] The refreshed information.
+      def refresh_access!
+        response = auth_connection.post(
+          "/api/v1/access_token",
+          grant_type: "refresh_token",
+          refresh_token: access.refresh_token
+        )
+          access.refreshed!(response.body)
+      end
+
+      # Dispose of an access or refresh token when you're done with it.
+      # @param [Boolean] remove_refresh_token Whether or not to remove all
+      #   tokens associated with the user.
+      def revoke_access!(remove_refresh_token = nil)
+        token_type = remove_refresh_token ? :refresh_token : :access_token
+        token = access.send(token_type)
+        auth_connection.post(
+          "/api/v1/revoke_token",
+          token: token,
+          token_type_hint: token_type
+        )
+        @access = nil
+      end
+
       private
 
-      # @return [Faraday::Connection] A new or existing connection.
-      def connection
-        @connection ||= Faraday.new(
-          @api_endpoint,
-          headers: default_headers,
-          builder: middleware
-        )
+      # @return [Faraday::RackBuilder] The middleware to use when creating the
+      #   connection.
+      def middleware
+        @middleware ||= Faraday::RackBuilder.new do |builder|
+          builder.use Response::RaiseError
+          builder.use Response::ParseJson
+          builder.use Faraday::Request::UrlEncoded
+          builder.adapter Faraday.default_adapter
+        end
       end
 
       # @return [Hash] The minimum parameters to send with every request.
@@ -130,15 +157,30 @@ module Redd
         }
       end
 
-      # @return [Faraday::RackBuilder] The middleware to use when creating the
-      #   connection.
-      def middleware
-        @middleware ||= Faraday::RackBuilder.new do |builder|
-          builder.use Response::RaiseError
-          builder.use Response::ParseJson
-          builder.use Faraday::Request::UrlEncoded
-          builder.adapter Faraday.default_adapter
-        end
+      # @return [Faraday::Connection] A new or existing connection.
+      def connection
+        @connection ||= Faraday.new(
+          @api_endpoint,
+          headers: default_headers,
+          builder: middleware
+        )
+      end
+
+      # @return [Hash] A hash of the headers with basic auth.
+      def auth_headers
+        {
+          "User-Agent" => @user_agent,
+          "Authorization" => Faraday.basic_auth(@client_id, @secret)
+        }
+      end
+
+      # @return [Faraday::Connection] A new or existing connection.
+      def auth_connection
+        @auth_connection ||= Faraday.new(
+          @auth_endpoint,
+          headers: auth_headers,
+          builder: middleware
+        )
       end
     end
   end
