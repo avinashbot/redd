@@ -12,7 +12,6 @@ module Redd
             req.url "/api/v1/me/prefs"
             req.body = MultiJson.dump(changed_prefs)
           end
-          
           Objects::Base.new(self, response.body)
         end
       end

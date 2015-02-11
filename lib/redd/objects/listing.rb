@@ -14,7 +14,7 @@ module Redd
       attr_reader :after
 
       def initialize(client, data)
-        data[:children].each do |child| 
+        data[:children].each do |child|
           self << client.object_from_body(child)
         end
         @before = data[:before]

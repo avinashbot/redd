@@ -19,7 +19,7 @@ module Redd
           params = {subject: subject, text: text}
           params << {captcha: captcha, iden: identifier} if captcha
           params[:from_sr] = from_sr if from_sr
-          params[:to] = 
+          params[:to] =
             if respond_to?(:display_name)
               "/r/#{self[:display_name]}"
             else
