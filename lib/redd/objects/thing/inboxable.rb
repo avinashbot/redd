@@ -15,6 +15,7 @@ module Redd
 
         # Reply to the thing.
         # @param text [String] The text to comment.
+        # @return [Objects::Comment, Objects::PrivateMessage] The reply.
         def reply(text)
           client.add_comment(self, text)
         end

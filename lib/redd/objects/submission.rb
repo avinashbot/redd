@@ -6,7 +6,8 @@ module Redd
     class Submission < Thing
       include Editable
       include Hideable
-      # include Saveable
+      include Moderatable
+      include Saveable
       include Votable
 
       alias_property :nsfw?, :over_18

@@ -14,9 +14,10 @@ module Redd
         utilities
         account
         identity
-        private_messages
+        privatemessages
         submit
         read
+        wikiread
       ).each do |mixin_name|
         require_relative "base/#{mixin_name}"
         camel_case = mixin_name.split("_").map(&:capitalize).join

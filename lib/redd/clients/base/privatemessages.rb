@@ -1,7 +1,7 @@
 module Redd
   module Clients
     class Base
-      module PrivateMessages
+      module Privatemessages
         # Return a listing of a user's private messages.
         #
         # @param category ["inbox", "unread", "sent"] The category of messages

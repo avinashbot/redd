@@ -7,8 +7,8 @@ module Redd
       alias_property :content, :content_md
       alias_property :body, :content_md
 
-      def revision_by
-        @revision_by ||= client.object_from_body(self[:revision_by])
+      def revision_user
+        @revision_by ||= client.object_from_body(revision_by)
       end
     end
   end
