@@ -2,6 +2,7 @@ require_relative "base"
 
 module Redd
   module Clients
+    # The client for an account you own (e.g. bots).
     class Script < Base
       # @!attribute [r] client_id
       attr_reader :client_id

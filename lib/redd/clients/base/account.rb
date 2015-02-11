@@ -1,6 +1,7 @@
 module Redd
   module Clients
     class Base
+      # Methods that require the "account" scope
       module Account
         # Edit some user preferences
         # @param [Hash] changed_prefs The preferences to override.

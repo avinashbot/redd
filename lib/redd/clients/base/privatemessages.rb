@@ -1,6 +1,7 @@
 module Redd
   module Clients
     class Base
+      # Methods that require the "privatemessages" scope
       module Privatemessages
         # Return a listing of a user's private messages.
         #

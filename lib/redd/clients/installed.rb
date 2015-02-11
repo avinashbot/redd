@@ -3,6 +3,8 @@ require_relative "base"
 
 module Redd
   module Clients
+    # The client for installed apps that can't keep a secret.
+    # It might even work with Rubymotion (fingers crossed).
     class Installed < Base
       # @!attribute [r] client_id
       attr_reader :client_id

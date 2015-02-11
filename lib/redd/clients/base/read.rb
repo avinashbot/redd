@@ -1,6 +1,7 @@
 module Redd
   module Clients
     class Base
+      # Methods that require the "read" scope
       module Read
         # @param [Array<String>] fnames A list of fullnames.
         # @return [Objects::Listing<Objects::Thing>] A listing of things with

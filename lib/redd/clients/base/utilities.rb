@@ -69,7 +69,8 @@ module Redd
 
         # Take a multilevel body ({kind: "tx", data: {...}}) and flatten it
         # into something like {kind: "tx", ...}
-        # @param [Hash] The response body.
+        # @param [Hash] body The response body.
+        # @return [Hash] The flattened hash.
         def flatten_body(body)
           data = body[:data]
           data[:kind] = body[:kind]

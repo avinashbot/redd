@@ -1,6 +1,7 @@
 module Redd
   module Clients
     class Base
+      # Methods that require the "identity" scope
       module Identity
         # @return [Objects::User] The logged-in user.
         def me

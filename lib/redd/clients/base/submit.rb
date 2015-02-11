@@ -1,6 +1,7 @@
 module Redd
   module Clients
     class Base
+      # Methods that require the "submit" scope
       module Submit
         # Add a comment to a link, reply to a comment or reply to a message.
         # Bit of an all-purpose method, this one.

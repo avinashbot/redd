@@ -6,6 +6,7 @@ require_relative "../rate_limit"
 require_relative "../access"
 
 module Redd
+  # The module containing the multiple types of clients.
   module Clients
     # The basic client to inherit from. Don't use this directly, prefer
     # {Redd.it}
@@ -47,13 +48,13 @@ module Redd
       # Create a Client.
       #
       # @param [Hash] options The options to create the client with.
-      # @param options [String] :user_agent The User-Agent string to use in the
-      #   header of every request.
-      # @param options [#after_limit] :rate_limit The handler that takes care of
-      #   rate limiting.
-      # @param options [String] :auth_endpoint The main domain to authenticate
+      # @option options [String] :user_agent The User-Agent string to use in
+      #   the header of every request.
+      # @option options [#after_limit] :rate_limit The handler that takes care
+      #   of rate limiting.
+      # @option options [String] :auth_endpoint The main domain to authenticate
       #   with.
-      # @param options [String] :api_endpoint The main domain to make requests
+      # @option options [String] :api_endpoint The main domain to make requests
       #   with.
       # @note HTTPS is mandatory for OAuth2.
       def initialize(**options)

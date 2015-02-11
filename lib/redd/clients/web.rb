@@ -3,6 +3,7 @@ require_relative "base"
 
 module Redd
   module Clients
+    # The client for a web-based flow (e.g. "login with reddit")
     class Web < Base
       # @!attribute [r] client_id
       attr_reader :client_id
@@ -23,13 +24,13 @@ module Redd
       # @param [Array<String>] scope The scope to request access to.
       # @param [:temporary, :permanent] duration
       # @return [String] The url to redirect the user to.
-      def auth_url(state, scopes = ["identity"], duration = :temporary)
+      def auth_url(state, scope = ["identity"], duration = :temporary)
         query = {
           response_type: "code",
           client_id: @client_id,
           redirect_uri: @redirect_uri,
           state: state,
-          scope: scopes.join(","),
+          scope: scope.join(","),
           duration: duration
         }
 

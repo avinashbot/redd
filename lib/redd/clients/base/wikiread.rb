@@ -1,6 +1,7 @@
 module Redd
   module Clients
     class Base
+      # Methods that require the "wikiread" scope
       module Wikiread
         # Get a list of pages in the subreddit wiki.
         # @param subreddit [Objects::Subreddit, String] The subreddit to

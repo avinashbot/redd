@@ -2,6 +2,8 @@ require_relative "base"
 
 module Redd
   module Clients
+    # The client that doesn't need a user to function.
+    # @note Of course, that means many editing methods throw an error.
     class Userless < Base
       # @!attribute [r] client_id
       attr_reader :client_id
