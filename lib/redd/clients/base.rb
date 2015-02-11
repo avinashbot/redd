@@ -18,6 +18,7 @@ module Redd
         privatemessages
         read
         submit
+        stream
         wikiread
       ).each do |mixin_name|
         require_relative "base/#{mixin_name}"
