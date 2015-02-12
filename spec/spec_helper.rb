@@ -6,19 +6,10 @@ VCR.configure do |config|
   config.cassette_library_dir = "spec/cassettes"
   config.hook_into :webmock
   config.default_cassette_options = {record: :new_episodes}
+  config.configure_rspec_metadata!
 end
 
 RSpec.configure do |config|
-  # See http://www.chrisjeon.me/blog/2013/12/15/how-to-configure-vcr-to-work-with-rails-rspec
-  config.around(:each, :vcr) do |example|
-    name = example.metadata[:full_description].split(/\s+/, 2).join("/")
-           .underscore.gsub(/[^\w\/]+/, "_")
-    opts = example.metadata.slice(:record, :match_requests_on)
-           .except(:example_group)
-
-    VCR.use_cassette(name, opts) { example.call }
-  end
-
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest
   # assertions if you prefer.
@@ -26,10 +17,10 @@ RSpec.configure do |config|
     # This option will default to `true` in RSpec 4. It makes the `description`
     # and `failure_message` of custom matchers include text for helper methods
     # defined using `chain`, e.g.:
-    # be_bigger_than(2).and_smaller_than(4).description
-    #   # => "be bigger than 2 and smaller than 4"
+    #     be_bigger_than(2).and_smaller_than(4).description
+    #     # => "be bigger than 2 and smaller than 4"
     # ...rather than:
-    #   # => "be bigger than 2"
+    #     # => "be bigger than 2"
     expectations.include_chain_clauses_in_custom_matcher_descriptions = true
   end
 
@@ -46,12 +37,12 @@ RSpec.configure do |config|
   # to individual examples or groups you care about by tagging them with
   # `:focus` metadata. When nothing is tagged with `:focus`, all examples
   # get run.
-  config.filter_run :focus
+  config.filter_run_including :focus
+  config.filter_run_excluding :secure if ENV["TRAVIS_SECURE_ENV_VARS"] == "false"
   config.run_all_when_everything_filtered = true
 
   # Limits the available syntax to the non-monkey patched syntax that is
-  # recommended.
-  # For more details, see:
+  # recommended. For more details, see:
   #   - http://myronmars.to/n/dev-blog/2012/06/rspecs-new-expectation-syntax
   #   - http://teaisaweso.me/blog/2013/05/27/rspecs-new-message-expectation-syntax/
   #   - http://myronmars.to/n/dev-blog/2014/05/notable-changes-in-rspec-3#new__config_option_to_disable_rspeccore_monkey_patching
@@ -60,11 +51,6 @@ RSpec.configure do |config|
   # This setting enables warnings. It's recommended, but in some cases may
   # be too noisy due to issues in dependencies.
   config.warnings = true
-
-  # Print the 10 slowest examples and example groups at the
-  # end of the spec run, to help surface which specs are running
-  # particularly slow.
-  config.profile_examples = 10
 
   # Run specs in random order to surface order dependencies. If you find an
   # order dependency and want to debug it, you can fix the order by providing

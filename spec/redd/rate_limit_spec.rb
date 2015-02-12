@@ -1,5 +1,3 @@
-require "redd/rate_limit"
-
 RSpec.describe Redd::RateLimit do
   let(:rate_limit) { Redd::RateLimit.new(2) }
 
