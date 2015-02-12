@@ -7,6 +7,7 @@ module Redd
       include Thing::Editable
       include Thing::Inboxable
       include Thing::Moderatable
+      include Thing::Refreshable
       include Thing::Saveable
       include Thing::Votable
 

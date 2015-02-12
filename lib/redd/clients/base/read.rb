@@ -14,7 +14,7 @@ module Redd
         # @param [String] url The url of the thing.
         # @return [Objects::Thing] The thing.
         def from_url(url)
-          request_object(:get, "/api/info", url: url)
+          request_object(:get, "/api/info", url: url).first
         end
 
         # @param [String] name The username.
