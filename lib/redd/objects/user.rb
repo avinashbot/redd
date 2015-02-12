@@ -4,7 +4,7 @@ module Redd
   module Objects
     # The model for a reddit user
     class User < Thing
-      include Messageable
+      include Thing::Messageable
     end
   end
 end

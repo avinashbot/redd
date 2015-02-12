@@ -4,11 +4,11 @@ module Redd
   module Objects
     # A submission made in a subreddit.
     class Submission < Thing
-      include Editable
-      include Hideable
-      include Moderatable
-      include Saveable
-      include Votable
+      include Thing::Editable
+      include Thing::Hideable
+      include Thing::Moderatable
+      include Thing::Saveable
+      include Thing::Votable
 
       alias_property :nsfw?, :over_18
       alias_property :self?, :is_self

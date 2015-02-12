@@ -4,7 +4,7 @@ module Redd
   module Objects
     # A comment made on links.
     class Subreddit < Thing
-      include Messageable
+      include Thing::Messageable
 
       alias_property :header_image, :header_img
       alias_property :nsfw?, :over18

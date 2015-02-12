@@ -4,11 +4,11 @@ module Redd
   module Objects
     # A comment that can be made on a link.
     class Comment < Thing
-      include Editable
-      include Inboxable
-      include Moderatable
-      include Saveable
-      include Votable
+      include Thing::Editable
+      include Thing::Inboxable
+      include Thing::Moderatable
+      include Thing::Saveable
+      include Thing::Votable
 
       alias_property :reports_count, :num_reports
     end
