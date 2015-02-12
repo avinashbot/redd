@@ -18,7 +18,7 @@ module Redd
         )
           params = {subject: subject, text: text}
           params << {captcha: captcha, iden: identifier} if captcha
-          params[:from_sr] = from_sr if from_sr
+          params[:from_sr] = client.property(from_sr, :display_name) if from_sr
           params[:to] =
             if respond_to?(:display_name)
               "/r/#{self[:display_name]}"

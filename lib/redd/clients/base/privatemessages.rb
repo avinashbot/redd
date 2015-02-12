@@ -20,7 +20,7 @@ module Redd
         #   return.
         def my_messages(category = "inbox", mark = false, params = {})
           params[:mark] = mark
-          object_from_response(:get, "/message/#{category}.json", params)
+          request_object(:get, "/message/#{category}.json", params)
         end
       end
     end
