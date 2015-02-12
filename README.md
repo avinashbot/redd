@@ -12,7 +12,6 @@
 
 #### Gemfile
 ```ruby
-
 gem "ruby", "~> 0.7.0"
 # if you're feeling adventurous
 # gem "redd", github: "avidw/redd", branch: "oauth2"

@@ -13,7 +13,7 @@ module Redd
       attr_reader :redirect_uri
 
       # @param [Hash] options The options to create the client with.
-      # @see {Redd.it}
+      # @see Redd.it
       def initialize(client_id, redirect_uri, **options)
         @client_id = client_id
         @redirect_uri = redirect_uri
