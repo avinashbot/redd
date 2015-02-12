@@ -11,15 +11,16 @@ module Redd
     # The basic client to inherit from. Don't use this directly, prefer
     # {Redd.it}
     class Base
+      # @!parse include Utilities
+      # @!parse include Account
+      # @!parse include Identity
+      # @!parse include Privatemessages
+      # @!parse include Read
+      # @!parse include Submit
+      # @!parse include Stream
+      # @!parse include Wikiread
       %w(
-        utilities
-        account
-        identity
-        privatemessages
-        read
-        submit
-        stream
-        wikiread
+        utilities account identity privatemessages read submit stream wikiread
       ).each do |mixin_name|
         require_relative "base/#{mixin_name}"
         camel_case = mixin_name.split("_").map(&:capitalize).join
