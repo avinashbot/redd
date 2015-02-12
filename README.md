@@ -6,38 +6,82 @@
   <a href="https://rubygems.org/gems/redd"><img src="http://img.shields.io/gem/dt/redd.svg?style=flat-square" alt="Gem Downloads"></a>
 </p>
 
-**redd** is an API wrapper for [reddit](http://www.reddit.com/dev/api) written in ruby that focuses on being *simple and extensible*.  
-**Check out the latest documentation on [RubyDoc](http://rubydoc.info/github/avidw/redd/oauth2/frames).**
+**redd** is an API wrapper for [reddit](http://www.reddit.com/dev/api) written in ruby that focuses on being consistent and extensible. **Check out the latest documentation on [RubyDoc](http://www.rubydoc.info/github/avidw/redd/oauth2/frames/Redd.it).**
 
 ---
 
+#### Gemfile
 ```ruby
-# Gemfile
 
 gem "ruby", "~> 0.7.0"
 # if you're feeling adventurous
 # gem "redd", github: "avidw/redd", branch: "oauth2"
 ```
 
+#### Getting Started
 ```ruby
-# Getting Started.rb
+# Authorization (Web)
+w = Redd.it(:web, "CLIENT_ID", "SECRET", "REDIRECT_URI", user_agent: "TestSite v1.0.0")
+url = w.auth_url("random_state", ["identity", "read"], :temporary)
+puts "Please go to #{url} and enter the code below:"
+code = gets.chomp
+w.authorize!(code)
 
-require "bundler/setup"
-require "redd"
-
-r = Redd.it(:script,
-  "CLIENT_ID", "SECRET",
-  "Unidan", "hunter2",
-  user_agent: "TestBot v1.0.0"
-)
-
+# Authorization
+r = Redd.it(:script, "CLIENT_ID", "SECRET", "Unidan", "hunter2", user_agent: "TestBot v1.0.0")
 r.authorize!
-puts "#{r.me.name} checking in!"
 
-begin
+# See documentation for more grants.
+```
+
+```ruby
+# Access
+get "/redirect" do
+  access = w.authorize!(params[:code])
+  session[:access] = access.to_json
+  redirect to("/name")
+end
+
+get "/name" do
+  session_access = Access.from_json(session[:access])
+  w.with(session_access) do |client|
+    client.refresh_access! if session_access.expired?
+    "Your username is #{client.me.name}"
+  end
+end
+
+```
+
+```ruby
+# Getting a model
+vargas = r.user_from_name("_vargas_")
+puts vargas.keys
+puts vargas.over_18?
+
+picturegame = r.subreddit_from_name("picturegame")
+puts picturegame.display_name
+puts picturegame.public_description
+```
+
+```ruby
+# Listings
+hot = r.get_hot("all")
+hot.each { |link| puts "#{link.title} by /u/#{link.author}" }
+```
+
+```ruby
+# Streaming
+def stream_all!
   r.stream :get_comments, "all" do |comment|
     comment.reply("World!") if comment.body == "Hello?"
   end
+end
+```
+
+```ruby
+# Escaping Errors
+begin
+  stream_all!
 rescue Redd::Error::RateLimited => error
   sleep(error.time)
   retry
@@ -46,9 +90,9 @@ rescue Redd::Error => error
   raise error unless (500...600).include?(error.code)
   retry
 end
-
 ```
 
+#### Extras
 ```ruby
 # Extending Redd.rb
 
@@ -67,11 +111,9 @@ Redd::Objects::Submission.include(MyGildingExtension)
 ```ruby
 # How To Request A Feature.rb
 
-def request_feature(feature)
-  github.issues.add(feature)
-  I.will_patch_it_in(:asap)
-  enjoy!
-end
+github.issues.add(feature)
+I.will_patch_it_in(:asap)
+requests.select { |request| request.too_simple? }.size.zero? #=> true
 ```
 
 ```ruby
