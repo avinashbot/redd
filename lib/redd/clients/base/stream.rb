@@ -13,6 +13,9 @@ module Redd
             super(*args, &block)
           end
 
+          # Add an element to the front if it isn't already in the queue.
+          # @param element
+          # @return [PRAWBoundedQueueSet] self
           def enqueue(element)
             @queue.push(element) if add?(element)
             dequeue! if size > @max
@@ -20,6 +23,9 @@ module Redd
           end
           alias_method :enq, :enqueue
 
+          # Add an element to the front if it isn't already in the queue.
+          # @param element
+          # @return [Boolean] Whether the element was added to the queue.
           def enqueue?(element)
             added = add?(element)
             if added
@@ -30,6 +36,8 @@ module Redd
           end
           alias_method :enq?, :enqueue?
 
+          # Remove the last element of the queue.
+          # @return The removed element.
           def dequeue
             element = @queue.shift
             delete(element)

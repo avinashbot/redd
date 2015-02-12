@@ -13,6 +13,7 @@ module Redd
   module Clients
     class Base
       # Internal methods that make life easier.
+      # @todo Move this out to Redd::Utils?
       module Utilities
         # The kind strings and the objects that should be used for them.
         OBJECT_KINDS = {

@@ -6,7 +6,7 @@ module Redd
         # @param [Array<String>] fnames A list of fullnames.
         # @return [Objects::Listing<Objects::Thing>] A listing of things with
         #   the fullname.
-        def from_id(*fnames)
+        def from_fullname(*fnames)
           names = fnames.join(",")
           request_object(:get, "/api/info", id: names)
         end
