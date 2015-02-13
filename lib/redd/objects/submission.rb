@@ -26,6 +26,8 @@ module Redd
       end
 
       # @return [Listing] The submission's comments.
+      # @todo Allow for various depths and contexts and what not. Maybe a
+      #   get_comment method?
       def comments
         refresh! unless @comments
         @comments
@@ -57,10 +59,13 @@ module Redd
           link_id: fullname
         )
 
-        client.object_from_body(kind: "Listing", data: {
-          before: "", after: "",
-          children: response.body[:json][:data][:things]
-        })
+        client.object_from_body(
+          kind: "Listing",
+          data: {
+            before: "", after: "",
+            children: response.body[:json][:data][:things]
+          }
+        )
       end
     end
   end

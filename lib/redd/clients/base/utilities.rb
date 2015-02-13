@@ -42,7 +42,6 @@ module Redd
         #
         # @param [Hash] body A JSON hash.
         # @return [Objects::Thing, Objects::Listing]
-        # rubocop:disable Metrics/MethodLength
         def object_from_body(body)
           return nil unless body.is_a?(Hash) && body.key?(:kind)
           object = object_from_kind(body[:kind])

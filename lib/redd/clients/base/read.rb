@@ -29,11 +29,11 @@ module Redd
           request_object(:get, "/r/#{name}/about.json")
         end
 
-        # @!method get_hot(subreddit = nil, params = {})
-        # @!method get_new(subreddit = nil, params = {})
-        # @!method get_top(subreddit = nil, params = {})
-        # @!method get_controversial(subreddit = nil, params = {})
-        # @!method get_comments(subreddit = nil, params = {})
+        # @!method get_hot(subreddit = nil, **params)
+        # @!method get_new(subreddit = nil, **params)
+        # @!method get_top(subreddit = nil, **params)
+        # @!method get_controversial(subreddit = nil, **params)
+        # @!method get_comments(subreddit = nil, **params)
         #
         # Get the appropriate listing.
         # @param subreddit [Objects::Subreddit, String] The subreddit to query.

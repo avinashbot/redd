@@ -25,7 +25,7 @@ module Redd
 
         # Remove the sigil that shows a thing was created by a moderator.
         def undistinguish
-          distinguish(thing, :no)
+          distinguish(:no)
         end
 
         # Stop getting any moderator-related reports on the thing.

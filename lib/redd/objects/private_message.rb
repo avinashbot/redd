@@ -8,6 +8,11 @@ module Redd
 
       alias_property :from, :author
       alias_property :to, :dest
+
+      # Block the sender of the message from sending any more.
+      def block_sender!
+        post("/api/block", id: fullname)
+      end
     end
   end
 end
