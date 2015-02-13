@@ -13,8 +13,6 @@ module Redd
       alias_property :type, :subreddit_type
       alias_property :times_gilded, :gilded
 
-      # @!group Stylesheets
-
       # @return [String] The url for the subreddit's stylesheet.
       def stylesheet_url
         get("/r/#{display_name}/stylesheet").headers["location"]
@@ -24,10 +22,6 @@ module Redd
       def stylesheet
         Faraday.get(stylesheet_url).body
       end
-
-      # @!endgroup
-
-      # @!group Invites
 
       # Accept a moderator invite from a subreddit.
       def accept_moderator_invite!
@@ -43,10 +37,6 @@ module Redd
       def leave_moderator_status!
         post("/api/leavemoderator", id: fullname)
       end
-
-      # @!endgroup
-
-      # @!group Flairs
 
       # Get a list of everbody on the subreddit with a user flair.
       #
@@ -86,12 +76,12 @@ module Redd
       end
 
       # Set the flair of a user or link.
-      # @param [:user, :link] type The type of thing.
       # @param [Objects::Subreddit, Objects::User] thing The user or link to
       #   set the flair to.
+      # @param [:user, :link] type The type of thing.
       # @param [String] text The text to set the flair to.
       # @param [String] css_class The css_class of the flair.
-      def set_flair(type, thing, text = nil, css_class = nil)
+      def set_flair(thing, type = nil, text = nil, css_class = nil)
         if thing.is_a?(Objects::User) || type == :user
           params[:name] = client.property(thing, :name)
         elsif thing.is_a?(Objects::Submission) || type == :user
@@ -102,8 +92,6 @@ module Redd
 
         post("/r/#{display_name}/api/flair", text: text, css_class: css_class)
       end
-
-      # @!endgroup
     end
   end
 end
