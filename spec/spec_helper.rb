@@ -38,8 +38,11 @@ RSpec.configure do |config|
   # `:focus` metadata. When nothing is tagged with `:focus`, all examples
   # get run.
   config.filter_run_including :focus
-  config.filter_run_excluding :secure if ENV["TRAVIS_SECURE_ENV_VARS"] == "false"
   config.run_all_when_everything_filtered = true
+
+  if ENV["TRAVIS_SECURE_ENV_VARS"] == "false"
+    config.filter_run_excluding :secure
+  end
 
   # Limits the available syntax to the non-monkey patched syntax that is
   # recommended. For more details, see:

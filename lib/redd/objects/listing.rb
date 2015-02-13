@@ -3,8 +3,6 @@ module Redd
     # A collection of reddit things.
     # @see https://www.reddit.com/dev/api#listings
     class Listing < Array
-      KIND = "Listing".freeze
-
       # @!attribute [r] before
       # @return [String] The id of the object before the listing.
       attr_reader :before
@@ -17,17 +15,14 @@ module Redd
       # @param [{:before => String, :after => String,
       #   :children => Array<Hash>}] attributes The data to initialize the
       #   class with.
-      # @todo Only call Clients::Base#object_from_body when item is being accessed.
+      # @todo Only call Clients::Base#object_from_body when item is being
+      #   accessed.
       def initialize(client, attributes)
         @before = attributes[:before]
         @after = attributes[:after]
         attributes[:children].each do |child|
           self << client.object_from_body(child)
         end
-      end
-
-      def kind
-        KIND
       end
     end
   end

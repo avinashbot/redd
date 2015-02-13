@@ -3,10 +3,9 @@
   <a href="https://rubygems.org/gems/redd"><img src="http://img.shields.io/gem/v/redd.svg?style=flat-square" alt="Gem Version"></a>
   <a href="https://travis-ci.org/avidw/redd"><img src="http://img.shields.io/travis/avidw/redd.svg?style=flat-square" alt="Build Status"></a>
   <a href="https://rubygems.org/gems/redd"><img src="http://img.shields.io/badge/license-MIT-blue.svg?style=flat-square" alt="MIT License"></a>
-  <a href="https://rubygems.org/gems/redd"><img src="http://img.shields.io/gem/dt/redd.svg?style=flat-square" alt="Gem Downloads"></a>
 </p>
 
-**redd** is an API wrapper for [reddit](http://www.reddit.com/dev/api) written in ruby that focuses on being consistent and extensible. **Check out the latest documentation on [RubyDoc](http://www.rubydoc.info/github/avidw/redd/oauth2/frames/Redd.it).**
+**redd** is an API wrapper for [reddit](http://www.reddit.com/dev/api) written in ruby that focuses on being consistent and extensible. **Check out the latest documentation on [RubyDoc](http://www.rubydoc.info/github/avidw/redd/master/frames/Redd.it).**
 
 ---
 
@@ -107,17 +106,19 @@ Redd::Objects::Comment.include(MyGildingExtension)
 Redd::Objects::Submission.include(MyGildingExtension)
 ```
 
-```ruby
-# How To Request A Feature.rb
+```markdown
+# Contributing
+1. [Fork](https://github.com/avidw/redd/issues/new)
+2. [Pull](https://github.com/avidw/redd/compare)
+3. [Profit](https://www.reddit.com/r/requestabot)
 
-github.issues.add(feature)
-I.will_patch_it_in(:asap)
-requests.select { |request| request.too_simple? }.size.zero? #=> true
+# Request a Feature
+1. [Help](https://github.com/avidw/redd/issues/new)
 ```
 
 ```ruby
 # Copyright.rb
-
+#
 # Copyright (c) Avinash Dwarapu under the MIT License. See LICENSE.txt for more details.
-# Some code has been used from RedditKit.rb. See RedditKit.LICENSE.txt for more details.
+# Redd::Error has been modified from RedditKit.rb. See RedditKit.LICENSE.txt for its license.
 ```

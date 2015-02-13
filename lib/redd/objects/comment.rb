@@ -12,6 +12,11 @@ module Redd
       include Thing::Votable
 
       alias_property :reports_count, :num_reports
+
+      # @return [Listing] The comment's replies.
+      def replies
+        @replies ||= client.object_from_body(self[:replies])
+      end
     end
   end
 end

@@ -95,18 +95,6 @@ module Redd
         yield new_instance
       end
 
-      # @return [String] The url to redirect the user to for permissions.
-      def auth_url
-        fail NotImplementedError, "Try Redd.it(...)"
-      end
-
-      # Contact reddit and gain access to their API
-      # @return [Access] The access given by reddit.
-      # @note The returned access is automatically set as the current one.
-      def authorize!
-        fail NotImplementedError, "Try Redd.it(...)"
-      end
-
       # Obtain a new access token using a refresh token.
       # @return [Access] The refreshed information.
       def refresh_access!
@@ -115,7 +103,7 @@ module Redd
           grant_type: "refresh_token",
           refresh_token: access.refresh_token
         )
-          access.refreshed!(response.body)
+        access.refreshed!(response.body)
       end
 
       # Dispose of an access or refresh token when you're done with it.
