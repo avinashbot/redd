@@ -57,9 +57,9 @@ module Redd
           link_id: fullname
         )
 
-        object_from_body(kind: "Listing", data: {
+        client.object_from_body(kind: "Listing", data: {
           before: "", after: "",
-          children: response.body[:json][:things]
+          children: response.body[:json][:data][:things]
         })
       end
     end
