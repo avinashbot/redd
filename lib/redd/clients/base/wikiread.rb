@@ -13,7 +13,7 @@ module Redd
           path = "/wiki/pages.json"
           name = property(subreddit, :display_name)
           path.prepend("/r/#{name}") if subreddit
-          get(path)[:data]
+          get(path).body[:data]
         end
 
         # Get a wiki page.

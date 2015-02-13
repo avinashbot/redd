@@ -28,6 +28,8 @@ module Redd
       #   sort to use.
       # @option params [:hour, :day, :week, :month, :year, :all] :t The
       #   time period to consider when sorting.
+      # @option params [:given] :show For {#get_gilded}, whether to show the
+      #   gildings given.
       # @note The option :t only applies to the top and controversial sorts.
       # @return [Listing<Submission>]
       %w(
@@ -41,7 +43,7 @@ module Redd
       end
 
       # Get posts that the user has gilded.
-      # @see #{get_gilded}
+      # @see #get_gilded
       def get_gildings_given(**params)
         get_gilded(**params.merge(show: "given"))
       end

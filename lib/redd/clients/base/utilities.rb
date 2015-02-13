@@ -43,7 +43,7 @@ module Redd
         # @param [Hash] body A JSON hash.
         # @return [Objects::Thing, Objects::Listing]
         def object_from_body(body)
-          return nil unless body.is_a?(Hash) && body.key?(:kind)
+          return nil unless body.is_a?(Hash)
           object = object_from_kind(body[:kind])
           flat = flatten_body(body)
           object.new(self, flat)
@@ -69,12 +69,10 @@ module Redd
         end
 
         # @param [String] kind A kind in the format /t[1-5]/.
-        # @return [Objects::Thing, Objects::Listing] The appropriate object for
-        #   a given kind. Raises an error if one isn't found.
+        # @return [Objects::Base, Objects::Listing] The appropriate object for
+        #   a given kind.
         def object_from_kind(kind)
-          OBJECT_KINDS.fetch(kind)
-        rescue KeyError => error
-          raise error, "Redd doesn't know about the `#{kind}` kind!"
+          OBJECT_KINDS.fetch(kind, Objects::Base)
         end
       end
     end

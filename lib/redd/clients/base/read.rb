@@ -40,7 +40,7 @@ module Redd
         # @param params [Hash] A list of params to send with the request.
         # @option params [String] :after Return results after the given
         #   fullname.
-        # @option params [String] :before Return results before the given
+        # @option params [String :before Return results before the given
         #   fullname.
         # @option params [Integer] :count (0) The number of items already seen
         #   in the listing.
@@ -51,6 +51,7 @@ module Redd
         #
         # @note The option :t only applies to the top and controversial sorts.
         # @return [Objects::Listing<Objects::Thing>]
+        # @todo Move all listing methods into a helper?
         %w(hot new top controversial comments).each do |sort|
           define_method :"get_#{sort}" do |subreddit = nil, **params|
             srname = property(subreddit, :display_name) if subreddit
