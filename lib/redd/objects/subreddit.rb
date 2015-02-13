@@ -92,6 +92,33 @@ module Redd
 
         post("/r/#{display_name}/api/flair", text: text, css_class: css_class)
       end
+
+      # @!method get_reports(**params)
+      # @!method get_spam(**params)
+      # @!method get_modqueue(**params)
+      # @!method get_unmoderated(**params)
+      # @!method get_edited(**params)
+      #
+      # Get the appropriate moderator listing.
+      # @param [Hash] params A list of params to send with the request.
+      # @option params [String] :after Return results after the given
+      #   fullname.
+      # @option params [String] :before Return results before the given
+      #   fullname.
+      # @option params [Integer] :count The number of items already seen
+      #   in the listing.
+      # @option params [1..100] :limit The maximum number of things to
+      #   return.
+      # @option params :location No idea what this does.
+      # @option params [:links, :comments] :only The type of things to show.
+      #
+      # @return [Objects::Listing<Objects::Thing>]
+      # @see https://www.reddit.com/dev/api#GET_about_{location}
+      %w(reports spam modqueue unmoderated edited).each do |sort|
+        define_method :"get_#{sort}" do |**params|
+          request_object(:get, "/r/#{display_name}/about/#{sort}", params)
+        end
+      end
     end
   end
 end
