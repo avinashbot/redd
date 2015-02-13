@@ -5,7 +5,7 @@ module Redd
       module None
         # @return [Boolean] Whether a captcha is required for some API methods.
         def needs_captcha?
-          get("/api/needs_captcha.json").body == "true"
+          get("/api/needs_captcha.json").body
         end
 
         # Create a new captcha identifier.
