@@ -43,7 +43,7 @@ module Redd
         # @param [Hash] body A JSON hash.
         # @return [Objects::Thing, Objects::Listing]
         def object_from_body(body)
-          return nil unless body.is_a?(Hash)
+          return body unless body.is_a?(Hash) || body.key?(:kind)
           object = object_from_kind(body[:kind])
           flat = flatten_body(body)
           object.new(self, flat)
