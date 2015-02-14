@@ -111,15 +111,15 @@ module Redd
       # Dispose of an access or refresh token when you're done with it.
       # @param [Boolean] remove_refresh_token Whether or not to remove all
       #   tokens associated with the user.
-      def revoke_access!(remove_refresh_token = nil)
+      def revoke_access!(remove_refresh_token = false)
         token_type = remove_refresh_token ? :refresh_token : :access_token
         token = access.send(token_type)
+        @access = nil
         auth_connection.post(
           "/api/v1/revoke_token",
           token: token,
           token_type_hint: token_type
         )
-        @access = nil
       end
 
       private
