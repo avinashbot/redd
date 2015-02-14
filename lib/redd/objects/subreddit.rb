@@ -14,6 +14,8 @@ module Redd
       alias_property :type, :subreddit_type
       alias_property :times_gilded, :gilded
 
+      # @!group Stylesheets
+
       # @return [String] The url for the subreddit's stylesheet.
       def stylesheet_url
         get("/r/#{display_name}/stylesheet").headers["location"]
@@ -23,6 +25,23 @@ module Redd
       def stylesheet
         Faraday.get(stylesheet_url).body
       end
+
+      # Edit the subreddit's stylesheet
+      #
+      # @param [String] contents The new CSS.
+      # @param [String] reason Why you modified the stylesheet.
+      # @author Takashi M (@beatak) and Avinash Dwarapu (@avidw)
+      # @note https://www.reddit.com/r/naut/about/stylesheet/ is a good place
+      #   to test if you have an error.
+      def edit_stylesheet(contents, reason = nil)
+        params = {op: "save", stylesheet_contents: contents}
+        params[:reason] = reason if reason
+        post("/r/#{display_name}/api/subreddit_stylesheet", params)
+      end
+
+      # @!endgroup
+
+      # @!group Invites
 
       # Accept a moderator invite from a subreddit.
       def accept_moderator_invite!
@@ -38,6 +57,10 @@ module Redd
       def leave_moderator_status!
         post("/api/leavemoderator", id: fullname)
       end
+
+      # @!endgroup
+
+      # @!group Flairs
 
       # Get a list of everbody on the subreddit with a user flair.
       #
@@ -94,6 +117,10 @@ module Redd
         post("/r/#{display_name}/api/flair", text: text, css_class: css_class)
       end
 
+      # @!endgroup
+
+      # @!group Listings
+
       # @!method get_hot(**params)
       # @!method get_new(**params)
       # @!method get_top(**params)
@@ -144,9 +171,51 @@ module Redd
       # @see https://www.reddit.com/dev/api#GET_about_{location}
       %w(reports spam modqueue unmoderated edited).each do |sort|
         define_method :"get_#{sort}" do |**params|
-          request_object(:get, "/r/#{display_name}/about/#{sort}", params)
+          client.request_object(
+            :get, "/r/#{display_name}/about/#{sort}", params
+          )
         end
       end
+
+      # @!endgroup
+
+      # @!group Moderator Settings
+
+      # @return [Objects::Base] The current settings of a subreddit.
+      def admin_about
+        client.request_object(:get, "/r/#{display_name}/about/edit.json")
+      end
+
+      # Edit the subreddit's settings
+      # @param [Hash] attributes The subreddit's new settings.
+      # @author Takashi M (@beatak) and Avinash Dwarapu (@avidw)
+      # @note This method may make additional requests if not all of the
+      #   required attributes are provided.
+      # @see https://github.com/alaycock/MeetCal-bot/blob/master/serverInfo.conf
+      def admin_edit(attributes)
+        params = {sr: fullname}
+        required_attributes = %i(
+          allow_top collapse_deleted_comments comment_score_hide_mins
+          css_on_cname description exclude_banned_modqueue lang name over_18
+          public_description public_traffic show_cname_sidebar show_media
+          spam_comments spam_links spam_selfposts submit_link_label
+          submit_text submit_text_label title type wiki_edit_age
+          wiki_edit_karma wikimode header-title
+        )
+
+        if required_attributes.all? { |key| attributes.key?(key) }
+          params.merge!(attributes)
+        else
+          current = admin_about
+          current.delete(:kind)
+          complete = current.merge(attributes)
+          params.merge!(complete)
+        end
+
+        post("/api/site_admin", params)
+      end
+
+      # @!endgroup
     end
   end
 end

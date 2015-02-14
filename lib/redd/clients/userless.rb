@@ -9,6 +9,7 @@ module Redd
       attr_reader :client_id
 
       # @param [Hash] options The options to create the client with.
+      # @see Base#initialize
       # @see Redd.it
       def initialize(client_id, secret, **options)
         @client_id = client_id

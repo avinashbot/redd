@@ -37,7 +37,7 @@ module Redd
       ).each do |type|
         define_method :"get_#{type}" do |**params|
           client.request_object(
-            :get, "/user/#{name}/#{type}.json",
+            :get, "/user/#{name}/#{type}.json", **params
           )
         end
       end
