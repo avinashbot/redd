@@ -36,17 +36,33 @@ r.authorize!
 
 ```ruby
 # Access
+require "secure_random"
+require "sinatra"
+
+enable :sessions
+
+get "/auth" do
+  state = SecureRandom.urlsafe_base64
+  session[:state] = state
+  redirect w.auth_url(state, %w(identity), :permanent)
+end
+
 get "/redirect" do
+  halt 500, "Your state doesn't match!" unless session[:state] == params[:state]
   access = w.authorize!(params[:code])
   session[:access] = access.to_json
   redirect to("/name")
 end
 
 get "/name" do
-  session_access = Access.from_json(session[:access])
-  w.with(session_access) do |client|
-    client.refresh_access! if session_access.expired?
-    "Your username is #{client.me.name}"
+  if session[:access]
+    session_access = Redd::Access.from_json(session[:access])
+    w.with(session_access) do |client|
+      client.refresh_access! if session_access.expired?
+      "Your username is #{client.me.name}"
+    end
+  else
+    redirect to("/auth")
   end
 end
 
