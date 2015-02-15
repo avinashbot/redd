@@ -4,14 +4,14 @@ module Redd
       # Things that a moderator can manage.
       module Moderatable
         # Approve a submission.
-        def approve
+        def approve!
           post("/api/approve", id: fullname)
         end
 
         # Remove a submission.
         # @param [Boolean] spam Whether or not this item is removed due to it
         #   being spam.
-        def remove(spam = false)
+        def remove!(spam = false)
           post("/api/remove", id: fullname, spam: spam)
         end
 

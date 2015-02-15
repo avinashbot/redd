@@ -25,6 +25,13 @@ module Redd
         self[:gilded] > 0
       end
 
+      # Reply to the thing.
+      # @param text [String] The text to comment.
+      # @return [Objects::Comment] The reply.
+      def add_comment(text)
+        client.add_comment(self, text)
+      end
+
       # @return [Listing] The submission's comments.
       # @todo Allow for various depths and contexts and what not. Maybe a
       #   get_comment method?

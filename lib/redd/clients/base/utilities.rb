@@ -57,7 +57,6 @@ module Redd
         def flat_comments(base)        
           meth = (base.is_a?(Objects::Submission) ? :comments : :replies)
           stack = base.send(meth).dup
-          
           flattened = []
 
           until stack.empty?
