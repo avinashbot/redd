@@ -32,14 +32,7 @@ module Redd
         refresh! unless @comments
         @comments
       end
-
-      # @return [Array<Comment, MoreComments>] A linear array of the
-      #   submission's comments.
-      # @todo Somehow implement. Maybe a recursive method belonging to a
-      #   CommentListing<Comment, MoreComments>?
-      def flat_comments
-        fail NotImplementedError
-      end
+      alias_method :replies, :comments
 
       # Refresh the submission AND its comments.
       # @return [Submission] The updated submission.

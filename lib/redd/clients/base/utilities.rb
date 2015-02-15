@@ -43,10 +43,33 @@ module Redd
         # @param [Hash] body A JSON hash.
         # @return [Objects::Thing, Objects::Listing]
         def object_from_body(body)
-          return body unless body.is_a?(Hash) || body.key?(:kind)
+          return nil unless body.is_a?(Hash) && body.key?(:kind)
           object = object_from_kind(body[:kind])
           flat = flatten_body(body)
           object.new(self, flat)
+        end
+
+        # @param [Objects::Submission, Objects::Comment] base The start of the
+        #   comment tree.
+        # @author Bryce Boe (@bboe) in Python
+        # @return [Array<Objects::Comment, Objects::MoreComments>] A linear
+        #   array of the submission's comments or the comments' replies.
+        def flat_comments(base)        
+          meth = (base.is_a?(Objects::Submission) ? :comments : :replies)
+          stack = base.send(meth).dup
+          
+          flattened = []
+
+          until stack.empty?
+            comment = stack.shift
+            if comment.is_a?(Objects::Comment)
+              replies = comment.replies
+              stack += replies if replies
+            end
+            flattened << comment
+          end
+
+          flattened
         end
 
         private
