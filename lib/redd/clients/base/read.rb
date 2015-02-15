@@ -42,9 +42,9 @@ module Redd
         #   fullname.
         # @option params [String :before Return results before the given
         #   fullname.
-        # @option params [Integer] :count (0) The number of items already seen
-        #   in the listing.
-        # @option params [1..100] :limit (25) The maximum number of things to
+        # @option params [Integer] :count The number of items already seen in
+        #   the listing.
+        # @option params [1..100] :limit The maximum number of things to
         #   return.
         # @option params [:hour, :day, :week, :month, :year, :all] :t The
         #   time period to consider when sorting.
@@ -59,6 +59,39 @@ module Redd
             path = path.prepend("/r/#{srname}") if subreddit
             request_object(:get, path, params)
           end
+        end
+
+        # Search.
+        # @param query [String] The query string.
+        # @param subreddit [Objects::Subreddit, String] The subreddit to query.
+        # @param params [Hash] A list of params to send with the request.
+        # @option params [String] :after Return results after the given
+        #   fullname.
+        # @option params [String :before Return results before the given
+        #   fullname.
+        # @option params [Integer] :count The number of items already seen in
+        #   the listing.
+        # @option params [1..100] :limit The maximum number of things to
+        #   return.
+        # @option params [:cloudsearch, :lucene, :plain] :syntax The type of
+        #   syntax to use.
+        # @option params [:relevance, :new, :hot, :top, :comments] :sort The
+        #   way to sort the results.
+        # @option params [:hour, :day, :week, :month, :year, :all] :t The
+        #   time period to consider when sorting.
+        #
+        # @note The option :t only applies to the top and controversial sorts.
+        # @return [Objects::Listing<Objects::Thing>]
+        def search(query, subreddit = nil, **params)
+          path = "/search.json"
+          params[:q] = query
+          if subreddit
+            params[:restrict_sr] = true
+            srname = property(subreddit, :display_name)
+            path = path.prepend("/r/#{srname}")
+          end
+
+          request_object(:get, path, params)
         end
       end
     end

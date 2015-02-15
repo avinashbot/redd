@@ -148,6 +148,30 @@ module Redd
         end
       end
 
+      # Search.
+      # @param query [String] The query string.
+      # @param params [Hash] A list of params to send with the request.
+      # @option params [String] :after Return results after the given
+      #   fullname.
+      # @option params [String :before Return results before the given
+      #   fullname.
+      # @option params [Integer] :count The number of items already seen in
+      #   the listing.
+      # @option params [1..100] :limit The maximum number of things to
+      #   return.
+      # @option params [:cloudsearch, :lucene, :plain] :syntax The type of
+      #   syntax to use.
+      # @option params [:relevance, :new, :hot, :top, :comments] :sort The
+      #   way to sort the results.
+      # @option params [:hour, :day, :week, :month, :year, :all] :t The
+      #   time period to consider when sorting.
+      #
+      # @note The option :t only applies to the top and controversial sorts.
+      # @return [Objects::Listing<Objects::Thing>]
+      def search(query, **params)
+        client.search(query, self, **params)
+      end
+
       # @!method get_reports(**params)
       # @!method get_spam(**params)
       # @!method get_modqueue(**params)
