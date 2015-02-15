@@ -56,19 +56,27 @@ module Redd
           bset = PRAWBoundedQueueSet.new(10)
           before = ""
           loop do
-            # Get the latest comments from the subreddit. By the way, this line
-            # is the one where the sleeping/rate-limiting happens.
-            params = kwargs.merge(before: before)
-            listing = send(meth, *args, **params)
-            # Run the loop for each of the item in the listing
-            listing.reverse_each do |thing|
-              yield thing if bset.enqueue?(thing.fullname)
+            begin
+              # Get the latest comments from the subreddit. By the way, this line
+              # is the one where the sleeping/rate-limiting happens.
+              params = kwargs.merge(before: before)
+              listing = send(meth, *args, **params)
+              # Run the loop for each of the item in the listing
+              listing.reverse_each do |thing|
+                yield thing if bset.enqueue?(thing.fullname)
+              end
+              # Set the latest comment.
+              before = listing.first.fullname unless listing.empty?
+            rescue Redd::Error::RateLimited => error
+              # If this error pops up, you probably have an issue with your bot.
+              sleep(error.time)
+            rescue Redd::Error => error
+              # 5-something errors are usually errors on reddit's end.
+              raise error unless (500...600).include?(error.code)
             end
-            # Set the latest comment.
-            before = listing.first.fullname unless listing.empty?
           end
         end
-      end
-    end
+      end # <- See, this is why I sometimes prefer Python.
+    end # <- Thank god for code folding.
   end
 end
