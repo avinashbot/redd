@@ -15,6 +15,49 @@ module Redd
       alias_property :type, :subreddit_type
       alias_property :times_gilded, :gilded
 
+      # @!group Submissions
+
+      # Submit a link or a text post to the subreddit.
+      #
+      # @param [String] title The title of the submission.
+      # @param [String] captcha A possible captcha result to send if one
+      #   is required.
+      # @param [String] identifier The identifier for the captcha if one
+      #   is required.
+      # @param [String] text The text of the self-post.
+      # @param [String] url The URL of the link.
+      # @param [Boolean] resubmit Whether to post a link to the subreddit
+      #   despite it having been posted there before (you monster).
+      # @param [Boolean] sendreplies Whether to send the replies to your
+      #   inbox.
+      # @return [Objects::Thing] The returned result (url, id and name).
+      def submit(
+        title, captcha = nil, identifier = nil, text: nil, url: nil,
+        resubmit: false, sendreplies: true
+      )
+
+        params = {
+          extension: "json", title: title, sr: display_name,
+          resubmit: resubmit, sendreplies: sendreplies
+        }
+
+        params << {captcha: captcha, iden: identifier} if captcha
+        params[:kind], params[:text] = :self, text if text
+        params[:kind], params[:url] = :link, url if url
+
+        response = post("/api/submit", params)
+        Objects::Thing.new(self, response.body[:json][:data])
+      end
+
+      # Add a comment to the submission.
+      # @param text [String] The text to comment.
+      # @return [Objects::Comment] The reply.
+      def add_comment(text)
+        client.add_comment(self, text)
+      end
+
+      # @!endgroup
+
       # @!group Stylesheets
 
       # @return [String] The url for the subreddit's stylesheet.
@@ -173,6 +216,10 @@ module Redd
         client.search(query, self, **params)
       end
 
+      # @!endgroup
+
+      # @!group Moderation
+
       # @!method get_reports(**params)
       # @!method get_spam(**params)
       # @!method get_modqueue(**params)
@@ -201,10 +248,6 @@ module Redd
           )
         end
       end
-
-      # @!endgroup
-
-      # @!group Moderator Settings
 
       # @return [Objects::Base] The current settings of a subreddit.
       def admin_about
@@ -248,7 +291,7 @@ module Redd
       # @return [String] The url of the image on reddit's CDN.
       def upload_image(file, name = nil, header = true)
         fail "You can't set name and also enable header!" if name && header
-        
+
         io = (file.is_a?(IO) ? file : File.open(file, "r"))
         type = FastImage.type(io)
         payload = Faraday::UploadIO.new(io, "image/#{type}")

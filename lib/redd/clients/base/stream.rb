@@ -57,8 +57,7 @@ module Redd
           before = ""
           loop do
             begin
-              # Get the latest comments from the subreddit. By the way, this line
-              # is the one where the sleeping/rate-limiting happens.
+              # Get the latest comments from the subreddit.
               params = kwargs.merge(before: before)
               listing = send(meth, *args, **params)
               # Run the loop for each of the item in the listing

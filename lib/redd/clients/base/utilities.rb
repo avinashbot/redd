@@ -54,7 +54,7 @@ module Redd
         # @author Bryce Boe (@bboe) in Python
         # @return [Array<Objects::Comment, Objects::MoreComments>] A linear
         #   array of the submission's comments or the comments' replies.
-        def flat_comments(base)        
+        def flat_comments(base)
           meth = (base.is_a?(Objects::Submission) ? :comments : :replies)
           stack = base.send(meth).dup
           flattened = []
