@@ -11,8 +11,10 @@ module Redd
       include Hashie::Extensions::MethodQuery
       include Hashie::Extensions::DeepMerge
 
+      # The `delete` method is called `delete_path` because it conflicts with
+      # Hash#delete.
       extend Forwardable
-      def_delegators :@client, :get, :post, :put, :delete
+      def_delegators :@client, :get, :post, :put, :delete_path
 
       # @!attribute [r] client
       # @return [Clients::Base] The client that used to make requests.

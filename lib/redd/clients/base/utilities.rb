@@ -63,7 +63,7 @@ module Redd
             comment = stack.shift
             if comment.is_a?(Objects::Comment)
               replies = comment.replies
-              stack += replies if replies
+              stack = replies + stack if replies
             end
             flattened << comment
           end
