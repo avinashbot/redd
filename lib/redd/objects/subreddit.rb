@@ -224,14 +224,22 @@ module Redd
           public_description public_traffic show_cname_sidebar show_media
           spam_comments spam_links spam_selfposts submit_link_label
           submit_text submit_text_label title type wiki_edit_age
-          wiki_edit_karma wikimode header-title
+          wiki_edit_karma wikimode header-title link_type
         )
 
         if required_attributes.all? { |key| attributes.key?(key) }
           params.merge!(attributes)
         else
           current = admin_about
-          current.delete(:kind)
+          current.delete_if {|key, value| :kind == key }
+          if !current[:link_type] && current[:content_options]
+            current[:link_type] = current[:content_options]
+            current.delete_if {|key, value| :content_options == key }
+          end
+          if !current[:type] && current[:subreddit_type]
+            current[:type] = current[:subreddit_type]
+            current.delete_if {|key, value| :subreddit_type == key }
+          end
           complete = current.merge(attributes)
           params.merge!(complete)
         end
