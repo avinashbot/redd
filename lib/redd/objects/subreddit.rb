@@ -255,7 +255,7 @@ module Redd
 
         params = {file: payload, header: (header ? 1 : 0), img_type: type}
         params[:name] = name if name
-        post("/r/#{display_name}/api/upload_sr_img", params)[:img_src]
+        post("/r/#{display_name}/api/upload_sr_img", params).body[:img_src]
       end
 
       # @!endgroup
