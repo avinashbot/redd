@@ -1,3 +1,4 @@
+require "fastimage"
 require_relative "thing"
 
 module Redd
@@ -237,6 +238,24 @@ module Redd
         end
 
         post("/api/site_admin", params)
+      end
+
+      # Add or replace the subreddit image or header logo.
+      # @param [String, IO] file The path/url to the file or the file itself.
+      # @param [String] name The name of the uploaded file.
+      # @param [Boolean] header Whether the image should be set as the
+      #   subreddit header.
+      # @return [String] The url of the image on reddit's CDN.
+      def upload_image(file, name = nil, header = true)
+        fail "You can't set name and also enable header!" if name && header
+        
+        io = (file.is_a?(IO) ? file : File.open(file, "r"))
+        type = FastImage.type(io)
+        payload = Faraday::UploadIO.new(io, "image/#{type}")
+
+        params = {file: payload, header: (header ? 1 : 0), img_type: type}
+        params[:name] = name if name
+        post("/r/#{display_name}/api/upload_sr_img", params)[:img_src]
       end
 
       # @!endgroup

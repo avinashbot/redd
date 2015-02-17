@@ -27,4 +27,5 @@ Gem::Specification.new do |spec|
   spec.add_dependency "hashie", "~> 3.4.0"
   spec.add_dependency "faraday", "~> 0.9.1"
   spec.add_dependency "multi_json", "~> 1.10.1"
+  spec.add_dependency "fastimage", "~> 1.6.6"
 end

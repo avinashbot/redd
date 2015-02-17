@@ -130,6 +130,7 @@ module Redd
         @middleware ||= Faraday::RackBuilder.new do |builder|
           builder.use Response::RaiseError
           builder.use Response::ParseJson
+          builder.use Faraday::Request::Multipart
           builder.use Faraday::Request::UrlEncoded
           builder.adapter Faraday.default_adapter
         end
