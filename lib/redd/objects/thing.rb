@@ -21,13 +21,6 @@ module Redd
       def fullname
         self[:name] || "#{kind}_#{id}"
       end
-
-      private
-
-      def response_merge!(meth, path, params = {})
-        body = client.send(meth, path, params).body
-        deep_merge!(body[:data])
-      end
     end
   end
 end
