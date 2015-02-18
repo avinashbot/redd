@@ -1,7 +1,3 @@
-error.rb would have been impossible if it weren't for @samsymons :)
-
----
-
 Copyright (c) 2013 Sam Symons
 
 MIT License

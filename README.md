@@ -136,6 +136,6 @@ Redd::Objects::Submission.include(MyGildingExtension)
 ```ruby
 # Copyright.rb
 #
-# Copyright (c) Avinash Dwarapu under the MIT License. See LICENSE.txt for more details.
-# Redd::Error has been modified from RedditKit.rb. See RedditKit.LICENSE.txt for its license.
+# Copyright (c) Avinash Dwarapu under the MIT License. See LICENSE.md for more details.
+# Redd::Error has been modified from RedditKit.rb. See RedditKit.LICENSE.md for its license.
 ```
