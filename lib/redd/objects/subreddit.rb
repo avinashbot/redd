@@ -256,28 +256,43 @@ module Redd
 
       # Edit the subreddit's settings
       # @param [Hash] attributes The subreddit's new settings.
-      # @author Takashi M (@beatak) and Avinash Dwarapu (@avidw)
       # @note This method may make additional requests if not all of the
-      #   required attributes are provided.
+      #   required attributes are provided. Take a look at the source for the
+      #   required attributes required to avoid making the additional request.
       # @see https://github.com/alaycock/MeetCal-bot/blob/master/serverInfo.conf
       def admin_edit(attributes)
-        params = {sr: fullname}
-        required_attributes = %i(
+        params = {
+          # Subreddit name
+          sr: fullname,
+          # Apparently useless options
+          show_cname_sidebar: true,
+          :"header-title" => title
+        }
+
+        required = %i(
           allow_top collapse_deleted_comments comment_score_hide_mins
-          css_on_cname description exclude_banned_modqueue header-title lang
-          link_type name over_18 public_description public_traffic
-          show_cname_sidebar show_media spam_comments spam_links spam_selfposts
-          submit_link_label submit_text submit_text_label title type
-          wiki_edit_age wiki_edit_karma wikimode
+          css_on_cname description exclude_banned_modqueue lang link_type name
+          over_18 public_description public_traffic show_media spam_comments
+          spam_links spam_selfposts submit_link_label submit_text
+          submit_text_label title type wiki_edit_age wiki_edit_karma wikimode
         )
 
-        if required_attributes.all? { |key| attributes.key?(key) }
+        if required.all? { |key| attributes.key?(key) }
           params.merge!(attributes)
         else
-          current = admin_about
-          current.delete(:kind)
-          complete = current.merge(attributes)
-          params.merge!(complete)
+          about = admin_about
+          final = about
+            .select { |k, _| required.include?(k) }
+            .merge(
+              name: display_name,
+              type: about[:subreddit_type],
+              lang: about[:language],
+              link_type: about[:content_options],
+              allow_top: true,
+              css_on_cname: true
+            )
+            .merge(attributes)
+          params.merge!(final)
         end
 
         post("/api/site_admin", params)
