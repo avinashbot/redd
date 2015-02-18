@@ -264,11 +264,11 @@ module Redd
         params = {sr: fullname}
         required_attributes = %i(
           allow_top collapse_deleted_comments comment_score_hide_mins
-          css_on_cname description exclude_banned_modqueue lang name over_18
-          public_description public_traffic show_cname_sidebar show_media
-          spam_comments spam_links spam_selfposts submit_link_label
-          submit_text submit_text_label title type wiki_edit_age
-          wiki_edit_karma wikimode header-title
+          css_on_cname description exclude_banned_modqueue header-title lang
+          link_type name over_18 public_description public_traffic
+          show_cname_sidebar show_media spam_comments spam_links spam_selfposts
+          submit_link_label submit_text submit_text_label title type
+          wiki_edit_age wiki_edit_karma wikimode
         )
 
         if required_attributes.all? { |key| attributes.key?(key) }
