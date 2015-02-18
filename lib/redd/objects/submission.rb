@@ -67,6 +67,38 @@ module Redd
           }
         )
       end
+
+      # Get the related articles.
+      # @param [Hash] params A list of params to send with the request.
+      # @option params [String] :after Return results after the given
+      #   fullname.
+      # @option params [String] :before Return results before the given
+      #   fullname.
+      # @option params [Integer] :count The number of items already seen
+      #   in the listing.
+      # @option params [1..100] :limit The maximum number of things to
+      #   return.
+      # @return [Objects::Listing<Objects::Thing>]
+      def get_related(**params)
+        related = get("/related/#{id}.json", params).body[1]
+        client.object_from_body(related)
+      end
+
+      # Get other articles with the same URL.
+      # @param [Hash] params A list of params to send with the request.
+      # @option params [String] :after Return results after the given
+      #   fullname.
+      # @option params [String] :before Return results before the given
+      #   fullname.
+      # @option params [Integer] :count The number of items already seen
+      #   in the listing.
+      # @option params [1..100] :limit The maximum number of things to
+      #   return.
+      # @return [Objects::Listing<Objects::Submission>]
+      def get_duplicates(**params)
+        duplicates = get("/duplicates/#{id}.json", params).body[1]
+        client.object_from_body(duplicates)
+      end
     end
   end
 end
