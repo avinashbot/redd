@@ -22,6 +22,11 @@ module Redd
           params[:mark] = mark
           request_object(:get, "/message/#{category}.json", params)
         end
+
+        # Mark all messages as read.
+        def read_all_messages
+          post("/api/read_all_messages")
+        end
       end
     end
   end
