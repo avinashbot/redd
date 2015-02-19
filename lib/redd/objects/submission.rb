@@ -25,6 +25,19 @@ module Redd
         self[:gilded] > 0
       end
 
+      # Mark the thing as Not Suitable For Work.
+      def mark_as_nsfw
+        get("/api/marknsfw", id: fullname)
+        self[:over_18] = true
+      end
+
+      # No longer mark the thing as Not Suitable For Work.
+      def unmark_as_nsfw
+        get("/api/unmarknsfw", id: fullname)
+        self[:over_18] = false
+      end
+      alias_method :mark_as_safe, :unmark_as_nsfw
+
       # Reply to the thing.
       # @param text [String] The text to comment.
       # @return [Objects::Comment] The reply.
