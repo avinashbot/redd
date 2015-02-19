@@ -45,6 +45,26 @@ module Redd
         client.add_comment(self, text)
       end
 
+      # Set the submission to "contest mode" (comments are randomly sorted)
+      def set_contest_mode
+        post("/api/set_contest_mode", id: fullname, state: true)
+      end
+
+      # Unset the "contest mode".
+      def unset_contest_mode
+        post("/api/set_contest_mode", id: fullname, state: false)
+      end
+
+      # Set the submission as the sticky post of the subreddit
+      def set_sticky
+        post("/api/set_subreddit_sticky", id: fullname, state: true)
+      end
+
+      # Unsticky the post from the subreddit
+      def unset_sticky
+        post("/api/set_subreddit_sticky", id: fullname, state: false)
+      end
+
       # @return [Listing] The submission's comments.
       # @todo Allow for various depths and contexts and what not. Maybe a
       #   get_comment method?
