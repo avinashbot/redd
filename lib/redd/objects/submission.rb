@@ -58,11 +58,13 @@ module Redd
       # Set the submission as the sticky post of the subreddit
       def set_sticky
         post("/api/set_subreddit_sticky", id: fullname, state: true)
+        self[:stickied] = true
       end
 
       # Unsticky the post from the subreddit
       def unset_sticky
         post("/api/set_subreddit_sticky", id: fullname, state: false)
+        self[:stickied] = false
       end
 
       # @return [Listing] The submission's comments.
