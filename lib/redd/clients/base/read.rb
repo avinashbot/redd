@@ -29,6 +29,20 @@ module Redd
           request_object(:get, "/r/#{name}/about.json")
         end
 
+        # Fetch a list of multis belonging to the user.
+        def my_multis
+          multis = get("/api/multi/mine").body
+          multis.map { |thing| object_from_body(thing) }
+        end
+
+        # Fetch an individual multi from its path.
+        # @param [String] path The multi's path.
+        # @return [Objects::LabeledMulti]
+        def multi_from_path(path)
+          without_slash = path.gsub(/^\//, "")
+          request_object(:get, "/api/multi/" + without_slash)
+        end
+
         # @!method get_hot(subreddit = nil, **params)
         # @!method get_new(subreddit = nil, **params)
         # @!method get_top(subreddit = nil, **params)
@@ -92,12 +106,6 @@ module Redd
           end
 
           request_object(:get, path, params)
-        end
-
-        # Fetch a list of multis belonging to the user.
-        def my_multis
-          multis = get("/api/multi/mine").body
-          multis.map { |thing| object_from_body(thing) }
         end
       end
     end
