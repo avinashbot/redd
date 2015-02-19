@@ -89,12 +89,14 @@ module Redd
         end
       end
 
-      # @param [Access] access The access to use.
+      # @param [Access] new_access The access to use.
       # @yield The client with the given access.
-      def with(access)
-        new_instance = dup
-        new_instance.access = access
-        yield new_instance
+      def with(new_access)
+        old_access = @access
+        @access = new_access
+        response = yield(self)
+        @access = old_access
+        response
       end
 
       # Obtain a new access token using a refresh token.
