@@ -93,6 +93,12 @@ module Redd
 
           request_object(:get, path, params)
         end
+
+        # Fetch a list of multis belonging to the user.
+        def my_multis
+          multis = get("/api/multi/mine").body
+          multis.map { |thing| object_from_body(thing) }
+        end
       end
     end
   end

@@ -2,6 +2,7 @@ require_relative "../../objects/base"
 require_relative "../../objects/thing"
 require_relative "../../objects/listing"
 require_relative "../../objects/wiki_page"
+require_relative "../../objects/labeled_multi"
 require_relative "../../objects/more_comments"
 require_relative "../../objects/comment"
 require_relative "../../objects/user"
@@ -17,14 +18,15 @@ module Redd
       module Utilities
         # The kind strings and the objects that should be used for them.
         OBJECT_KINDS = {
-          "Listing"  => Objects::Listing,
-          "wikipage" => Objects::WikiPage,
-          "more"     => Objects::MoreComments,
-          "t1"       => Objects::Comment,
-          "t2"       => Objects::User,
-          "t3"       => Objects::Submission,
-          "t4"       => Objects::PrivateMessage,
-          "t5"       => Objects::Subreddit
+          "Listing"      => Objects::Listing,
+          "wikipage"     => Objects::WikiPage,
+          "LabeledMulti" => Objects::LabeledMulti,
+          "more"         => Objects::MoreComments,
+          "t1"           => Objects::Comment,
+          "t2"           => Objects::User,
+          "t3"           => Objects::Submission,
+          "t4"           => Objects::PrivateMessage,
+          "t5"           => Objects::Subreddit
         }
 
         # Request and create an object from the response.
