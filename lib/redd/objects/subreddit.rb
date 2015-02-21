@@ -282,16 +282,16 @@ module Redd
         else
           about = admin_about
           final = about
-            .select { |k, _| required.include?(k) }
-            .merge(
-              name: display_name,
-              type: about[:subreddit_type],
-              lang: about[:language],
-              link_type: about[:content_options],
-              allow_top: true,
-              css_on_cname: true
-            )
-            .merge(attributes)
+                  .select { |k, _| required.include?(k) }
+                  .merge(
+                    name: display_name,
+                    type: about[:subreddit_type],
+                    lang: about[:language],
+                    link_type: about[:content_options],
+                    allow_top: true,
+                    css_on_cname: true
+                  )
+                  .merge(attributes)
           params.merge!(final)
         end
 
