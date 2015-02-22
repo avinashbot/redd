@@ -2,13 +2,13 @@
 module Redd
   # The class that handles rate limiting for reddit.
   #
-  # If you'd rather have short bursts or no rate limiting at all, it's easy to
+  # If you'd rather have an asynchronous or queue-based limiting, it's easy to
   # write one yourself. A rate limiting class is any class that has an
   # {#after_limit} method. The block returns a Faraday::Response object, so you
   # can also extract the headers from the response and use those instead. To
   # remove rate limiting entirely, follow the example below.
   #
-  # @note To remove rate limiting entirely, just burst forever.
+  # @example To remove rate limiting entirely, just burst forever.
   #     rt = Redd::RateLimit.new
   #     rt.burst!(Float::INFINITY)
   class RateLimit
@@ -24,7 +24,9 @@ module Redd
     # @return [Time] The time the last request was made.
     attr_reader :last_request
 
-    # @!attribute [r] used, remaining, reset
+    # @!attribute [r] used
+    # @!attribute [r] remaining
+    # @!attribute [r] reset
     # @return [Integer] The data from reddit's response headers.
     attr_reader :used, :remaining, :reset
 
