@@ -45,6 +45,6 @@ module Redd
       web: Clients::Web
     }
 
-    @client = types[type].new(*args, **kwargs)
+    types[type].new(*args, **kwargs)
   end
 end
