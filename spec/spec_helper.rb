@@ -40,6 +40,8 @@ RSpec.configure do |config|
   config.filter_run_including :focus
   config.run_all_when_everything_filtered = true
 
+  # If we don't have the details to perform authentication, we can't do those
+  # tests. 
   if ENV["TRAVIS_SECURE_ENV_VARS"] == "false"
     config.filter_run_excluding :secure
   end
