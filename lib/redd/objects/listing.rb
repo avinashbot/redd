@@ -21,7 +21,7 @@ module Redd
         @before = attributes[:before]
         @after = attributes[:after]
         attributes[:children].each do |child|
-          self << client.object_from_body(child) || child
+          self << (client.object_from_body(child) || child)
         end
       end
     end

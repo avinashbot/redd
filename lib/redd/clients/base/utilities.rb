@@ -45,7 +45,7 @@ module Redd
         # @param [Hash] body A JSON hash.
         # @return [Objects::Thing, Objects::Listing]
         def object_from_body(body)
-          return nil unless body.is_a?(Hash) && body.key?(:kind)
+          return nil unless body.is_a?(Hash)
           object = object_from_kind(body[:kind])
           flat = flatten_body(body)
           object.new(self, flat)
@@ -73,8 +73,6 @@ module Redd
           flattened
         end
 
-        private
-
         # Get a given property of a given object.
         # @param [Objects::Base, String] object The object with the property.
         # @param [Symbol] property The property to get.
@@ -82,12 +80,14 @@ module Redd
           object.respond_to?(property) ? object.send(property) : object.to_s
         end
 
+        private
+
         # Take a multilevel body ({kind: "tx", data: {...}}) and flatten it
         # into something like {kind: "tx", ...}
         # @param [Hash] body The response body.
         # @return [Hash] The flattened hash.
         def flatten_body(body)
-          data = body[:data]
+          data = body[:data] || body
           data[:kind] = body[:kind]
           data
         end

@@ -15,7 +15,7 @@ module Redd
 
       # @return [Listing] The comment's replies.
       def replies
-        @replies ||= client.object_from_body(self[:replies])
+        @replies ||= (client.object_from_body(self[:replies]) || [])
       end
     end
   end
