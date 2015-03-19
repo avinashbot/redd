@@ -150,15 +150,16 @@ module Redd
       # @param [String] text The text to set the flair to.
       # @param [String] css_class The css_class of the flair.
       def set_flair(thing, type = nil, text = nil, css_class = nil)
+        params = {text: text, css_class: css_class}
         if thing.is_a?(Objects::User) || type == :user
           params[:name] = client.property(thing, :name)
-        elsif thing.is_a?(Objects::Submission) || type == :user
+        elsif thing.is_a?(Objects::Submission) || type == :link
           params[:link] = client.property(thing, :fullname)
         else
           fail "You should provide a proper type."
         end
 
-        post("/r/#{display_name}/api/flair", text: text, css_class: css_class)
+        post("/r/#{display_name}/api/flair", params)
       end
 
       # @!endgroup

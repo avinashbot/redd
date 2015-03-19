@@ -27,6 +27,7 @@ module Redd
         when /wrong_password/i            then InvalidCredentials
         when /bad_captcha/i               then InvalidCaptcha
         when /ratelimit/i                 then RateLimited
+        when /quota_filled/i              then RateLimited
         when /bad_css_name/i              then InvalidClassName
         when /too_old/i                   then Archived
         when /too_much_flair_css/i        then TooManyClassNames
@@ -120,7 +121,7 @@ module Redd
       attr_reader :time
 
       def initialize(env)
-        @time = env[:body][:json][:ratelimit]
+        @time = env[:body][:json][:ratelimit] || 60*60
         super
       end
     end
