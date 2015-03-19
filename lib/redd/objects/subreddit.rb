@@ -152,7 +152,7 @@ module Redd
       def set_flair(thing, type = nil, text = nil, css_class = nil)
         if thing.is_a?(Objects::User) || type == :user
           params[:name] = client.property(thing, :name)
-        elsif thing.is_a?(Objects::Submission) || type == :user
+        elsif thing.is_a?(Objects::Submission) || type == :link
           params[:link] = client.property(thing, :fullname)
         else
           fail "You should provide a proper type."
