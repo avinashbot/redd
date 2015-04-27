@@ -17,7 +17,7 @@ module Redd
           subject, text, from_sr = nil, captcha = nil, identifier = nil
         )
           params = {subject: subject, text: text}
-          params << {captcha: captcha, iden: identifier} if captcha
+          params.merge!(captcha: captcha, iden: identifier) if captcha
           params[:from_sr] = client.property(from_sr, :display_name) if from_sr
           params[:to] =
             if respond_to?(:display_name)
