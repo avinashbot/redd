@@ -41,7 +41,7 @@ module Redd
           resubmit: resubmit, sendreplies: sendreplies
         }
 
-        params << {captcha: captcha, iden: identifier} if captcha
+        params.merge!(captcha: captcha, iden: identifier) if captcha
         params[:kind], params[:text] = :self, text if text
         params[:kind], params[:url] = :link, url if url
 
