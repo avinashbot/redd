@@ -7,7 +7,7 @@ module Redd
         # @param [String] category A category to save to (if gilded).
         def save(category = nil)
           params = {id: fullname}
-          params << {category: category} if category
+          params.merge!(category: category) if category
           post("/api/save", params)
         end
 
