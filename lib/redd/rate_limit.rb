@@ -62,7 +62,7 @@ module Redd
     # Update necessary info with each request.
     # @param [Faraday::Response] response The response to the request made.
     def update!(response)
-      @last_request = Time.now
+      @last_request_time = Time.now
       %w(used remaining reset).each do |type|
         value = response.headers["x-ratelimit-#{type}"]
         instance_variable_set("@#{type}", value.to_i) unless value.nil?
