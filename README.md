@@ -10,6 +10,8 @@
 
 ---
 
+[![Join the chat at https://gitter.im/avidw/redd](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/avidw/redd?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 #### Gemfile
 ```ruby
 gem "redd", "~> 0.7.0"
