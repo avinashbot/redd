@@ -1,5 +1,6 @@
 module Redd
   # An error from reddit
+  # TODO: Move Error to an Errors module in next minor version?
   class Error < StandardError
     attr_reader :code
     attr_reader :headers
@@ -27,7 +28,7 @@ module Redd
         when /wrong_password/i            then InvalidCredentials
         when /bad_captcha/i               then InvalidCaptcha
         when /ratelimit/i                 then RateLimited
-        when /quota_filled/i              then RateLimited
+        when /quota_filled/i              then QuotaFilled
         when /bad_css_name/i              then InvalidClassName
         when /too_old/i                   then Archived
         when /too_much_flair_css/i        then TooManyClassNames
@@ -104,6 +105,9 @@ module Redd
     # You don't have the proper scope to perform this request.
     InvalidScope = Class.new(Error)
 
+    # Looks like we didn't get a JSON response. Raise this error.
+    JSONError = Class.new(Error)
+
     # Four, oh four! The thing you're looking for wasn't found.
     NotFound = Class.new(Error)
 
@@ -121,8 +125,16 @@ module Redd
       attr_reader :time
 
       def initialize(env)
-        @time = env[:body][:json][:ratelimit] || 60*60
         super
+        @time = env[:body][:json][:ratelimit] || 3600
+      end
+    end
+
+    # This seems to be a more OAuth2-focused error.
+    class QuotaFilled < RateLimited
+      def initialize(env)
+        super
+        @time = 3600
       end
     end
 

@@ -1,4 +1,5 @@
 require "faraday/response"
+require_relative "../error"
 
 module Redd
   # The module that contains middleware that alters the Faraday response.
@@ -7,10 +8,10 @@ module Redd
     class ParseJson < Faraday::Response::Middleware
       dependency "multi_json"
 
-      def parse(body)
-        MultiJson.load(body, symbolize_keys: true)
+      def on_complete(env)
+        env[:body] = MultiJson.load(env[:body], symbolize_keys: true)
       rescue MultiJson::ParseError
-        body
+        raise JSONError.new(env), env[:body]
       end
     end
   end
