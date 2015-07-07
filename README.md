@@ -124,7 +124,6 @@ Redd::Objects::Comment.include(MyGildingExtension)
 Redd::Objects::Submission.include(MyGildingExtension)
 ```
 
-```markdown
 # Contributing
 1. [Fork](https://github.com/avidw/redd/issues/new)
 2. [Pull](https://github.com/avidw/redd/compare)
@@ -132,7 +131,6 @@ Redd::Objects::Submission.include(MyGildingExtension)
 
 # Request a Feature
 1. [Help](https://github.com/avidw/redd/issues/new)
-```
 
 ```ruby
 # Copyright.rb
