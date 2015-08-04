@@ -81,7 +81,7 @@ module Redd
         # @param params [Hash] A list of params to send with the request.
         # @option params [String] :after Return results after the given
         #   fullname.
-        # @option params [String :before Return results before the given
+        # @option params [String] :before Return results before the given
         #   fullname.
         # @option params [Integer] :count The number of items already seen in
         #   the listing.
