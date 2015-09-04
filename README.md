@@ -89,6 +89,7 @@ hot.each { |link| puts "#{link.title} by /u/#{link.author}" }
 # Streaming
 def stream_all!
   r.stream :get_comments, "all" do |comment|
+    reddit.refresh_access! if reddit.access.expired? # for :web
     comment.reply("World!") if comment.body == "Hello?"
   end
 end

@@ -33,6 +33,9 @@ module Redd
 
         @access = Access.new(response.body)
       end
+
+      alias_method :refresh_access!, :authorize!
+
     end
   end
 end
