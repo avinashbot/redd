@@ -44,7 +44,7 @@ module Redd
 
     # @return [Boolean] Whether the access has expired.
     def expired?
-      Time.now > @expires_at
+      Time.now > (@expires_at + 60)
     end
 
     # Refresh the object with the new response body.
