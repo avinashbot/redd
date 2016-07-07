@@ -11,7 +11,7 @@ module Redd
       def on_complete(env)
         env[:body] = MultiJson.load(env[:body], symbolize_keys: true)
       rescue MultiJson::ParseError
-        raise JSONError.new(env), env[:body]
+        raise ::Redd::Error::JSONError.new(env), env[:body]
       end
     end
   end
