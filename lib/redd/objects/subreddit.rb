@@ -255,6 +255,17 @@ module Redd
         client.request_object(:get, "/r/#{display_name}/about/edit.json")
       end
 
+      # @return [Objects::Base] The current moderators of a subreddit.
+      def moderator_about
+        body = get("/r/#{display_name}/about/moderators.json").body
+        client.object_from_body(
+          kind: "Listing",
+          data: {
+            children: body[:data][:children]
+          }
+        )
+      end
+
       # Edit the subreddit's settings
       # @param [Hash] attributes The subreddit's new settings.
       # @note This method may make additional requests if not all of the
