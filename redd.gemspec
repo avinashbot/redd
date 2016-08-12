@@ -18,14 +18,14 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(/^(test|spec|features)\//)
   spec.require_paths = ["lib"]
 
-  spec.add_development_dependency "bundler", "~> 1.10.6"
-  spec.add_development_dependency "rake", "~> 10.4.2"
-  spec.add_development_dependency "rspec", "~> 3.2.0"
-  spec.add_development_dependency "vcr", "~> 2.9.3"
-  spec.add_development_dependency "webmock", "~> 1.20.4"
+  spec.add_development_dependency "bundler", "~> 1.12"
+  spec.add_development_dependency "rake", "~> 11.2"
+  spec.add_development_dependency "rspec", "~> 3.5"
+  spec.add_development_dependency "vcr", "~> 3.0"
+  spec.add_development_dependency "webmock", "~> 2.1"
 
-  spec.add_dependency "hashie", "~> 3.4.0"
-  spec.add_dependency "faraday", "~> 0.9.1"
-  spec.add_dependency "multi_json", "~> 1.10.1"
-  spec.add_dependency "fastimage", "~> 1.6.6"
+  spec.add_dependency "hashie", "~> 3.4"
+  spec.add_dependency "faraday", "~> 0.9"
+  spec.add_dependency "multi_json", "~> 1.12"
+  spec.add_dependency "fastimage", "~> 2.0"
 end
