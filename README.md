@@ -1,9 +1,8 @@
 <p align="center">
   <img src="https://i.imgur.com/2JfE4M1.png" alt="redd"><br>
   <a href="https://rubygems.org/gems/redd"><img src="http://img.shields.io/gem/v/redd.svg?style=flat-square" alt="Gem Version"></a>
-  <a href="https://travis-ci.org/avidw/redd"><img src="http://img.shields.io/travis/avidw/redd.svg?style=flat-square" alt="Build Status"></a>
+  <a href="https://travis-ci.org/avidw/redd"><img src="http://img.shields.io/travis/avinashbot/redd.svg?style=flat-square" alt="Build Status"></a>
   <a href="https://rubygems.org/gems/redd"><img src="http://img.shields.io/badge/license-MIT-blue.svg?style=flat-square" alt="MIT License"></a>
-  <a href="https://gitter.im/avidw/redd?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=body_badge"><img src="https://img.shields.io/badge/GITTER-JOIN%20CHAT%20%E2%86%92-1dce73.svg?style=flat-square" alt="Chat on Gitter"></a>
 </p>
 
 **redd** is an API wrapper for [reddit](http://www.reddit.com/dev/api) written in ruby that focuses on being consistent and extensible. **Check out the latest documentation on [RubyDoc](http://www.rubydoc.info/github/avidw/redd/master/frames/Redd.it).**
@@ -12,7 +11,7 @@
 
 #### Gemfile
 ```ruby
-gem "redd", "~> 0.7.0"
+gem "redd", "~> 0.7"
 
 # Optional fast JSON parser.
 gem "oj", platforms: :ruby
