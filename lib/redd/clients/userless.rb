@@ -24,8 +24,8 @@ module Redd
           "/api/v1/access_token",
           grant_type: "client_credentials"
         )
-
         @access = Access.new(response.body)
+        reset_connection!
       end
     end
   end

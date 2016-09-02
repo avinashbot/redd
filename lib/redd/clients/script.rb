@@ -32,10 +32,10 @@ module Redd
         )
 
         @access = Access.new(response.body)
+        reset_connection!
       end
 
       alias_method :refresh_access!, :authorize!
-
     end
   end
 end

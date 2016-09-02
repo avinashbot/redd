@@ -50,6 +50,7 @@ module Redd
           expires_in: parsed[:expires_in].first,
           scope: parsed[:scope]
         )
+        reset_connection!
       end
     end
   end

@@ -108,6 +108,7 @@ module Redd
           refresh_token: access.refresh_token
         )
         access.refreshed!(response.body)
+        reset_connection!
       end
 
       # Dispose of an access or refresh token when you're done with it.
@@ -117,6 +118,7 @@ module Redd
         token_type = remove_refresh_token ? :refresh_token : :access_token
         token = access.send(token_type)
         @access = nil
+        reset_connection!
         auth_connection.post(
           "/api/v1/revoke_token",
           token: token,
@@ -149,6 +151,11 @@ module Redd
           "User-Agent" => @user_agent,
           "Authorization" => "bearer #{@access.access_token}"
         }
+      end
+
+      def reset_connection!
+        @connection = nil
+        @access
       end
 
       # @return [Faraday::Connection] A new or existing connection.

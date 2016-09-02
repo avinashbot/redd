@@ -50,8 +50,8 @@ module Redd
           code: code,
           redirect_uri: @redirect_uri
         )
-
         @access = Access.new(response.body)
+        reset_connection!
       end
     end
   end
