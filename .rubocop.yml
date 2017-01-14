@@ -1,0 +1,11 @@
+AllCops:
+  TargetRubyVersion: 2.3
+
+Metrics/LineLength:
+  Max: 100
+
+Style/RaiseArgs:
+  Enabled: false
+
+Metrics/ParameterLists:
+  CountKeywordArgs: false

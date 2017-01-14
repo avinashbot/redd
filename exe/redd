@@ -1,0 +1,84 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require 'webrick'
+require 'redd'
+
+server = WEBrick::HTTPServer.new(
+  Port: 8000,
+  BindAddress: '0.0.0.0',
+  Logger: WEBrick::Log.new(File.open(File::NULL, 'w')),
+  AccessLog: []
+)
+
+server.mount_proc '/' do |_, res|
+  res.body = <<-EOS
+    <!doctype html>
+    <title>Redd Quickstart</title>
+    <style>
+      html, body { margin: 0; height: 100vh; }
+      .wrapper { padding-top: 30vh; text-align: center; font-family: sans-serif; }
+      #btn { background-color: #3D9970; margin: 5px; border-radius: 5px; padding: 10px; color: #fff; text-decoration: none; }
+    </style>
+    <div class="wrapper">
+      <h1>redd // quickstart</h1>
+      <a onclick="window.open('/authenticate', '', 'width=960,height=640')" href="#" id="btn">Start</a>
+      <span>a new session in your terminal?</span>
+    </div>
+  EOS
+end
+
+server.mount_proc '/authenticate' do |_, res|
+  res.set_redirect(
+    WEBrick::HTTPStatus[302],
+    Redd.url(
+      client_id: 'P4txR-D6TzF8cg',
+      response_type: 'code',
+      state: '0',
+      redirect_uri: 'http://localhost:8000/redirect',
+      'scope': %w(identity read privatemessages wikiread submit vote edit modposts history modflair)
+    )
+  )
+end
+
+server.mount_proc '/redirect' do |req, res|
+  err = req.query['error']
+  should_exit = err.nil? || err == 'access_denied'
+  res.body = <<-EOS
+    <!doctype html>
+    <title>Done!</title>
+    #{should_exit ? '<script>window.close();</script>' : "<p>Uh oh, there was an error: #{err}</p>"}
+  EOS
+
+  unless err
+    R = Redd.it(
+      user_agent: "Ruby:Redd-Quickstart:v#{Redd::VERSION} (by unknown)",
+      client_id: 'P4txR-D6TzF8cg',
+      redirect_uri: 'http://localhost:8000/redirect',
+      code: req.query['code']
+    )
+    server.stop
+  end
+end
+
+# Get the server going and shut it all down if user hits Ctrl-C
+begin
+  puts "Listening at \e[34mhttp://localhost:8000\e[0m..."
+  server.start
+rescue Interrupt
+  server.shutdown
+  exit
+end
+
+# Post a colourful welcome message
+suggestions = ['R.me.name']
+puts "Welcome, \e[35m/u/#{R.me.name}\e[0m! Try `\e[34m#{suggestions.sample}\e[0m`."
+
+# Load Pry or IRB depending on what's installed (let's hope it's Pry for their own good)
+begin
+  require 'pry'
+  Pry.start
+rescue LoadError
+  require 'irb'
+  IRB.start
+end
