@@ -43,13 +43,11 @@ module Redd
     end
 
     # Authenticate the client using the provided auth.
-    # @return [Access] the access returned by the strategy
     def authenticate(*args)
       @access = @auth.authenticate(*args)
     end
 
     # Refresh the access currently in use.
-    # @return [Access] the newly refreshed access
     def refresh(*args)
       @access = @auth.refresh(*args)
     end

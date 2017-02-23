@@ -23,6 +23,6 @@ class StubClient
   end
 
   %i(get post put patch delete).each do |verb|
-    define_method(verb) { |_, _ = {}| raise 'stub this method' }
+    define_method(verb) { |_path, _params = {}| raise 'stub this method' }
   end
 end

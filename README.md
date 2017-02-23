@@ -31,3 +31,20 @@ session.subreddit('all').comment_stream do |comment|
   end
 end
 ```
+
+---
+
+### FAQ
+
+#### Is that bot fully functional?
+**Yes**, that's all there is to it! You don't need to handle rate-limiting, refresh access tokens or protect against issues on reddit's end (like 5xx errors).
+
+---
+
+<div align="center">
+  <!-- Copyright Notice -->
+  <em>
+  This project is available under the MIT License. See LICENSE.txt for more details.<br>
+  The Redd logo uses the FARRAY font by Coquet Adrien.
+  </em>
+</div>

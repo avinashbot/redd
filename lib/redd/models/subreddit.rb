@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require_relative 'lazy_model'
-require_relative '../utilities/streamer'
+require_relative '../utilities/stream'
 
 module Redd
   module Models
@@ -64,18 +64,22 @@ module Redd
         define_method(sort) { |**params| listing(sort, **params) }
       end
 
+      # Stream newly submitted posts.
       def post_stream(**params, &block)
-        streamer = Utilities::Streamer.new do |before|
+        params[:limit] ||= 100
+        stream = Utilities::Stream.new do |before|
           listing(:new, params.merge(before: before))
         end
-        block_given? ? streamer.stream(&block) : streamer.enum_for(:stream)
+        block_given? ? stream.stream(&block) : stream.enum_for(:stream)
       end
 
+      # Stream newly submitted comments.
       def comment_stream(**params, &block)
-        streamer = Utilities::Streamer.new do |before|
+        params[:limit] ||= 100
+        stream = Utilities::Stream.new do |before|
           listing(:comments, params.merge(before: before))
         end
-        block_given? ? streamer.stream(&block) : streamer.enum_for(:stream)
+        block_given? ? stream.stream(&block) : stream.enum_for(:stream)
       end
 
       # Submit a link or a text post to the subreddit.

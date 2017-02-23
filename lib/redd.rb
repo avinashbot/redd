@@ -39,7 +39,7 @@ module Redd
     # @param redirect_uri [String] the URI for reddit to redirect to after authorization
     # @param scope [Array<String>] an array of scopes to request
     # @return [String] the generated url
-    def url(response_type: 'code', state: '0', scope: ['identity'], client_id:, redirect_uri:)
+    def url(client_id:, redirect_uri:, response_type: 'code', state: '', scope: ['identity'])
       'https://www.reddit.com/api/v1/authorize?' + URI.encode_www_form(
         client_id: client_id,
         redirect_uri: redirect_uri,

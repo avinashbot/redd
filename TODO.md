@@ -4,6 +4,7 @@
   - [ ] `Messageable`
   - [ ] `MoreComments` and expansion
   - [ ] `Multireddit`
+- [ ] set limit to 100 for streaming
 - [ ] Write tests (oh boy)
 - [ ] More comprehensive error checking
 - [ ] A `FrontPage` object
