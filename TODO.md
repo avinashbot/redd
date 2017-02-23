@@ -3,8 +3,7 @@
 - [ ] Make v0.8.0 feature-complete with v0.7.x
   - [ ] `Messageable`
   - [ ] `MoreComments` and expansion
-  - [ ] `Multireddit`
-- [ ] set limit to 100 for streaming
+- [ ] make rubocop fail on error
 - [ ] Write tests (oh boy)
 - [ ] More comprehensive error checking
 - [ ] A `FrontPage` object
