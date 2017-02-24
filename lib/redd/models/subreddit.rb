@@ -38,6 +38,8 @@ module Redd
         WikiPage.from_response(@client, title: title, subreddit: self)
       end
 
+      # @!group Listings
+
       # Get the appropriate listing.
       # @param sort [:hot, :new, :top, :controversial, :comments, :rising] the type of listing
       # @param params [Hash] a list of params to send with the request
@@ -67,6 +69,9 @@ module Redd
         define_method(sort) { |**params| listing(sort, **params) }
       end
 
+      # @!endgroup
+      # @!group Moderator Listings
+
       # Get the appropriate moderator listing.
       # @param type [:reports, :spam, :modqueue, :unmoderated, :edited] the type of listing
       # @param params [Hash] a list of params to send with the request
@@ -91,6 +96,8 @@ module Redd
       %i(reports spam modqueue unmoderated edited).each do |type|
         define_method(type) { |**params| moderator_listing(type, **params) }
       end
+
+      # @!endgroup
 
       # Stream newly submitted posts.
       def post_stream(**params, &block)
@@ -186,8 +193,8 @@ module Redd
       end
 
       # Remove the subreddit from the user's subscribed subreddits.
-      def unsubscribe(skip_initial_defaults: false)
-        subscribe(action: :unsub, skip_initial_defaults: skip_initial_defaults)
+      def unsubscribe
+        subscribe(action: :unsub)
       end
     end
   end
