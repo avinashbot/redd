@@ -75,7 +75,7 @@ end
 suggestions = [
   'R.me.link_karma',
   "R.subreddit('pics').hot.first.title",
-  "puts R.subreddit('all').hot.map(&:title)",
+  "puts R.subreddit('all').hot.map(&:title)"
 ]
 puts "Welcome, \e[35m/u/#{R.me.name}\e[0m! Try `\e[34m#{suggestions.sample}\e[0m`."
 

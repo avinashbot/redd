@@ -171,7 +171,7 @@ module Redd
       def get_flair(user)
         # We have to do this because reddit returns all flairs if given a nonexistent user
         flair = flair_listing(name: user.name).first
-        return flair if flair && flair[:user].casecmp(user.name) == 0
+        return flair if flair && flair[:user].casecmp(user.name).zero?
         nil
       end
 
