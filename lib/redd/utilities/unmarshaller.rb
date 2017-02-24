@@ -31,7 +31,7 @@ module Redd
         elsif MAPPING.key?(response[:kind])
           MAPPING[response[:kind]].from_response(@client, response[:data])
         else
-          raise "unknown type to unmarshal: #{response[:kind]}"
+          raise "unknown type to unmarshal: #{response[:kind].inspect}"
         end
       end
     end

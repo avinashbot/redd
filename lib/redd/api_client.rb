@@ -20,23 +20,25 @@ module Redd
     # @param endpoint [String] the API endpoint
     # @param user_agent [String] the user agent to send
     # @param limit_time [Integer] the minimum number of seconds between each request
-    # @param auto_retry [Boolean] whether to retry requests that may be successful if retried
+    # @param max_retries [Integer] number of times to retry requests that may be successful if
+    #   retried
     # @param auto_login [Boolean] (for script and userless) automatically authenticate if not done
     #   so already
     # @param auto_refresh [Boolean] (for script and userless) automatically refresh access token if
     #   nearing expiration
     def initialize(auth, endpoint: API_ENDPOINT, user_agent: USER_AGENT, limit_time: 1,
-                   auto_retry: true, auto_login: true, auto_refresh: true)
+                   max_retries: 5, auto_login: true, auto_refresh: true)
       super(endpoint: endpoint, user_agent: user_agent)
 
-      @auth   = auth
-      @access = nil
-      @error_handler = Utilities::ErrorHandler.new
-      @rate_limiter  = Utilities::RateLimiter.new(limit_time)
-      @unmarshaller  = Utilities::Unmarshaller.new(self)
-      @auto_retry    = auto_retry
+      @auth            = auth
+      @access          = nil
+      @max_retries     = max_retries
+      @failures        = 0
+      @error_handler   = Utilities::ErrorHandler.new
+      @rate_limiter    = Utilities::RateLimiter.new(limit_time)
+      @unmarshaller    = Utilities::Unmarshaller.new(self)
 
-      # FIXME: ugh, hard dependencies
+      # FIXME: hard dependencies on Script and Userless types
       can_auto      = auth.is_a?(AuthStrategies::Script) || auth.is_a?(AuthStrategies::Userless)
       @auto_login   = can_auto && auto_login
       @auto_refresh = can_auto && auto_refresh
@@ -92,21 +94,16 @@ module Redd
       api_params = { api_type: 'json', raw_json: 1 }.merge(params)
       response = @rate_limiter.after_limit { super(verb, path, params: api_params, form: form) }
       # Check for errors in the returned response
-      err = @error_handler.check_error(response)
-      raise err unless err.nil?
+      response_error = @error_handler.check_error(response)
+      raise response_error unless response_error.nil?
       # All done, return the response
+      @failures = 0
       response
-    rescue Redd::ServerError => e
-      # FIXME: auto_retry might loop forever if issue is on reddit's end?
-      retry if @auto_retry
-      raise e
-    end
-
-    # Raise an error if one was detected in the response.
-    # @param response [Response] the response object to check
-    # @raise ResponseError
-    def check_errors(response)
-      API_ERRORS.each { |klass| raise klass.new(response) if klass.error?(response) }
+    rescue Redd::ServerError, HTTP::TimeoutError => e
+      @failures += 1
+      raise e if @failures > @max_retries
+      warn "Redd got a #{e.class.name} error (#{e.message}), retrying..."
+      retry
     end
   end
 end

@@ -4,8 +4,15 @@ AllCops:
 Metrics/LineLength:
   Max: 100
 
+# Allows for raising Redd::ResponseErrors with a Response object.
 Style/RaiseArgs:
   Enabled: false
 
+# Many reddit calls demand a lot of parameters.
 Metrics/ParameterLists:
   CountKeywordArgs: false
+
+# Stop rubocop from complaining about large `describe` blocks.
+Metrics/BlockLength:
+  Exclude:
+    - spec/**/*_spec.rb

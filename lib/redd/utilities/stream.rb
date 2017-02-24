@@ -30,7 +30,7 @@ module Redd
       # @yieldreturn [Listing] the models after the latest one
       def initialize(&block)
         @loader = block
-        @buffer = RingBuffer.new(10)
+        @buffer = RingBuffer.new(100)
         @latest = nil
       end
 
