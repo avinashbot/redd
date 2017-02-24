@@ -36,7 +36,8 @@ server.mount_proc '/authenticate' do |_, res|
       response_type: 'code',
       state: '0',
       redirect_uri: 'http://localhost:8000/redirect',
-      'scope': %w(identity read privatemessages wikiread submit vote edit modposts history modflair)
+      'scope': %w(identity read subscribe privatemessages wikiread submit vote edit modposts history
+                  modflair)
     )
   )
 end

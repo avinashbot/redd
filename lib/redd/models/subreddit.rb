@@ -150,6 +150,45 @@ module Redd
         params[:css_class] = css_class if css_class
         @client.post("/r/#{get_attribute(:display_name)}/api/flair", params)
       end
+
+      # Get a listing of all user flairs.
+      # @param params [Hash] a list of params to send with the request
+      # @option params [String] :after return results after the given fullname
+      # @option params [String] :before return results before the given fullname
+      # @option params [Integer] :count the number of items already seen in the listing
+      # @option params [String] :name prefer {#get_flair}
+      # @option params [:links, :comments] :only the type of objects required
+      #
+      # @return [Listing<Hash<Symbol, String>>]
+      def flair_listing(**params)
+        res = @client.get("/r/#{get_attribute(:display_name)}/api/flairlist", params).body
+        Listing.new(@client, children: res[:users], before: res[:prev], after: res[:next])
+      end
+
+      # Get the user's flair data.
+      # @param user [User] the user whose flair to fetch
+      # @return [Hash, nil]
+      def get_flair(user)
+        # We have to do this because reddit returns all flairs if given a nonexistent user
+        flair = flair_listing(name: user.name).first
+        return flair if flair && flair[:user].casecmp(user.name) == 0
+        nil
+      end
+
+      # Add the subreddit to the user's subscribed subreddits.
+      def subscribe(action: :sub, skip_initial_defaults: false)
+        @client.post(
+          '/api/subscribe',
+          sr_name: get_attribute(:display_name),
+          action: action,
+          skip_initial_defaults: skip_initial_defaults
+        )
+      end
+
+      # Remove the subreddit from the user's subscribed subreddits.
+      def unsubscribe(skip_initial_defaults: false)
+        subscribe(action: :unsub, skip_initial_defaults: skip_initial_defaults)
+      end
     end
   end
 end
