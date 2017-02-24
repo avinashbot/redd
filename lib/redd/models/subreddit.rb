@@ -49,7 +49,7 @@ module Redd
       #   when sorting
       #
       # @note The option :time only applies to the top and controversial sorts.
-      # @return [Listing<Submission>]
+      # @return [Listing<Submission, Comment>]
       def listing(sort, **params)
         params[:t] = params.delete(:time) if params.key?(:time)
         @client.model(:get, "/r/#{get_attribute(:display_name)}/#{sort}.json", params)
@@ -65,6 +65,31 @@ module Redd
       # @see #listing
       %i(hot new top controversial comments rising).each do |sort|
         define_method(sort) { |**params| listing(sort, **params) }
+      end
+
+      # Get the appropriate moderator listing.
+      # @param type [:reports, :spam, :modqueue, :unmoderated, :edited] the type of listing
+      # @param params [Hash] a list of params to send with the request
+      # @option params [String] :after return results after the given fullname
+      # @option params [String] :before return results before the given fullname
+      # @option params [Integer] :count the number of items already seen in the listing
+      # @option params [1..100] :limit the maximum number of things to return
+      # @option params [:links, :comments] :only the type of objects required
+      #
+      # @return [Listing<Submission, Comment>]
+      def moderator_listing(type, **params)
+        @client.model(:get, "/r/#{get_attribute(:display_name)}/about/#{type}.json", params)
+      end
+
+      # @!method reports(**params)
+      # @!method spam(**params)
+      # @!method modqueue(**params)
+      # @!method unmoderated(**params)
+      # @!method edited(**params)
+      #
+      # @see #moderator_listing
+      %i(reports spam modqueue unmoderated edited).each do |type|
+        define_method(type) { |**params| moderator_listing(type, **params) }
       end
 
       # Stream newly submitted posts.
