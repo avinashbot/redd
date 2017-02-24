@@ -4,6 +4,7 @@
   - [ ] `Messageable`
   - [ ] `MoreComments` and expansion
 - [ ] make rubocop fail on error
+- [ ] unduplicate duplicated code
 - [ ] Write tests (oh boy)
 - [ ] More comprehensive error checking
 - [ ] A `FrontPage` object

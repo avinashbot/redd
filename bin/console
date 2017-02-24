@@ -71,14 +71,13 @@ rescue Interrupt
 end
 
 # Post a colourful welcome message
-suggestions = ['R.me.name']
+suggestions = [
+  'R.me.link_karma',
+  "R.subreddit('pics').hot.first.title",
+  "puts R.subreddit('all').hot.map(&:title)",
+]
 puts "Welcome, \e[35m/u/#{R.me.name}\e[0m! Try `\e[34m#{suggestions.sample}\e[0m`."
 
-# Load Pry or IRB depending on what's installed (let's hope it's Pry for their own good)
-begin
-  require 'pry'
-  Pry.start
-rescue LoadError
-  require 'irb'
-  IRB.start
-end
+# Load Pry
+require 'pry'
+Pry.start

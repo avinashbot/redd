@@ -1,11 +1,14 @@
 # frozen_string_literal: true
 
 require_relative 'lazy_model'
+require_relative 'messageable'
 
 module Redd
   module Models
     # A reddit user.
     class User < LazyModel
+      include Messageable
+
       # Make a User from their name.
       # @option hash [String] :name the user's name
       # @return [User]
@@ -20,6 +23,15 @@ module Redd
       # @return [User]
       def self.from_id(client, id)
         from_response(client, name: id)
+      end
+
+      # Compose a message to the moderators of a subreddit.
+      #
+      # @param subject [String] the subject of the message
+      # @param text [String] the message text
+      # @param from [Subreddit, nil] the subreddit to send the message on behalf of
+      def send_message(subject:, text:, from: nil)
+        super(to: get_attribute(:name), subject: subject, text: text, from: from)
       end
 
       # Get the appropriate listing.

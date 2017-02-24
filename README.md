@@ -37,7 +37,13 @@ end
 ### FAQ
 
 #### Is that bot fully functional?
-**Yes**, that's all there is to it! You don't need to handle rate-limiting, refresh access tokens or protect against issues on reddit's end (like 5xx errors).
+**Yes**, that's all there is to it! You don't need to handle rate-limiting, refresh access tokens
+or protect against issues on reddit's end (like 5xx errors).
+
+#### How can I contact you?
+[Reddit](https://www.reddit.com/message/compose/?to=Mustermind) /
+[GitHub](https://github.com/avinashbot/redd/issues/new) /
+[Email](mailto:avinash@dwarapu.me)
 
 ---
 

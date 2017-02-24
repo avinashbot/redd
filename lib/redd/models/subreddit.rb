@@ -1,12 +1,15 @@
 # frozen_string_literal: true
 
 require_relative 'lazy_model'
+require_relative 'messageable'
 require_relative '../utilities/stream'
 
 module Redd
   module Models
     # A subreddit.
     class Subreddit < LazyModel
+      include Messageable
+
       # Make a Subreddit from its name.
       # @option hash [String] :display_name the subreddit's name
       # @return [Subreddit]
@@ -101,6 +104,15 @@ module Redd
         params[:url]  = url  if url
         params[:text] = text if text
         Submission.from_response(@client, @client.post('/api/submit', params).body[:json][:data])
+      end
+
+      # Compose a message to the moderators of a subreddit.
+      #
+      # @param subject [String] the subject of the message
+      # @param text [String] the message text
+      # @param from [Subreddit, nil] the subreddit to send the message on behalf of
+      def send_message(subject:, text:, from: nil)
+        super(to: "/r/#{get_attribute(:display_name)}", subject: subject, text: text, from: from)
       end
 
       # Set the flair for a link or a user for this subreddit.

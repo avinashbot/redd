@@ -19,6 +19,11 @@ module Redd
         #   because depth of replies is just one.
         super
       end
+
+      # Delete the message from the user's inbox.
+      def delete
+        @client.post('/api/del_msg', id: get_attribute(:name))
+      end
     end
   end
 end
