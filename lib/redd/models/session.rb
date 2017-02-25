@@ -1,11 +1,14 @@
 # frozen_string_literal: true
 
 require_relative 'lazy_model'
+require_relative 'searchable'
 
 module Redd
   module Models
     # The starter class.
     class Session < BasicModel
+      include Searchable
+
       # @return [FrontPage] the user's front page
       def front_page
         FrontPage.new(@client)

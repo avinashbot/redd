@@ -2,6 +2,7 @@
 
 require_relative 'lazy_model'
 require_relative 'messageable'
+require_relative 'searchable'
 require_relative '../utilities/stream'
 
 module Redd
@@ -9,6 +10,7 @@ module Redd
     # A subreddit.
     class Subreddit < LazyModel
       include Messageable
+      include Searchable
 
       # Make a Subreddit from its name.
       # @option hash [String] :display_name the subreddit's name
@@ -36,6 +38,15 @@ module Redd
       # @return [WikiPage]
       def wiki_page(title)
         WikiPage.from_response(@client, title: title, subreddit: self)
+      end
+
+      # Search a subreddit.
+      # @param query [String] the search query
+      # @param params [Hash] refer to {Searchable} to see search parameters
+      # @see Searchable#search
+      def search(query, **params)
+        restricted_params = { restrict_to: get_attribute(:display_name) }.merge(params)
+        super(query, restricted_params)
       end
 
       # @!group Listings

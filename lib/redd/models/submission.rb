@@ -35,14 +35,26 @@ module Redd
 
       # Mark the link as "Not Suitable For Work".
       def mark_as_nsfw
-        @client.get('/api/unmarknsfw', id: get_attribute(:name))
-        @attributes[:over_18] = false
+        @client.get('/api/marknsfw', id: get_attribute(:name))
+        @attributes[:over_18] = true
       end
 
       # No longer mark the link as "Not Suitable For Work".
       def unmark_as_nsfw
-        @client.get('/api/marknsfw', id: get_attribute(:name))
+        @client.get('/api/unmarknsfw', id: get_attribute(:name))
         @attributes[:over_18] = false
+      end
+
+      # Mark the link as a spoiler.
+      def mark_as_spoiler
+        @client.get('/api/spoiler', id: get_attribute(:name))
+        @attributes[:spoiler] = true
+      end
+
+      # No longer mark the link as a spoiler.
+      def unmark_as_spoiler
+        @client.get('/api/unspoiler', id: get_attribute(:name))
+        @attributes[:spoiler] = false
       end
 
       # Set the submission to "contest mode" (comments are randomly sorted)
@@ -64,6 +76,16 @@ module Redd
       # Unsticky the post from the subreddit.
       def remove_sticky
         @client.post('/api/set_subreddit_sticky', id: get_attribute(:name), state: false)
+      end
+
+      # Prevent users from commenting on the link (and hide it as well).
+      def lock
+        @client.post('/api/lock', id: get_attribute(:name))
+      end
+
+      # Allow users to comment on the link again.
+      def unlock
+        @client.post('/api/unlock', id: get_attribute(:name))
       end
     end
   end
