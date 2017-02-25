@@ -14,6 +14,9 @@ module Redd
   # An error with Redd, probably (let me know!)
   class BadRequest < ResponseError; end
 
+  # Whatever it is, you're not allowed to do it.
+  class Forbidden < ResponseError; end
+
   # You don't have the correct scope to do this.
   class InsufficientScope < ResponseError; end
 

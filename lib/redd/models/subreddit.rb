@@ -196,6 +196,24 @@ module Redd
       def unsubscribe
         subscribe(action: :unsub)
       end
+
+      # Get the subreddit's CSS.
+      # @return [String, nil] the stylesheet or nil if no stylesheet exists
+      def stylesheet
+        url = @client.get("/r/#{get_attribute(:display_name)}/stylesheet").headers['location']
+        HTTP.get(url).body.to_s
+      rescue Redd::NotFound
+        nil
+      end
+
+      # Edit the subreddit's stylesheet.
+      # @param text [String] the updated CSS
+      # @param reason [String] the reason for modifying the stylesheet
+      def update_stylesheet(text, reason: nil)
+        params = { op: 'save', stylesheet_contents: text }
+        params[:reason] = reason if reason
+        @client.post("/r/#{get_attribute(:display_name)}/api/subreddit_stylesheet", params)
+      end
     end
   end
 end

@@ -9,6 +9,7 @@ module Redd
     class ErrorHandler
       HTTP_ERRORS = {
         400 => Redd::BadRequest,
+        403 => Redd::Forbidden,
         404 => Redd::NotFound,
         500 => Redd::ServerError,
         502 => Redd::ServerError,
@@ -23,9 +24,10 @@ module Redd
 
       def check_error(response)
         return HTTP_ERRORS[response.code].new(response) if HTTP_ERRORS.key?(response.code)
-        if response.code == 403
+        if response.code == 401
           AUTHORIZATION_ERRORS.each do |key, klass|
-            return klass.new(response) if response.headers['www-authenticate'].include?(key)
+            auth_header = response.headers['www-authenticate']
+            return klass.new(response) if auth_header && auth_header.include?(key)
           end
         end
         nil
