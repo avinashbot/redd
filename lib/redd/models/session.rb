@@ -73,7 +73,7 @@ module Redd
       # @option params [1..100] :limit (25) The maximum number of things to
       #   return.
       # @return [Listing]
-      def messages(category: 'inbox', mark: false, **params)
+      def my_messages(category: 'inbox', mark: false, **params)
         @client.model(:get, "/message/#{category}.json", params.merge(mark: mark))
       end
 
