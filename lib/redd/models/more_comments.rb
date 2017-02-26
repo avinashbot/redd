@@ -19,6 +19,11 @@ module Redd
         )
       end
 
+      # @return [Array<String>] an array representation of self
+      def to_ary
+        get_attribute(:children)
+      end
+
       # Keep expanding until all top-level MoreComments are converted to comments
       def recursive_expand(link:, sort: 'best')
         # FIXME: this returns a flattened listing of comments and doesn't preserve the structure

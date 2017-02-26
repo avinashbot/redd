@@ -56,6 +56,11 @@ module Redd
         @attributes
       end
 
+      # @return [Array<self>] an array representation of self
+      def to_ary
+        [self]
+      end
+
       # Checks whether an attribute is supported by method_missing.
       # @param method_name [Symbol] the method name or attribute to check
       # @param include_private [Boolean] whether to also include private methods

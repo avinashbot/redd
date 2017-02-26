@@ -9,6 +9,16 @@ module Redd
     class Session < BasicModel
       include Searchable
 
+      # @return [ModMail] the new modmail
+      def modmail
+        ModMail.new(@client)
+      end
+
+      # @return [LiveThread] the live thread
+      def live_thread(id)
+        LiveThread.from_id(client, id)
+      end
+
       # @return [FrontPage] the user's front page
       def front_page
         FrontPage.new(@client)

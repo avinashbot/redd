@@ -8,7 +8,7 @@ module Redd
     class ErrorHandler
       HTTP_ERRORS = {
         400 => Redd::BadRequest,
-        403 => Redd::Forbidden,
+        # 403 => Redd::Forbidden,
         404 => Redd::NotFound,
         500 => Redd::ServerError,
         502 => Redd::ServerError,
@@ -28,7 +28,8 @@ module Redd
           Redd::APIError.new(response)
         elsif HTTP_ERRORS.key?(response.code)
           HTTP_ERRORS[response.code].new(response)
-        elsif response.code == 401
+        elsif response.code == 401 || response.code == 403
+          # FIXME: i think insufficient_scope comes with 403 and invalid_token with 401
           AUTHORIZATION_ERRORS.each do |key, klass|
             auth_header = response.headers['www-authenticate']
             return klass.new(response) if auth_header && auth_header.include?(key)
