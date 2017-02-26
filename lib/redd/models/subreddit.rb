@@ -12,6 +12,23 @@ module Redd
       include Messageable
       include Searchable
 
+      # A list of keys that are required by #modify_settings.
+      SETTINGS_KEYS = %i(allow_images allow_top collapse_deleted_comments comment_score_hide_mins
+                         description exclude_banned_modqueue header-title hide_ads lang link_type
+                         over_18 public_description public_traffic show_media show_media_preview
+                         spam_comments spam_links spam_selfposts spoilers_enabled submit_link_label
+                         submit_text submit_text_label suggested_comment_sort theme_sr
+                         theme_sr_update title type wiki_edit_age wiki_edit_karma wikimode).freeze
+
+      # A mapping from keys returned by #settings to keys required by #modify_settings
+      SETTINGS_MAP = {
+        subreddit_type: :type,
+        language: :lang,
+        content_options: :link_type,
+        default_set: :allow_top,
+        header_hover_text: :'header-title'
+      }.freeze
+
       # Make a Subreddit from its name.
       # @option hash [String] :display_name the subreddit's name
       # @return [Subreddit]
@@ -256,6 +273,21 @@ module Redd
         params = { op: 'save', stylesheet_contents: text }
         params[:reason] = reason if reason
         @client.post("/r/#{get_attribute(:display_name)}/api/subreddit_stylesheet", params)
+      end
+
+      # @return [Hash] the subreddit's settings
+      def settings
+        @client.get("/r/#{get_attribute(:display_name)}/about/edit").body[:data]
+      end
+
+      # Modify the subreddit's settings.
+      # @param params [Hash] the settings to change
+      # @see https://www.reddit.com/dev/api#POST_api_site_admin
+      def modify_settings(**params)
+        full_params = settings.merge(params)
+        full_params[:sr] = get_attribute(:name)
+        SETTINGS_MAP.each { |src, dest| full_params[dest] = full_params.delete(src) }
+        @client.post('/api/site_admin', full_params)
       end
 
       private
