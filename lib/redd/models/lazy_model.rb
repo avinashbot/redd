@@ -40,6 +40,15 @@ module Redd
         super
       end
 
+      # Checks whether an attribute is supported by method_missing. Since we don't know whether an
+      # attribute exists until we load it, we have to respond true until we load it.
+      # @param method_name [Symbol] the method name or attribute to check
+      # @param include_private [Boolean] whether to also include private methods
+      # @return [Boolean] whether the method is handled by method_missing
+      def respond_to_missing?(method_name, include_private = false)
+        @definitely_fully_loaded ? super : true
+      end
+
       private
 
       # Make sure the model is loaded at least once.
@@ -49,12 +58,6 @@ module Redd
 
       # Gets the attribute and loads it if it may be available from the response.
       def get_attribute(name)
-        ensure_fully_loaded unless @attributes.key?(name)
-        super
-      end
-
-      # Checks whether an attribute exists, loading it first if necessary.
-      def attribute?(name)
         ensure_fully_loaded unless @attributes.key?(name)
         super
       end

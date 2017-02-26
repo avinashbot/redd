@@ -61,15 +61,15 @@ module Redd
       # @param include_private [Boolean] whether to also include private methods
       # @return [Boolean] whether the method is handled by method_missing
       def respond_to_missing?(method_name, include_private = false)
-        attribute?(method_name) || attribute?(depredicate(method_name)) || super
+        @attributes.key?(method_name) || @attributes.key?(depredicate(method_name)) || super
       end
 
       # Return an attribute or raise a NoMethodError if it doesn't exist.
       # @param method_name [Symbol] the name of the attribute
       # @return [Object] the result of the attribute check
       def method_missing(method_name, *args, &block)
-        return get_attribute(method_name) if attribute?(method_name)
-        return get_attribute(depredicate(method_name)) if attribute?(depredicate(method_name))
+        return get_attribute(method_name) if @attributes.key?(method_name)
+        return get_attribute(depredicate(method_name)) if @attributes.key?(depredicate(method_name))
         super
       end
 
@@ -112,12 +112,6 @@ module Redd
         coerce_attribute(name) if @to_coerce.include?(name) && @attributes.key?(name)
         # Fetch the attribute, raising a KeyError if it doesn't exist.
         @attributes.fetch(name)
-      end
-
-      # @param name [Symbol] the name of the attribute to check
-      # @return [Boolean] whether the attribute exists
-      def attribute?(name)
-        @attributes.key?(name)
       end
     end
   end

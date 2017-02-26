@@ -28,8 +28,10 @@ module Redd
       # @option hash [String] :id the comment's id (e.g. abc123)
       # @return [Comment]
       def self.from_response(client, hash)
+        # FIXME: listings can be empty... (for some reason)
+
         # Ensure we have the comment's id.
-        id = hash.fetch(:id, hash.fetch(:name).tr('t1_', ''))
+        id = hash.fetch(:id) { hash.fetch(:name).tr('t1_', '') }
 
         # If we have the link_id, we can load the listing with replies.
         if hash.key?(:link_id)
@@ -45,6 +47,12 @@ module Redd
           # Returns a single-item listing containing the comment
           c.get('/api/info', id: "t1_#{id}").body[:data][:children][0][:data]
         end
+      end
+
+      private
+
+      def after_initialize
+        @attributes[:replies] = [] if !@attributes.key?(:replies) || @attributes[:replies] == ''
       end
     end
   end

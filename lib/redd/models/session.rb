@@ -48,7 +48,7 @@ module Redd
       # Get submissions or comments by their fullnames.
       # @param fullnames [String, Array<String>] one or an array of fullnames (e.g. t3_abc1234)
       # @return [Listing<Submission, Comment>]
-      def get(fullnames)
+      def from_ids(fullnames)
         # XXX: Could we use better methods for t1_ and t3_?
         @client.model(:get, '/api/info', id: Array(fullnames).join(','))
       end

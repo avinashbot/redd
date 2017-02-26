@@ -4,6 +4,10 @@ AllCops:
 Metrics/LineLength:
   Max: 100
 
+# Dumb, but also brand new.
+Style/NumericPredicate:
+  Enabled: false
+
 # Allows for raising Redd::ResponseErrors with a Response object.
 Style/RaiseArgs:
   Enabled: false

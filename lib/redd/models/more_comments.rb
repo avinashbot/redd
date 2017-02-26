@@ -18,6 +18,13 @@ module Redd
           sort: sort
         )
       end
+
+      # Keep expanding until all top-level MoreComments are converted to comments
+      def recursive_expand(link:, sort: 'best')
+        expand(link: link, sort: sort).flat_map do |o|
+          o.is_a?(MoreComments) && o.count > 0 ? o.recursive_expand(link: link, sort: sort) : o
+        end
+      end
     end
   end
 end
