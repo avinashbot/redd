@@ -5,7 +5,6 @@ require_relative '../error'
 module Redd
   module Utilities
     # Handles response errors in API responses.
-    # TODO: handle [:json][:errors] array
     class ErrorHandler
       HTTP_ERRORS = {
         400 => Redd::BadRequest,
@@ -22,8 +21,9 @@ module Redd
         'invalid_token' => Redd::InvalidAccess
       }.freeze
 
-      def check_error(response)
-        if response.body[:json] && response.body[:json][:errors] &&
+      def check_error(response, raw:)
+        # TODO: deal with errors of type { fields:, explanation:, message:, reason: }
+        if !raw && response.body[:json] && response.body[:json][:errors] &&
            !response.body[:json][:errors].empty?
           Redd::APIError.new(response)
         elsif HTTP_ERRORS.key?(response.code)
@@ -34,7 +34,6 @@ module Redd
             return klass.new(response) if auth_header && auth_header.include?(key)
           end
         end
-        nil
       end
     end
   end

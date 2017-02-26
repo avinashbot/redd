@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'enumerator'
-
 module Redd
   module Utilities
     # A forward-expading listing of items that can be enumerated forever.

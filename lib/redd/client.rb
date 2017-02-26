@@ -24,6 +24,19 @@ module Redd
       @user_agent = user_agent
     end
 
+    # Make an HTTP request.
+    # @param verb [:get, :post, :put, :patch, :delete] the HTTP verb to use
+    # @param path [String] the path relative to the endpoint
+    # @param options [Hash] the request parameters
+    # @option options [Hash] :params the parameters to supply with the url
+    # @option options [Hash] :form the parameters to supply in the body
+    # @option options [Hash] :body the direct body contents
+    # @return [Response] the response
+    def request(verb, path, options = {})
+      response = connection.request(verb, path, **options)
+      Response.new(response.status.code, response.headers, response.body.to_s)
+    end
+
     # Make a GET request.
     # @param path [String] the path relative to the endpoint
     # @param options [Hash] the parameters to supply
@@ -72,17 +85,6 @@ module Redd
       @connection ||= HTTP.persistent(@endpoint)
                           .headers('User-Agent' => @user_agent)
                           .timeout(:per_operation, write: 5, connect: 5, read: 5)
-    end
-
-    # Make an HTTP request.
-    # @param verb [:get, :post, :put, :patch, :delete] the HTTP verb to use
-    # @param path [String] the path relative to the endpoint
-    # @param params [Hash] the parameters to supply with the url
-    # @param form [Hash] the parameters to supply in the body
-    # @return [Response] the response
-    def request(verb, path, params: {}, form: {})
-      response = connection.request(verb, path, params: params, form: form)
-      Response.new(response.status.code, response.headers, response.body.to_s)
     end
   end
 end

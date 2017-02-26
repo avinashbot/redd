@@ -34,6 +34,20 @@ module Redd
         super(to: get_attribute(:name), subject: subject, text: text, from: from)
       end
 
+      # Add the user as a friend.
+      # @param note [String] a note for the friend
+      def friend(note = nil)
+        name = get_attribute(:name)
+        body = JSON.generate(note ? { name: name, note: note } : { name: name })
+        @client.request(:put, "/api/v1/me/friends/#{name}", body: body)
+      end
+
+      # Unfriend the user.
+      def unfriend
+        name = get_attribute(:name)
+        @client.request(:delete, "/api/v1/me/friends/#{name}", raw: true, form: { id: name })
+      end
+
       # Get the appropriate listing.
       # @param type [:overview, :submitted, :comments, :liked, :disliked, :hidden, :saved, :gilded]
       #   the type of listing to request

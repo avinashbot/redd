@@ -65,7 +65,7 @@ module Redd
       # @return [Listing<Submission, Comment>]
       def listing(sort, **params)
         params[:t] = params.delete(:time) if params.key?(:time)
-        @client.model(:get, "/r/#{get_attribute(:display_name)}/#{sort}.json", params)
+        @client.model(:get, "/r/#{get_attribute(:display_name)}/#{sort}", params)
       end
 
       # @!method hot(**params)
@@ -94,7 +94,7 @@ module Redd
       #
       # @return [Listing<Submission, Comment>]
       def moderator_listing(type, **params)
-        @client.model(:get, "/r/#{get_attribute(:display_name)}/about/#{type}.json", params)
+        @client.model(:get, "/r/#{get_attribute(:display_name)}/about/#{type}", params)
       end
 
       # @!method reports(**params)
@@ -106,6 +106,38 @@ module Redd
       # @see #moderator_listing
       %i(reports spam modqueue unmoderated edited).each do |type|
         define_method(type) { |**params| moderator_listing(type, **params) }
+      end
+
+      # @!endgroup
+      # @!group Relationship Listings
+
+      # Get the appropriate relationship listing.
+      # @param type [:banned, :muted, :wikibanned, :contributors, :wikicontributors, :moderators]
+      #   the type of listing
+      # @param params [Hash] a list of params to send with the request
+      # @option params [String] :after return results after the given fullname
+      # @option params [String] :before return results before the given fullname
+      # @option params [Integer] :count the number of items already seen in the listing
+      # @option params [1..100] :limit the maximum number of things to return
+      # @option params [String] :user find a specific user
+      #
+      # @return [Array<Hash>]
+      def relationship_listing(type, **params)
+        # TODO: add methods to determine if a certain user was banned/muted/etc
+        user_list = @client.get("/r/#{get_attribute(:display_name)}/about/#{type}", params).body
+        user_list[:data][:children]
+      end
+
+      # @!method banned(**params)
+      # @!method muted(**params)
+      # @!method wikibanned(**params)
+      # @!method contributors(**params)
+      # @!method wikicontributors(**params)
+      # @!method moderators(**params)
+      #
+      # @see #relationship_listing
+      %i(banned muted wikibanned contributors wikicontributors moderators).each do |type|
+        define_method(type) { |**params| relationship_listing(type, **params) }
       end
 
       # @!endgroup
@@ -224,6 +256,17 @@ module Redd
         params = { op: 'save', stylesheet_contents: text }
         params[:reason] = reason if reason
         @client.post("/r/#{get_attribute(:display_name)}/api/subreddit_stylesheet", params)
+      end
+
+      private
+
+      def add_relationship(**params)
+        # FIXME: add public methods
+        @client.post("/r/#{get_attribute(:display_name)}/api/friend", params)
+      end
+
+      def remove_relationship(**params)
+        @client.post("/r/#{get_attribute(:display_name)}/api/unfriend", params)
       end
     end
   end

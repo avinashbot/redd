@@ -64,9 +64,30 @@ module Redd
       @unmarshaller.unmarshal(object)
     end
 
-    def model(verb, path, params = {})
+    def model(verb, path, options = {})
       # XXX: make unmarshal explicit in methods?
-      unmarshal(send(verb, path, params).body)
+      unmarshal(request(verb, path, options).body)
+    end
+
+    # Makes a request, ensuring not to break the rate limit by sleeping.
+    # @see Client#request
+    def request(verb, path, raw: false, params: {}, **options)
+      # Make sure @access is populated by a valid access
+      ensure_access_is_valid
+      # Setup base API params and make request
+      api_params = { api_type: 'json', raw_json: 1 }.merge(params)
+      response = @rate_limiter.after_limit { super(verb, path, params: api_params, **options) }
+      # Check for errors in the returned response
+      response_error = @error_handler.check_error(response, raw: raw)
+      raise response_error unless response_error.nil?
+      # All done, return the response
+      @failures = 0
+      response
+    rescue Redd::ServerError, HTTP::TimeoutError => e
+      @failures += 1
+      raise e if @failures > @max_retries
+      warn "Redd got a #{e.class.name} error (#{e.message}), retrying..."
+      retry
     end
 
     private
@@ -83,27 +104,6 @@ module Redd
 
     def connection
       super.auth("Bearer #{@access.access_token}")
-    end
-
-    # Makes a request, ensuring not to break the rate limit by sleeping.
-    # @see Client#request
-    def request(verb, path, params: {}, form: {})
-      # Make sure @access is populated by a valid access
-      ensure_access_is_valid
-      # Setup base API params and make request
-      api_params = { api_type: 'json', raw_json: 1 }.merge(params)
-      response = @rate_limiter.after_limit { super(verb, path, params: api_params, form: form) }
-      # Check for errors in the returned response
-      response_error = @error_handler.check_error(response)
-      raise response_error unless response_error.nil?
-      # All done, return the response
-      @failures = 0
-      response
-    rescue Redd::ServerError, HTTP::TimeoutError => e
-      @failures += 1
-      raise e if @failures > @max_retries
-      warn "Redd got a #{e.class.name} error (#{e.message}), retrying..."
-      retry
     end
   end
 end
