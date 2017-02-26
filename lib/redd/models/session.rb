@@ -62,20 +62,14 @@ module Redd
 
       # Return a listing of the user's inbox (including comment replies and private messages).
       #
-      # @param category ['inbox', 'unread', 'sent'] The category of messages
-      #   to view.
-      # @param mark [Boolean] Whether to remove the orangered from the
-      #   user's inbox.
-      # @param params [Hash] A list of optional params to send with the request.
-      # @option params [String] :after Return results after the given
-      #   fullname.
-      # @option params [String] :before Return results before the given
-      #   fullname.
-      # @option params [Integer] :count (0) The number of items already seen
-      #   in the listing.
-      # @option params [1..100] :limit (25) The maximum number of things to
-      #   return.
-      # @return [Listing]
+      # @param category ['inbox', 'unread', 'sent', 'moderator'] the category of messages to view
+      # @param mark [Boolean] whether to remove the orangered from the user's inbox
+      # @param params [Hash] a list of optional params to send with the request
+      # @option params [String] :after return results after the given fullname
+      # @option params [String] :before return results before the given fullname
+      # @option params [Integer] :count (0) the number of items already seen in the listing
+      # @option params [1..100] :limit (25) the maximum number of things to return
+      # @return [Listing<Comment, PrivateMessage>]
       def my_messages(category: 'inbox', mark: false, **params)
         @client.model(:get, "/message/#{category}.json", params.merge(mark: mark))
       end
@@ -83,6 +77,20 @@ module Redd
       # Mark all messages as read.
       def read_all_messages
         @client.post('/api/read_all_messages')
+      end
+
+      # @return [Array<User>] the logged-in user's friends
+      def friends
+        @client.get('/api/v1/me/friends').body[:data][:children].map do |h|
+          User.from_response(@client, name: h[:name], id: h[:id].tr('t2_', ''), since: h[:date])
+        end
+      end
+
+      # @return [Array<User>] users blocked by the logged-in user
+      def blocked
+        @client.get('/prefs/blocked').body[:data][:children].map do |h|
+          User.from_response(@client, name: h[:name], id: h[:id].tr('t2_', ''), since: h[:date])
+        end
       end
     end
   end

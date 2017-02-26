@@ -141,6 +141,7 @@ module Redd
       # @return [Array<Hash>]
       def relationship_listing(type, **params)
         # TODO: add methods to determine if a certain user was banned/muted/etc
+        # TODO: return User types?
         user_list = @client.get("/r/#{get_attribute(:display_name)}/about/#{type}", params).body
         user_list[:data][:children]
       end

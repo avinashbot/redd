@@ -56,6 +56,16 @@ module Redd
         vote(0)
       end
 
+      # Send replies to this thing to the user's inbox.
+      def enable_inbox_replies
+        @client.post('/api/sendreplies', id: get_attribute(:name), state: true)
+      end
+
+      # Stop sending replies to this thing to the user's inbox.
+      def disable_inbox_replies
+        @client.post('/api/sendreplies', id: get_attribute(:name), state: false)
+      end
+
       private
 
       # Send a vote.

@@ -66,7 +66,7 @@ module Redd
 
     def model(verb, path, options = {})
       # XXX: make unmarshal explicit in methods?
-      unmarshal(request(verb, path, options).body)
+      unmarshal(send(verb, path, options).body)
     end
 
     # Makes a request, ensuring not to break the rate limit by sleeping.

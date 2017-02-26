@@ -40,6 +40,10 @@ end
 **Yes**, that's all there is to it! You don't need to handle rate-limiting, refresh access tokens
 or protect against issues on reddit's end (like 5xx errors).
 
+#### Where can I find the documentation?
+
+[**Latest**](www.rubydoc.info/gems/redd) / [**GitHub**](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Session)
+
 #### How can I contact you?
 [Reddit](https://www.reddit.com/message/compose/?to=Mustermind) /
 [GitHub](https://github.com/avinashbot/redd/issues/new) /

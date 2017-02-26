@@ -23,8 +23,8 @@ module Redd
 
       def check_error(response, raw:)
         # TODO: deal with errors of type { fields:, explanation:, message:, reason: }
-        if !raw && response.body[:json] && response.body[:json][:errors] &&
-           !response.body[:json][:errors].empty?
+        if !raw && response.body.is_a?(Hash) && response.body[:json] &&
+           response.body[:json][:errors] && !response.body[:json][:errors].empty?
           Redd::APIError.new(response)
         elsif HTTP_ERRORS.key?(response.code)
           HTTP_ERRORS[response.code].new(response)

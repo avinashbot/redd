@@ -33,6 +33,17 @@ module Redd
         end
       end
 
+      # Get all submissions for the same url.
+      # @param params [Hash] A list of optional params to send with the request.
+      # @option params [String] :after return results after the given fullname
+      # @option params [String] :before return results before the given fullname
+      # @option params [Integer] :count (0) the number of items already seen in the listing
+      # @option params [1..100] :limit (25) the maximum number of things to return
+      # @return [Listing<Submission>]
+      def duplicates(**params)
+        @client.unmarshal(@client.get("/duplicates/#{get_attribute(:id)}", params).body[1])
+      end
+
       # Mark the link as "Not Suitable For Work".
       def mark_as_nsfw
         @client.get('/api/marknsfw', id: get_attribute(:name))
