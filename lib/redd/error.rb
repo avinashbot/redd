@@ -1,6 +1,17 @@
 # frozen_string_literal: true
 
 module Redd
+  # An error with the API.
+  class APIError < StandardError
+    attr_reader :response, :name
+
+    def initialize(response)
+      @response = response
+      @name, message = response.body[:json][:errors][0]
+      super(message)
+    end
+  end
+
   # Represents an error from reddit returned in a response.
   class ResponseError < StandardError
     attr_accessor :response

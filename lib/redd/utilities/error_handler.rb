@@ -23,8 +23,12 @@ module Redd
       }.freeze
 
       def check_error(response)
-        return HTTP_ERRORS[response.code].new(response) if HTTP_ERRORS.key?(response.code)
-        if response.code == 401
+        if response.body[:json] && response.body[:json][:errors] &&
+           !response.body[:json][:errors].empty?
+          Redd::APIError.new(response)
+        elsif HTTP_ERRORS.key?(response.code)
+          HTTP_ERRORS[response.code].new(response)
+        elsif response.code == 401
           AUTHORIZATION_ERRORS.each do |key, klass|
             auth_header = response.headers['www-authenticate']
             return klass.new(response) if auth_header && auth_header.include?(key)
