@@ -49,6 +49,14 @@ module Redd
         @definitely_fully_loaded ? super : true
       end
 
+      # Return an attribute or raise a NoMethodError if it doesn't exist.
+      # @param method_name [Symbol] the name of the attribute
+      # @return [Object] the result of the attribute check
+      def method_missing(method_name, *args, &block)
+        ensure_fully_loaded unless @attributes.key?(method_name)
+        super
+      end
+
       private
 
       # Make sure the model is loaded at least once.
@@ -58,6 +66,7 @@ module Redd
 
       # Gets the attribute and loads it if it may be available from the response.
       def get_attribute(name)
+        # XXX: Replace get_attribute calls with simple method calls?
         ensure_fully_loaded unless @attributes.key?(name)
         super
       end
