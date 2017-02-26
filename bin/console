@@ -22,7 +22,7 @@ server.mount_proc '/' do |_, res|
     </style>
     <div class="wrapper">
       <h1>redd // quickstart</h1>
-      <a onclick="window.open('/authenticate', '', 'width=960,height=640')" href="#" id="btn">Start</a>
+      <a href="#" target="_blank" id="btn">Start</a>
       <span>a new session in your terminal?</span>
     </div>
   EOS
@@ -37,7 +37,7 @@ server.mount_proc '/authenticate' do |_, res|
       state: '0',
       redirect_uri: 'http://localhost:8000/redirect',
       'scope': %w(identity read subscribe privatemessages wikiread submit vote edit modposts history
-                  modflair modconfig modmail livemanage)
+                  modflair modconfig modmail livemanage mysubreddits)
     )
   )
 end

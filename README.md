@@ -25,7 +25,7 @@ session = Redd.it(
 session.subreddit('all').comment_stream do |comment|
   if comment.body.include?('roll a dice')
     comment.reply("I just rolled a dice! It's a #{rand(1..6)}!")
-  elsif comment.body.include?('flip a coin') || comment.body.include?('coin flip')
+  elsif comment.body.include?('flip a coin')
     coin_face = (rand(0..1) == 1 ? 'heads' : 'tails')
     comment.reply("I just flipped a coin! It's #{coin_face}!")
   end

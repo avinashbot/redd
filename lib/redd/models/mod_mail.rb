@@ -31,7 +31,23 @@ module Redd
       #   state to limit the conversations by
       def conversations(subreddits: nil, **params)
         params[:entity] = Array(subreddits).map(&:display_name).join(',') if subreddits
-        @client.get('/api/mod/conversations', **params).body
+        @client.get('/api/mod/conversations', **params).body[:conversations].map do |_, conv|
+          Conversation.from_response(@client, conv)
+        end
+      end
+
+      # Create a new conversation.
+      # @param from [Subreddit] the subreddit to send the conversation from
+      # @param to [User] the person to send the message to
+      # @param subject [String] the message subject
+      # @param body [String] the message body
+      # @return [Conversation] the created conversation
+      def create(from:, to:, subject:, body:, hidden: false)
+        Conversation.from_response(@client, @client.post(
+          '/api/mod/conversations',
+          srName: from.display_name, to: to.name,
+          subject: subject, body: body, isAuthorHidden: hidden
+        ).body[:conversation])
       end
 
       # Get a conversation from its base36 id.

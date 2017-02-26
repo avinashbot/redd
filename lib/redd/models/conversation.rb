@@ -12,10 +12,10 @@ module Redd
       # @return [Conversation]
       def self.from_response(client, hash)
         id = hash.fetch(:id)
-        new(client) do |c|
+        new(client, hash) do |c|
           response = c.get("/api/mod/conversations/#{id}").body
           response[:conversation].merge(
-            messages: response[:messages],
+            messages: response[:messages].values.map { |m| Message.from_response(c, m) },
             user: response[:user],
             mod_actions: response[:modActions]
           )
@@ -27,6 +27,15 @@ module Redd
       # @return [Conversation]
       def self.from_id(client, id)
         from_response(client, id: id)
+      end
+
+      # Add a reply to the ongoing conversation.
+      def reply(body, hidden: false, internal: false)
+        # TODO: merge response into the conversation
+        @client.post(
+          "/api/mod/conversations/#{get_attribute(:id)}",
+          body: body, isAuthorHidden: hidden, isInternal: internal
+        ).body
       end
 
       # Mark this conversation as read.

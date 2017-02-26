@@ -10,7 +10,7 @@ module Redd
       include Searchable
 
       # @return [ModMail] the new modmail
-      def modmail
+      def mod_mail
         ModMail.new(@client)
       end
 
@@ -22,6 +22,11 @@ module Redd
       # @return [FrontPage] the user's front page
       def front_page
         FrontPage.new(@client)
+      end
+
+      # @return [Hash] a breakdown of karma over subreddits
+      def karma_breakdown
+        @client.get('/api/v1/me/karma').body[:data]
       end
 
       # @return [User] the logged-in user
