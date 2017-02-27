@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ['Avinash Dwarapu']
   spec.email         = ['avinash@dwarapu.me']
 
-  spec.summary       = 'An intuitive and fun API wrapper for reddit.'
+  spec.summary       = 'A batteries-included API wrapper for reddit.'
   spec.homepage      = 'https://github.com/avinashbot/redd'
   spec.license       = 'MIT'
 

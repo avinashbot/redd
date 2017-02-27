@@ -108,6 +108,13 @@ module Redd
         end
       end
 
+      # @return [Array<User>] users blocked by the logged-in user
+      def trusted
+        @client.get('/prefs/trusted').body[:data][:children].map do |h|
+          User.from_response(@client, name: h[:name], id: h[:id].sub('t2_', ''), since: h[:date])
+        end
+      end
+
       # Return a listing of the user's subreddits.
       #
       # @param type ['subscriber', 'contributor', 'moderator'] the type of subreddits

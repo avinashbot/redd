@@ -17,14 +17,21 @@
 
   <!-- Intro Text -->
   <p>
-    <strong>Redd</strong> is an API wrapper
-    for <a href="https://www.reddit.com/dev/api">reddit</a>
-    that is all about being <strong>simple</strong>
-    and <strong>intuitive</strong>.
+    <strong>Redd</strong> is a <strong>batteries-included</strong>
+    API wrapper for <a href="https://www.reddit.com/dev/api">reddit</a>.
   </p>
 </div>
 
 ---
+
+### Features
+
+- Supports most of the reddit API, including live threads and the beta mod-mail.
+- Includes support for streaming new posts and comments.
+- Built-in rate limiting and error handling.
+- Automatic retrying of failed requests.
+
+### Demo
 
 ```ruby
 require 'redd'
@@ -46,17 +53,20 @@ session.subreddit('all').comment_stream do |comment|
 end
 ```
 
----
-
 ### FAQ
 
 #### Is that bot fully functional?
-**Yes**, that's all there is to it! You don't need to handle rate-limiting, refresh access tokens
-or protect against issues on reddit's end (like 5xx errors).
+**Yes**, that's all there is to it! You don't need to handle rate-limiting, refresh access tokens or protect against issues on reddit's end (like 5xx errors).
 
 #### Where can I find the documentation?
 
 [**Gem**](http://www.rubydoc.info/gems/redd/Redd/Models/Session) / [**GitHub**](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Session)
+
+#### How do I request a feature / contribute?
+
+- The quickest way to get a feature into Redd is to raise a GitHub issue.
+- Pull requests are also appreciated!
+- Don't hesitate! There are no stupid questions!
 
 #### How can I contact you?
 [Reddit](https://www.reddit.com/message/compose/?to=Mustermind) /
