@@ -13,7 +13,11 @@
     <a href="https://rubygems.org/gems/redd">
       <img src="http://img.shields.io/gem/dt/redd.svg?style=flat-square" alt="Gem Downloads">
     </a>
+    <a href="https://rapidapi.com/package/Reddit/functions?utm_source=RedditGithub&utm_medium=button&utm_content=Vender_GitHub">
+      <img src="https://img.shields.io/badge/API%20Test-RapidAPI-blue.svg">
+    </a>   
   </p>
+
 
   <!-- Intro Text -->
   <p>
