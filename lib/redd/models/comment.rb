@@ -27,8 +27,6 @@ module Redd
       # @option hash [String] :id the comment's id (e.g. abc123)
       # @return [Comment]
       def self.from_response(client, hash)
-        # FIXME: listings can be empty... (for some reason)
-
         # Ensure we have the comment's id.
         id = hash.fetch(:id) { hash.fetch(:name).sub('t1_', '') }
 
@@ -46,6 +44,14 @@ module Redd
           # Returns a single-item listing containing the comment
           c.get('/api/info', id: "t1_#{id}").body[:data][:children][0][:data]
         end
+      end
+
+      # Create a Comment from its fullname.
+      # @param client [APIClient] the api client to initialize the object with
+      # @param id [String] the fullname
+      # @return [Comment]
+      def self.from_id(client, id)
+        from_response(client, name: id)
       end
 
       private

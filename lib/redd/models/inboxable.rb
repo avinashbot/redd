@@ -6,7 +6,7 @@ module Redd
     module Inboxable
       # Block the user that sent this item.
       def block
-        @client.post('/api/block', id: get_attribute(:fullname))
+        @client.post('/api/block', id: get_attribute(:name))
       end
 
       # Mark this thing as read.

@@ -21,9 +21,10 @@ module Redd
 
       # Make a Submission from its id.
       # @option hash [String] :id the post's id (e.g. abc123)
+      # @option hash [String] :name the post's fullname (e.g. t3_abc123)
       # @return [Submission]
       def self.from_response(client, hash)
-        link_id = hash.fetch(:id)
+        link_id = hash.fetch(:id) { hash.fetch(:name).sub('t3_', '') }
         new(client, hash) do |c|
           # `data` is a pair (2-element array):
           #   - data[0] is a one-item listing containing the submission
@@ -31,6 +32,14 @@ module Redd
           data = c.get("/comments/#{link_id}").body
           data[0][:data][:children][0][:data].merge(comments: c.unmarshal(data[1]))
         end
+      end
+
+      # Create a Subreddit from its fullname.
+      # @param client [APIClient] the api client to initialize the object with
+      # @param id [String] the fullname
+      # @return [Submission]
+      def self.from_id(client, id)
+        from_response(client, name: id)
       end
 
       # Get all submissions for the same url.

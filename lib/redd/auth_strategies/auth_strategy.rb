@@ -53,7 +53,7 @@ module Redd
 
       def request_access(grant_type, options = {})
         response = post('/api/v1/access_token', { grant_type: grant_type }.merge(options))
-        Models::Access.new(self, response.body)
+        Models::Access.from_response(self, response.body)
       end
     end
   end

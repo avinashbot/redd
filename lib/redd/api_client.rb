@@ -84,6 +84,7 @@ module Redd
       @failures = 0
       response
     rescue Redd::ServerError, HTTP::TimeoutError => e
+      # FIXME: maybe only retry GET requests, for obvious reasons?
       @failures += 1
       raise e if @failures > @max_retries
       warn "Redd got a #{e.class.name} error (#{e.message}), retrying..."

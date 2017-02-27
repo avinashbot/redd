@@ -3,6 +3,14 @@
 
 require 'webrick'
 require 'redd'
+require 'pry'
+
+# The REPL session to initialize Pry in.
+module Reddit
+  class << self
+    attr_accessor :reddit
+  end
+end
 
 server = WEBrick::HTTPServer.new(
   Port: 8000,
@@ -22,7 +30,7 @@ server.mount_proc '/' do |_, res|
     </style>
     <div class="wrapper">
       <h1>redd // quickstart</h1>
-      <a href="#" target="_blank" id="btn">Start</a>
+      <a href="/authenticate" target="_blank" id="btn">Start</a>
       <span>a new session in your terminal?</span>
     </div>
   EOS
@@ -53,7 +61,7 @@ server.mount_proc '/redirect' do |req, res|
   EOS
 
   unless err
-    R = Redd.it(
+    Reddit.reddit = Redd.it(
       user_agent: "Ruby:Redd-Quickstart:v#{Redd::VERSION} (by unknown)",
       client_id: 'P4txR-D6TzF8cg',
       redirect_uri: 'http://localhost:8000/redirect',
@@ -72,14 +80,30 @@ rescue Interrupt
   exit
 end
 
-# Post a colourful welcome message
-suggestions = [
-  'R.me.link_karma',
-  "R.subreddit('pics').hot.first.title",
-  "puts R.subreddit('all').hot.map(&:title)"
-]
-puts "Welcome, \e[35m/u/#{R.me.name}\e[0m! Try `\e[34m#{suggestions.sample}\e[0m`."
+Reddit.instance_exec do
+  # Post a colourful welcome message
+  suggestions = [
+    # Session#me
+    'reddit.me.link_karma',
+    # Subreddit listings
+    "reddit.subreddit('pics').hot.first.title",
+    # User listings
+    'puts reddit.me.comments(sort: :top).first.body',
+    # Sending messages
+    "reddit.user('Mustermind').send_message(subject: 'Hi!', text: 'How are you?')",
+    # Subscribing to subreddits
+    "reddit.subreddit('EarthPorn').subscribe",
+    # Upvoting
+    'reddit.front_page.hot(time: :month).upvote',
+    # Add friend
+    "reddit.user('Mustermind').friend",
+    # List friends
+    'reddit.me.friends.each { |friend| puts friend.display_name }',
+    # Hiding / Duplicates
+    'reddit.front_page.hot.each { |l| l.hide if l.duplicates.count > 2 }'
+  ]
+  puts "Hi \e[35m/u/#{reddit.me.name}\e[0m! Try `\e[34m#{suggestions.sample}\e[0m`."
 
-# Load Pry
-require 'pry'
-Pry.start
+  # Load Pry
+  Pry.start(self)
+end

@@ -61,6 +61,11 @@ module Redd
         [self]
       end
 
+      # @return [String] an easily readable representation of the object
+      def inspect
+        "#{super}\n" + @attributes.map { |a, v| "  #{a}: #{v}" }.join("\n")
+      end
+
       # Checks whether an attribute is supported by method_missing.
       # @param method_name [Symbol] the method name or attribute to check
       # @param include_private [Boolean] whether to also include private methods

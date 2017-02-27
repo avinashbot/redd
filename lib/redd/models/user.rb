@@ -25,6 +25,15 @@ module Redd
         from_response(client, name: id)
       end
 
+      # Unblock a previously blocked user.
+      # @param me [User] (optional) the person doing the unblocking
+      def unblock(me: nil)
+        my_id = 't2_' + (me.is_a?(User) ? user.id : @client.get('/api/v1/me').body[:id])
+        them_id = 't2_' + get_attribute(:id)
+        # Talk about an unintuitive endpoint
+        @client.post('/api/unfriend', container: my_id, id: them_id, type: 'enemy')
+      end
+
       # Compose a message to the moderators of a subreddit.
       #
       # @param subject [String] the subject of the message
