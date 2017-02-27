@@ -1,5 +1,4 @@
 <div align="center">
-
   <p>
     <!-- Redd -->
     <img src="logo.png" width="500"><br>

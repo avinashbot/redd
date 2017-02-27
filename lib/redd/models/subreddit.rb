@@ -69,7 +69,8 @@ module Redd
       # @!group Listings
 
       # Get the appropriate listing.
-      # @param sort [:hot, :new, :top, :controversial, :comments, :rising] the type of listing
+      # @param sort [:hot, :new, :top, :controversial, :comments, :rising, :gilded] the type of
+      #   listing
       # @param params [Hash] a list of params to send with the request
       # @option params [String] :after return results after the given fullname
       # @option params [String] :before return results before the given fullname
@@ -91,9 +92,10 @@ module Redd
       # @!method controversial(**params)
       # @!method comments(**params)
       # @!method rising(**params)
+      # @!method gilded(**params)
       #
       # @see #listing
-      %i(hot new top controversial comments rising).each do |sort|
+      %i(hot new top controversial comments rising gilded).each do |sort|
         define_method(sort) { |**params| listing(sort, **params) }
       end
 

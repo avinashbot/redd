@@ -54,7 +54,7 @@ module Redd
       end
 
       # Get a (lazily loaded) multi by its path.
-      # @param path [String] the multi's path, prepended by a /
+      # @param path [String] the multi's path, surrounded by a leading and trailing /
       # @return [Multireddit]
       def multi(path)
         Multireddit.from_id(@client, path)
@@ -106,6 +106,19 @@ module Redd
         @client.get('/prefs/blocked').body[:data][:children].map do |h|
           User.from_response(@client, name: h[:name], id: h[:id].sub('t2_', ''), since: h[:date])
         end
+      end
+
+      # Return a listing of the user's subreddits.
+      #
+      # @param type ['subscriber', 'contributor', 'moderator'] the type of subreddits
+      # @param params [Hash] a list of optional params to send with the request
+      # @option params [String] :after return results after the given fullname
+      # @option params [String] :before return results before the given fullname
+      # @option params [Integer] :count (0) the number of items already seen in the listing
+      # @option params [1..100] :limit (25) the maximum number of things to return
+      # @return [Listing<Subreddit>]
+      def my_subreddits(type, **params)
+        @client.model(:get, "/subreddits/mine/#{type}", params)
       end
     end
   end

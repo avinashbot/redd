@@ -3,5 +3,6 @@
 - [ ] make rubocop fail on error
 - [ ] unduplicate duplicated code
 - [ ] Write tests (oh boy)
+- [ ] change after_initialize to include force_load
 - [ ] abstract out listing methods?
 - [ ] Add `#==` and `#to_s` methods to models
