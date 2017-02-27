@@ -1,12 +1,28 @@
 <div align="center">
-  <!-- Redd -->
-  <img src="logo.png" width="500"><br>
+
+  <p>
+    <!-- Redd -->
+    <img src="logo.png" width="500"><br>
+
+    <!-- Badges -->
+    <a href="https://rubygems.org/gems/redd">
+      <img src="http://img.shields.io/gem/v/redd.svg?style=flat-square" alt="Gem Version">
+    </a>
+    <a href="https://travis-ci.org/avinashbot/redd">
+      <img src="http://img.shields.io/travis/avinashbot/redd.svg?style=flat-square" alt="Build Status">
+    </a>
+    <a href="https://rubygems.org/gems/redd">
+      <img src="http://img.shields.io/gem/dt/redd.svg?style=flat-square" alt="Gem Downloads">
+    </a>
+  </p>
 
   <!-- Intro Text -->
-  <strong>Redd</strong> is an API wrapper
-  for <a href="https://www.reddit.com/dev/api">reddit</a>
-  that is all about being <strong>simple</strong>
-  and <strong>intuitive</strong>.
+  <p>
+    <strong>Redd</strong> is an API wrapper
+    for <a href="https://www.reddit.com/dev/api">reddit</a>
+    that is all about being <strong>simple</strong>
+    and <strong>intuitive</strong>.
+  </p>
 </div>
 
 ---
