@@ -1,11 +1,15 @@
 # frozen_string_literal: true
 
+require_relative 'basic_model'
 require_relative 'lazy_model'
 
 module Redd
   module Models
     # Represents a live thread.
     class LiveThread < LazyModel
+      # An update in a live thread.
+      class LiveUpdate < BasicModel; end
+
       # Get a Conversation from its id.
       # @option hash [String] :id the base36 id (e.g. abc123)
       # @return [Conversation]
@@ -19,6 +23,17 @@ module Redd
       # @return [LiveThread]
       def self.from_id(client, id)
         from_response(client, id: id)
+      end
+
+      # Get the updates from the thread.
+      # @param params [Hash] a list of params to send with the request
+      # @option params [String] :after return results after the given fullname
+      # @option params [String] :before return results before the given fullname
+      # @option params [Integer] :count the number of items already seen in the listing
+      # @option params [1..100] :limit the maximum number of things to return
+      # @return [Listing]
+      def updates(**params)
+        @client.model(:get, "/live/#{get_attribute(:id)}", params)
       end
 
       # Configure the settings of this live thread

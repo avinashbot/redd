@@ -7,16 +7,16 @@ module Redd
       # Contains the mapping from 'kind' strings to classes.
       # TODO: UserList type!
       MAPPING = {
-        't1'              => Models::Comment,
-        't2'              => Models::User,
-        't3'              => Models::Submission,
-        't4'              => Models::PrivateMessage,
-        't5'              => Models::Subreddit,
-        'more'            => Models::MoreComments,
-        'wikipage'        => Models::WikiPage,
-        'Listing'         => Models::Listing,
-        'LabeledMulti'    => Models::Multireddit,
-        'LiveUpdateEvent' => Models::LiveThread
+        't1'           => Models::Comment,
+        't2'           => Models::User,
+        't3'           => Models::Submission,
+        't4'           => Models::PrivateMessage,
+        't5'           => Models::Subreddit,
+        'more'         => Models::MoreComments,
+        'wikipage'     => Models::WikiPage,
+        'Listing'      => Models::Listing,
+        'LabeledMulti' => Models::Multireddit,
+        'LiveUpdate'   => Models::LiveThread::LiveUpdate
       }.freeze
 
       def initialize(client)
