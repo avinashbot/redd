@@ -34,6 +34,7 @@ module Redd
             auth_header = response.headers['www-authenticate']
             return klass.new(response) if auth_header && auth_header.include?(key)
           end
+          nil
         end
       end
     end

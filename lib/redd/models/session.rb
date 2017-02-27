@@ -97,14 +97,14 @@ module Redd
       # @return [Array<User>] the logged-in user's friends
       def friends
         @client.get('/api/v1/me/friends').body[:data][:children].map do |h|
-          User.from_response(@client, name: h[:name], id: h[:id].tr('t2_', ''), since: h[:date])
+          User.from_response(@client, name: h[:name], id: h[:id].sub('t2_', ''), since: h[:date])
         end
       end
 
       # @return [Array<User>] users blocked by the logged-in user
       def blocked
         @client.get('/prefs/blocked').body[:data][:children].map do |h|
-          User.from_response(@client, name: h[:name], id: h[:id].tr('t2_', ''), since: h[:date])
+          User.from_response(@client, name: h[:name], id: h[:id].sub('t2_', ''), since: h[:date])
         end
       end
     end

@@ -19,7 +19,6 @@ module Redd
       include Postable
       include Replyable
 
-      coerce_attribute :replies
       coerce_attribute :author, User
       coerce_attribute :subreddit, Subreddit
 
@@ -31,11 +30,11 @@ module Redd
         # FIXME: listings can be empty... (for some reason)
 
         # Ensure we have the comment's id.
-        id = hash.fetch(:id) { hash.fetch(:name).tr('t1_', '') }
+        id = hash.fetch(:id) { hash.fetch(:name).sub('t1_', '') }
 
         # If we have the link_id, we can load the listing with replies.
         if hash.key?(:link_id)
-          link_id = hash[:link_id].tr('t3_', '')
+          link_id = hash[:link_id].sub('t3_', '')
           return new(client, hash) do |c|
             # The second half contains a single-item listing containing the comment
             c.get("/comments/#{link_id}/_/#{id}").body[1][:data][:children][0][:data]
@@ -52,7 +51,12 @@ module Redd
       private
 
       def after_initialize
-        @attributes[:replies] = [] if !@attributes.key?(:replies) || @attributes[:replies] == ''
+        @attributes[:replies] =
+          if !@attributes.key?(:replies) || @attributes[:replies] == ''
+            Listing.new(@client, children: [])
+          else
+            @client.unmarshal(@attributes[:replies])
+          end
       end
     end
   end
