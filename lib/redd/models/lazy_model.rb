@@ -29,6 +29,7 @@ module Redd
         return unless lazy?
         @attributes.merge!(@lazy_loader.call(@client))
         @definitely_fully_loaded = true
+        after_initialize
         self
       end
       alias reload force_load
