@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require_relative 'basic_model'
 require_relative 'lazy_model'
 require_relative 'messageable'
 require_relative 'searchable'
@@ -12,14 +13,6 @@ module Redd
       include Messageable
       include Searchable
 
-      # A list of keys that are required by #modify_settings.
-      SETTINGS_KEYS = %i(allow_images allow_top collapse_deleted_comments comment_score_hide_mins
-                         description exclude_banned_modqueue header-title hide_ads lang link_type
-                         over_18 public_description public_traffic show_media show_media_preview
-                         spam_comments spam_links spam_selfposts spoilers_enabled submit_link_label
-                         submit_text submit_text_label suggested_comment_sort theme_sr
-                         theme_sr_update title type wiki_edit_age wiki_edit_karma wikimode).freeze
-
       # A mapping from keys returned by #settings to keys required by #modify_settings
       SETTINGS_MAP = {
         subreddit_type: :type,
@@ -28,6 +21,10 @@ module Redd
         default_set: :allow_top,
         header_hover_text: :'header-title'
       }.freeze
+
+      # Represents a moderator action, part of a moderation log.
+      # @see Subreddit#log
+      class ModAction < BasicModel; end
 
       # Make a Subreddit from its name.
       # @option hash [String] :display_name the subreddit's name
@@ -291,6 +288,19 @@ module Redd
         full_params[:sr] = get_attribute(:name)
         SETTINGS_MAP.each { |src, dest| full_params[dest] = full_params.delete(src) }
         @client.post('/api/site_admin', full_params)
+      end
+
+      # Get the moderation log.
+      # @param params [Hash] a list of params to send with the request
+      # @option params [String] :after return results after the given fullname
+      # @option params [String] :before return results before the given fullname
+      # @option params [Integer] :count the number of items already seen in the listing
+      # @option params [1..100] :limit the maximum number of things to return
+      # @option params [String] :type filter events to a specific type
+      #
+      # @return [Listing<ModAction>]
+      def mod_log(**params)
+        @client.model(:get, "/r/#{get_attribute(:display_name)}/about/log", params)
       end
 
       private

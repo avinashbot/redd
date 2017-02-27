@@ -24,7 +24,7 @@ module Redd
       # @param sort [String] the sort order of the returned comments
       # @param lookup [Hash] a hash of comments to add future replies to
       # @param depth [Number] the maximum recursion depth
-      # @return [Array<Comment, MoreComments>] the expanded comments or {self} if past depth
+      # @return [Array<Comment, MoreComments>] the expanded comments or self if past depth
       def recursive_expand(link:, sort: 'best', lookup: {}, depth: 10)
         return [self] if depth == 0
 

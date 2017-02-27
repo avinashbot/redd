@@ -109,12 +109,13 @@ module Redd
       end
 
       # Get the conversations
-      # @param after [String] base36 modmail conversation id
       # @param subreddits [Subreddit, Array<Subreddit>] the subreddits to limit to
-      # @param limit [Integer] an integer (default: 25)
-      # @param sort [:recent, :mod, :user, :unread] the sort order
-      # @param state [:new, :inprogress, :mod, :notifications, :archived, :highlighted, :all] the
-      #   state to limit the conversations by
+      # @param params [Hash] additional request parameters
+      # @option params [String] :after base36 modmail conversation id
+      # @option params [Integer] :limit an integer (default: 25)
+      # @option params [:recent, :mod, :user, :unread] :sort the sort order
+      # @option params [:new, :inprogress, :mod, :notifications, :archived, :highlighted, :all]
+      #   :state the state to limit the conversations by
       def conversations(subreddits: nil, **params)
         params[:entity] = Array(subreddits).map(&:display_name).join(',') if subreddits
         @client.get('/api/mod/conversations', **params).body[:conversations].map do |_, conv|

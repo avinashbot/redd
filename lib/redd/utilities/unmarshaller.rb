@@ -15,6 +15,7 @@ module Redd
         'more'         => Models::MoreComments,
         'wikipage'     => Models::WikiPage,
         'Listing'      => Models::Listing,
+        'modaction'    => Models::Subreddit::ModAction,
         'LabeledMulti' => Models::Multireddit,
         'LiveUpdate'   => Models::LiveThread::LiveUpdate
       }.freeze
