@@ -94,6 +94,23 @@ module Redd
         @client.post('/api/read_all_messages')
       end
 
+      # @return [Hash] the user's preferences
+      def my_preferences
+        @client.get('/api/v1/me/prefs').body
+      end
+
+      # Edit the user's preferences.
+      # @param new_prefs [Hash] the changed preferences
+      # @return [Hash] the new preferences
+      # @see #my_preferences
+      def edit_preferences(new_prefs = {})
+        @client.request(
+          :patch, '/api/v1/me/prefs',
+          headers: { 'Content-Type' => 'application/json' },
+          body: JSON.generate(new_prefs)
+        ).body
+      end
+
       # @return [Array<User>] the logged-in user's friends
       def friends
         @client.get('/api/v1/me/friends').body[:data][:children].map do |h|
