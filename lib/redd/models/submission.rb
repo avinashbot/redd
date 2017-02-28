@@ -16,9 +16,6 @@ module Redd
       include Postable
       include Replyable
 
-      coerce_attribute :author, User
-      coerce_attribute :subreddit, Subreddit
-
       # Create a Subreddit from its fullname.
       # @param client [APIClient] the api client to initialize the object with
       # @param id [String] the fullname
@@ -103,6 +100,11 @@ module Redd
         #   - response[0] is a one-item listing containing the submission
         #   - response[1] is listing of comments
         response[0][:data][:children][0][:data].merge(comments: @client.unmarshal(response[1]))
+      end
+
+      def after_initialize
+        @attributes[:author] = User.from_id(@client, @attributes.fetch(:author))
+        @attributes[:subreddit] = Subreddit.from_id(@client, @attributes.fetch(:subreddit))
       end
     end
   end

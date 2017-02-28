@@ -8,7 +8,7 @@ module Redd
     class Multireddit < LazyModel
       # Create a Multireddit from its path.
       # @param client [APIClient] the api client to initialize the object with
-      # @param id [String] the multi's path (prepended by a /)
+      # @param id [String] the multi's path (with a leading and trailing slash)
       # @return [Multireddit]
       def self.from_id(client, id)
         new(client, path: id)
@@ -48,9 +48,9 @@ module Redd
       private
 
       def after_initialize
-        # @attributes[:subreddits].map! do |subreddit|
-        #   Subreddit.new(client, display_name: subreddit[:name])
-        # end
+        @attributes[:subreddits].map! do |subreddit|
+          Subreddit.new(client, display_name: subreddit[:name])
+        end
       end
 
       def default_loader

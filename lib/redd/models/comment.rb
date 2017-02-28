@@ -19,9 +19,6 @@ module Redd
       include Postable
       include Replyable
 
-      coerce_attribute :author, User
-      coerce_attribute :subreddit, Subreddit
-
       # Create a Comment from its fullname.
       # @param client [APIClient] the api client to initialize the object with
       # @param id [String] the fullname
@@ -52,6 +49,11 @@ module Redd
         end
         # We can only load the comment in isolation if we don't have the link_id.
         @client.get('/api/info', id: "t1_#{id}").body[:data][:children][0][:data]
+      end
+
+      def after_initialize
+        @attributes[:author] = User.from_id(@client, @attributes.fetch(:author))
+        @attributes[:subreddit] = Subreddit.from_id(@client, @attributes.fetch(:subreddit))
       end
     end
   end
