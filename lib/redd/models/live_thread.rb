@@ -10,19 +10,11 @@ module Redd
       # An update in a live thread.
       class LiveUpdate < BasicModel; end
 
-      # Get a Conversation from its id.
-      # @option hash [String] :id the base36 id (e.g. abc123)
-      # @return [Conversation]
-      def self.from_response(client, hash)
-        id = hash.fetch(:id)
-        new(client, hash) { |c| c.get("/live/#{id}/about").body[:data] }
-      end
-
       # Get a LiveThread from its id.
       # @param id [String] the id
       # @return [LiveThread]
       def self.from_id(client, id)
-        from_response(client, id: id)
+        new(client, id: id)
       end
 
       # Get the updates from the thread.
@@ -55,14 +47,14 @@ module Redd
       # @return [Array<User>] the contributors to this thread
       def contributors
         @client.get("/live/#{get_attribute(:id)}/contributors").body[0][:data].map do |user|
-          User.from_response(@client, user)
+          User.new(@client, user)
         end
       end
 
       # @return [Array<User>] users invited to contribute to this thread
       def invited_contributors
         @client.get("/live/#{get_attribute(:id)}/contributors").body[1][:data].map do |user|
-          User.from_response(@client, user)
+          User.new(@client, user)
         end
       end
 
@@ -76,6 +68,12 @@ module Redd
       # @return [Listing<Submission>]
       def discussions(**params)
         @client.model(:get, "/live/#{get_attribute(:id)}/discussions", params)
+      end
+
+      private
+
+      def default_loader
+        @client.get("/live/#{@attributes.fetch(:id)}/about").body[:data]
       end
     end
   end

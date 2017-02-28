@@ -5,16 +5,6 @@ module Redd
     # The base class for all models.
     class BasicModel
       class << self
-        # @abstract Create an instance from a partial hash containing an id. The difference between
-        # this and {#initialize} is that from_response is supposed to know how to build the whole
-        # response from the partial.
-        # @param client [APIClient] the api client to initialize the object with
-        # @param hash [Hash] a partial hash
-        # @return [BasicModel]
-        def from_response(client, hash)
-          new(client, hash)
-        end
-
         # @abstract Create an instance from a value.
         # @param _client [APIClient] the api client to initialize the object with
         # @param _value [Object] the object to coerce

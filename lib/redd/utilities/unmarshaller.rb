@@ -27,12 +27,12 @@ module Redd
       def unmarshal(response)
         if response[:json] && response[:json][:data]
           if response[:json][:data][:things]
-            Models::Listing.from_response(@client, children: response[:json][:data][:things])
+            Models::Listing.new(@client, children: response[:json][:data][:things])
           else
             Models::BasicModel.new(@client, response[:json][:data])
           end
         elsif MAPPING.key?(response[:kind])
-          MAPPING[response[:kind]].from_response(@client, response[:data])
+          MAPPING[response[:kind]].new(@client, response[:data])
         else
           raise "unknown type to unmarshal: #{response[:kind].inspect}"
         end

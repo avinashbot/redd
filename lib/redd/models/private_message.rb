@@ -11,18 +11,17 @@ module Redd
       include Inboxable
       include Replyable
 
-      # Make a Message from its id.
-      # @option hash [String] :id the post's id (e.g. abc123)
-      # @return [Submission]
-      def self.from_response(client, hash)
-        # FIXME: This returns the entire conversation, not the specific message. Possible to search,
-        #   because depth of replies is just one.
-        super
-      end
-
       # Delete the message from the user's inbox.
       def delete
         @client.post('/api/del_msg', id: get_attribute(:name))
+      end
+
+      private
+
+      def default_loader
+        # FIXME: This returns the entire conversation, not the specific message. Possible to search,
+        #   because depth of replies is just one.
+        {}
       end
     end
   end

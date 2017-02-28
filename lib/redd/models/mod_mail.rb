@@ -12,25 +12,10 @@ module Redd
       # TODO: add modmail-specific user type
       class Conversation < LazyModel
         # Get a Conversation from its id.
-        # @option hash [String] :id the base36 id (e.g. abc123)
-        # @return [Conversation]
-        def self.from_response(client, hash)
-          id = hash.fetch(:id)
-          new(client, hash) do |c|
-            response = c.get("/api/mod/conversations/#{id}").body
-            response[:conversation].merge(
-              messages: response[:messages].values.map { |m| Message.from_response(c, m) },
-              user: response[:user],
-              mod_actions: response[:modActions]
-            )
-          end
-        end
-
-        # Get a Conversation from its id.
         # @param id [String] the base36 id (e.g. abc123)
         # @return [Conversation]
         def self.from_id(client, id)
-          from_response(client, id: id)
+          new(client, id: id)
         end
 
         # Add a reply to the ongoing conversation.
@@ -84,6 +69,15 @@ module Redd
 
         private
 
+        def default_loader
+          response = @client.get("/api/mod/conversations/#{@attributes[:id]}").body
+          response[:conversation].merge(
+            messages: response[:messages].values.map { |m| Message.new(@client, m) },
+            user: response[:user],
+            mod_actions: response[:modActions]
+          )
+        end
+
         # Perform an action on a conversation.
         # @param method [:post, :delete] the method to use
         # @param action [String] the name of the action
@@ -104,7 +98,7 @@ module Redd
       # @return [Array<Subreddit>] moderated subreddits that are enrolled in the new modmail
       def enrolled
         @client.get('/api/mod/conversations/subreddits').body[:subreddits].map do |_, s|
-          Subreddit.from_response(@client, s.merge(last_updated: s.delete(:lastUpdated)))
+          Subreddit.new(@client, s.merge(last_updated: s.delete(:lastUpdated)))
         end
       end
 
@@ -119,7 +113,7 @@ module Redd
       def conversations(subreddits: nil, **params)
         params[:entity] = Array(subreddits).map(&:display_name).join(',') if subreddits
         @client.get('/api/mod/conversations', **params).body[:conversations].map do |_, conv|
-          Conversation.from_response(@client, conv)
+          Conversation.new(@client, conv)
         end
       end
 
@@ -130,7 +124,7 @@ module Redd
       # @param body [String] the message body
       # @return [Conversation] the created conversation
       def create(from:, to:, subject:, body:, hidden: false)
-        Conversation.from_response(@client, @client.post(
+        Conversation.new(@client, @client.post(
           '/api/mod/conversations',
           srName: from.display_name, to: to.name,
           subject: subject, body: body, isAuthorHidden: hidden

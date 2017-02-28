@@ -9,13 +9,6 @@ module Redd
     class Listing < BasicModel
       include Enumerable
 
-      # Make a Listing from a basic Hash.
-      # @return [Listing]
-      def self.from_response(client, hash)
-        hash[:children].map! { |el| client.unmarshal(el) }
-        new(client, hash)
-      end
-
       # @return [Array<Comment, Submission, PrivateMessage>] an array representation of self
       def to_ary
         get_attribute(:children)
@@ -25,6 +18,12 @@ module Redd
         define_method(method_name) do |*args, &block|
           get_attribute(:children).public_send(method_name, *args, &block)
         end
+      end
+
+      private
+
+      def after_initialize
+        @attributes.fetch(:children).map! { |el| @client.unmarshal(el) }
       end
     end
   end

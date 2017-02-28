@@ -18,16 +18,10 @@ module Redd
         @definitely_fully_loaded = false
       end
 
-      # @return [Boolean] whether the model can be to be lazily initialized
-      def lazy?
-        !@lazy_loader.nil?
-      end
-
       # Force the object to make a request to reddit.
       # @return [self]
       def force_load
-        return unless lazy?
-        @attributes.merge!(@lazy_loader.call(@client))
+        @attributes.merge!(@lazy_loader ? @lazy_loader.call(@client) : default_loader)
         @definitely_fully_loaded = true
         after_initialize
         self
@@ -60,9 +54,14 @@ module Redd
 
       private
 
+      # @abstract A lazy loader to use when one is not provided.
+      def default_loader
+        {}
+      end
+
       # Make sure the model is loaded at least once.
       def ensure_fully_loaded
-        force_load if lazy? && !@definitely_fully_loaded
+        force_load unless @definitely_fully_loaded
       end
 
       # Gets the attribute and loads it if it may be available from the response.

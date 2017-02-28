@@ -9,20 +9,12 @@ module Redd
     class User < LazyModel
       include Messageable
 
-      # Make a User from their name.
-      # @option hash [String] :name the user's name
-      # @return [User]
-      def self.from_response(client, hash)
-        name = hash.fetch(:name)
-        new(client, hash) { |c| c.get("/user/#{name}/about").body[:data] }
-      end
-
       # Create a User from their name.
       # @param client [APIClient] the api client to initialize the object with
       # @param id [String] the username
       # @return [User]
       def self.from_id(client, id)
-        from_response(client, name: id)
+        new(client, name: id)
       end
 
       # Unblock a previously blocked user.
@@ -89,6 +81,12 @@ module Redd
       # @see #listing
       %i(overview submitted comments liked disliked hidden saved gilded).each do |type|
         define_method(type) { |**params| listing(type, **params) }
+      end
+
+      private
+
+      def default_loader
+        @client.get("/user/#{@attributes.fetch(:name)}/about").body[:data]
       end
     end
   end

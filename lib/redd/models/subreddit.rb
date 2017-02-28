@@ -26,20 +26,12 @@ module Redd
       # @see Subreddit#log
       class ModAction < BasicModel; end
 
-      # Make a Subreddit from its name.
-      # @option hash [String] :display_name the subreddit's name
-      # @return [Subreddit]
-      def self.from_response(client, hash)
-        name = hash.fetch(:display_name)
-        new(client, hash) { |c| c.get("/r/#{name}/about").body[:data] }
-      end
-
       # Create a Subreddit from its name.
       # @param client [APIClient] the api client to initialize the object with
       # @param id [String] the subreddit name
       # @return [Subreddit]
       def self.from_id(client, id)
-        from_response(client, display_name: id)
+        new(client, display_name: id)
       end
 
       # @return [Array<String>] the subreddit's wiki pages
@@ -51,7 +43,7 @@ module Redd
       # @param title [String] the page's title
       # @return [WikiPage]
       def wiki_page(title)
-        WikiPage.from_response(@client, title: title, subreddit: self)
+        WikiPage.new(@client, title: title, subreddit: self)
       end
 
       # Search a subreddit.
@@ -195,7 +187,7 @@ module Redd
         params[:kind] = url ? 'link' : 'self'
         params[:url]  = url  if url
         params[:text] = text if text
-        Submission.from_response(@client, @client.post('/api/submit', params).body[:json][:data])
+        Submission.new(@client, @client.post('/api/submit', params).body[:json][:data])
       end
 
       # Compose a message to the moderators of a subreddit.
@@ -304,6 +296,10 @@ module Redd
       end
 
       private
+
+      def default_loader
+        @client.get("/r/#{@attributes.fetch(:display_name)}/about").body[:data]
+      end
 
       def add_relationship(**params)
         # FIXME: add public methods

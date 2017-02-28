@@ -17,7 +17,7 @@ module Redd
       # @param title [String] the page's title
       # @return [WikiPage]
       def wiki_page(title)
-        WikiPage.from_response(@client, title: title)
+        WikiPage.new(@client, title: title)
       end
 
       # Get the appropriate listing.

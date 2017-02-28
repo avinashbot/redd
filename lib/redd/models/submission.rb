@@ -19,27 +19,12 @@ module Redd
       coerce_attribute :author, User
       coerce_attribute :subreddit, Subreddit
 
-      # Make a Submission from its id.
-      # @option hash [String] :id the post's id (e.g. abc123)
-      # @option hash [String] :name the post's fullname (e.g. t3_abc123)
-      # @return [Submission]
-      def self.from_response(client, hash)
-        link_id = hash.fetch(:id) { hash.fetch(:name).sub('t3_', '') }
-        new(client, hash) do |c|
-          # `data` is a pair (2-element array):
-          #   - data[0] is a one-item listing containing the submission
-          #   - data[1] is listing of comments
-          data = c.get("/comments/#{link_id}").body
-          data[0][:data][:children][0][:data].merge(comments: c.unmarshal(data[1]))
-        end
-      end
-
       # Create a Subreddit from its fullname.
       # @param client [APIClient] the api client to initialize the object with
       # @param id [String] the fullname
       # @return [Submission]
       def self.from_id(client, id)
-        from_response(client, name: id)
+        new(client, name: id)
       end
 
       # Get all submissions for the same url.
@@ -106,6 +91,18 @@ module Redd
       # Allow users to comment on the link again.
       def unlock
         @client.post('/api/unlock', id: get_attribute(:name))
+      end
+
+      private
+
+      def default_loader
+        # Ensure we have the link's id.
+        id = @attributes[:id] ? @attributes[:id] : @attributes.fetch(:name).sub('t3_', '')
+        response = @client.get("/comments/#{id}").body
+        # `response` is a pair (2-element array):
+        #   - response[0] is a one-item listing containing the submission
+        #   - response[1] is listing of comments
+        response[0][:data][:children][0][:data].merge(comments: @client.unmarshal(response[1]))
       end
     end
   end
