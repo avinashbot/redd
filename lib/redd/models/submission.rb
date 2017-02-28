@@ -103,8 +103,10 @@ module Redd
       end
 
       def after_initialize
-        @attributes[:author] = User.from_id(@client, @attributes.fetch(:author))
-        @attributes[:subreddit] = Subreddit.from_id(@client, @attributes.fetch(:subreddit))
+        if @attributes[:subreddit]
+          @attributes[:subreddit] = Subreddit.from_id(@client, @attributes[:subreddit])
+        end
+        @attributes[:author] = User.from_id(@client, @attributes[:author]) if @attributes[:author]
       end
     end
   end

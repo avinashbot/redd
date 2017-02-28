@@ -36,6 +36,8 @@ module Redd
           else
             @client.unmarshal(@attributes[:replies])
           end
+        @attributes[:author] = User.from_id(@client, @attributes.fetch(:author))
+        @attributes[:subreddit] = Subreddit.from_id(@client, @attributes.fetch(:subreddit))
       end
 
       def default_loader
@@ -49,11 +51,6 @@ module Redd
         end
         # We can only load the comment in isolation if we don't have the link_id.
         @client.get('/api/info', id: "t1_#{id}").body[:data][:children][0][:data]
-      end
-
-      def after_initialize
-        @attributes[:author] = User.from_id(@client, @attributes.fetch(:author))
-        @attributes[:subreddit] = Subreddit.from_id(@client, @attributes.fetch(:subreddit))
       end
     end
   end
