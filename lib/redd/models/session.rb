@@ -132,6 +132,11 @@ module Redd
         end
       end
 
+      # @return [Array<String>] a list of categories the user's items are saved in
+      def saved_categories
+        @client.get('/api/saved_categories').body
+      end
+
       # Return a listing of the user's subreddits.
       #
       # @param type ['subscriber', 'contributor', 'moderator'] the type of subreddits

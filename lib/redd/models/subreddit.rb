@@ -308,10 +308,20 @@ module Redd
         remove_relationship(type: 'moderator_invite', name: user.name)
       end
 
+      # Accept an invite to become a moderator of this subreddit.
+      def accept_moderator_invite
+        @client.post("/r/#{get_attribute(:display_name)}/api/accept_moderator_invite")
+      end
+
       # Dethrone a moderator.
       # @param user [User] the user to remove
       def remove_moderator(user)
         remove_relationship(type: 'moderator', name: user.name)
+      end
+
+      # Leave from being a moderator on a subreddit.
+      def leave_moderator
+        @client.post('/api/leavemoderator', id: get_attribute(:name))
       end
 
       # Add a contributor to the subreddit.
@@ -324,6 +334,11 @@ module Redd
       # @param user [User] the user to remove
       def remove_contributor(user)
         remove_relationship(type: 'contributor', name: user.name)
+      end
+
+      # Leave from being a contributor on a subreddit.
+      def leave_contributor
+        @client.post('/api/leavecontributor', id: get_attribute(:name))
       end
 
       # Ban a user from a subreddit.

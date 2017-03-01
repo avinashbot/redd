@@ -16,6 +16,16 @@ module Redd
         @client.post('/api/del_msg', id: get_attribute(:name))
       end
 
+      # Mute the author of the message.
+      def mute_author
+        @client.post('/api/mute_message_author', id: get_attribute(:name))
+      end
+
+      # Unmute the author of the message.
+      def unmute_author
+        @client.post('/api/unmute_message_author', id: get_attribute(:name))
+      end
+
       private
 
       def default_loader

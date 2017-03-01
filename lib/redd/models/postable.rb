@@ -21,7 +21,7 @@ module Redd
       # Save a link or comment to the user's account.
       # @param category [String] a category to save to
       def save(category = nil)
-        params = { id: fullname }
+        params = { id: get_attribute(:name) }
         params[:category] = category if category
         @client.post('/api/save', params)
       end
@@ -33,12 +33,12 @@ module Redd
 
       # Hide a link from the user.
       def hide
-        @client.post('/api/hide', id: get_attribute(:fullname))
+        @client.post('/api/hide', id: get_attribute(:name))
       end
 
       # Unhide a previously hidden link.
       def unhide
-        @client.post('/api/unhide', id: get_attribute(:fullname))
+        @client.post('/api/unhide', id: get_attribute(:name))
       end
 
       # Upvote the model.
