@@ -82,6 +82,12 @@ module Redd
         define_method(type) { |**params| listing(type, **params) }
       end
 
+      # Gift a redditor reddit gold.
+      # @param months [Integer] the number of months of gold to gift
+      def gift_gold(months: 1)
+        @client.post("/api/v1/gold/give/#{get_attribute(:name)}", months: months)
+      end
+
       private
 
       def default_loader

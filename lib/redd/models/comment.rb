@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative 'lazy_model'
+require_relative 'gildable'
 require_relative 'inboxable'
 require_relative 'moderatable'
 require_relative 'postable'
@@ -14,6 +15,7 @@ module Redd
   module Models
     # A comment.
     class Comment < LazyModel
+      include Gildable
       include Inboxable
       include Moderatable
       include Postable

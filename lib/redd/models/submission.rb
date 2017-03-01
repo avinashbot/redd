@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative 'lazy_model'
+require_relative 'gildable'
 require_relative 'moderatable'
 require_relative 'postable'
 require_relative 'replyable'
@@ -12,6 +13,7 @@ module Redd
   module Models
     # A text or link post.
     class Submission < LazyModel
+      include Gildable
       include Moderatable
       include Postable
       include Replyable
