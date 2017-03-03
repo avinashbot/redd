@@ -17,7 +17,12 @@ module Redd
       def authenticate
         request_access('password', username: @username, password: @password)
       end
-      alias refresh authenticate
+
+      # Refresh the authentication and return the refreshed access
+      # @return [Access] the new access
+      def refresh(_)
+        authenticate
+      end
     end
   end
 end

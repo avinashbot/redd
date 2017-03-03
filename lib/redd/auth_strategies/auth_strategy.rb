@@ -26,13 +26,14 @@ module Redd
       end
 
       # @abstract Refresh the authentication and return the refreshed access
+      # @param _access [Access, String] the access to refresh
       # @return [Access] the new access
-      def refresh(*)
+      def refresh(_access)
         raise 'abstract method: this strategy cannot refresh access'
       end
 
       # Revoke the access token, making it invalid for future requests.
-      # @param access [Access] the access object to revoke
+      # @param access [Access, String] the access to revoke
       def revoke(access)
         token =
           if access.is_a?(String)
@@ -42,7 +43,7 @@ module Redd
           else
             access.access_token
           end
-        post('/api/v1/revoke_token', token: token).body
+        post('/api/v1/revoke_token', token: token)
       end
 
       private

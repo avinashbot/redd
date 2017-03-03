@@ -20,7 +20,7 @@ module Redd
       # @option params [String] :restrict_to restrict by subreddit (prefer {Subreddit#search})
       # @return [Listing<Comment, Submission>] the search results
       def search(query, **params)
-        params[:q] = query if query
+        params[:q] = query
         params[:t] = params.delete(:time) if params.key?(:time)
         if params[:restrict_to]
           subreddit = params.delete(:restrict_to)

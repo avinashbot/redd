@@ -13,35 +13,27 @@ module Redd
     API_ENDPOINT = 'https://oauth.reddit.com'
 
     # @return [APIClient] the access the client uses
-    attr_reader :access
+    attr_accessor :access
 
-    # Create a new API client from an auth strategy.
+    # Create a new API client with an auth strategy.
     # @param auth [AuthStrategies::AuthStrategy] the auth strategy to use
     # @param endpoint [String] the API endpoint
     # @param user_agent [String] the user agent to send
     # @param limit_time [Integer] the minimum number of seconds between each request
-    # @param max_retries [Integer] number of times to retry requests that may be successful if
-    #   retried
-    # @param auto_login [Boolean] (for script and userless) automatically authenticate if not done
-    #   so already
-    # @param auto_refresh [Boolean] (for script and userless) automatically refresh access token if
-    #   nearing expiration
+    # @param max_retries [Integer] number of times to retry requests that may succeed if retried
+    # @param auto_refresh [Boolean] automatically refresh access token if nearing expiration
     def initialize(auth, endpoint: API_ENDPOINT, user_agent: USER_AGENT, limit_time: 1,
-                   max_retries: 5, auto_login: true, auto_refresh: true)
+                   max_retries: 5, auto_refresh: true)
       super(endpoint: endpoint, user_agent: user_agent)
 
-      @auth            = auth
-      @access          = nil
-      @max_retries     = max_retries
-      @failures        = 0
-      @error_handler   = Utilities::ErrorHandler.new
-      @rate_limiter    = Utilities::RateLimiter.new(limit_time)
-      @unmarshaller    = Utilities::Unmarshaller.new(self)
-
-      # FIXME: hard dependencies on Script and Userless types
-      can_auto      = auth.is_a?(AuthStrategies::Script) || auth.is_a?(AuthStrategies::Userless)
-      @auto_login   = can_auto && auto_login
-      @auto_refresh = can_auto && auto_refresh
+      @auth          = auth
+      @access        = nil
+      @max_retries   = max_retries
+      @failures      = 0
+      @error_handler = Utilities::ErrorHandler.new
+      @rate_limiter  = Utilities::RateLimiter.new(limit_time)
+      @unmarshaller  = Utilities::Unmarshaller.new(self)
+      @auto_refresh  = auto_refresh
     end
 
     # Authenticate the client using the provided auth.
@@ -50,8 +42,8 @@ module Redd
     end
 
     # Refresh the access currently in use.
-    def refresh(*args)
-      @access = @auth.refresh(*args)
+    def refresh
+      @access = @auth.refresh(@access)
     end
 
     # Revoke the current access and remove it from the client.
@@ -95,12 +87,10 @@ module Redd
 
     # Makes sure a valid access is present, raising an error if nil
     def ensure_access_is_valid
-      # Authenticate first if auto_login is enabled
-      authenticate if @access.nil? && @auto_login
+      # If access is nil, panic
+      raise 'client access is nil, try calling #authenticate' if @access.nil?
       # Refresh access if auto_refresh is enabled
       refresh if @access.expired? && @auto_refresh
-      # Fuck it, panic
-      raise 'client access is nil, try calling #authenticate' if @access.nil?
     end
 
     def connection

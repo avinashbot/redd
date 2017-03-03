@@ -4,10 +4,9 @@ require_relative 'auth_strategy'
 
 module Redd
   module AuthStrategies
-    # A typical code-based authentication. I genuinely recommend this for bots.
-    # Only confidential web apps can be refreshed.
+    # A typical code-based authentication, for 'web' and 'installed' types.
     class Web < AuthStrategy
-      def initialize(client_id:, secret:, redirect_uri:, **kwargs)
+      def initialize(client_id:, redirect_uri:, secret: '', **kwargs)
         super(client_id: client_id, secret: secret, **kwargs)
         @redirect_uri = redirect_uri
       end
@@ -22,7 +21,8 @@ module Redd
       # Refresh the authentication and return a new refreshed access
       # @return [Access] the new access
       def refresh(access)
-        request_access('refresh_token', refresh_token: must_have(access, :refresh_token))
+        refresh_token = access.is_a?(String) ? refresh_token : access.refresh_token
+        request_access('refresh_token', refresh_token: refresh_token)
       end
     end
   end

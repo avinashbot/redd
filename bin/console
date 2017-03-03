@@ -44,9 +44,10 @@ server.mount_proc '/authenticate' do |_, res|
       response_type: 'code',
       state: '0',
       redirect_uri: 'http://localhost:8000/redirect',
-      'scope': %w(account creddits edit flair history identity livemanage modconfig modcontributors
-                  modflair modlog modmail modothers modposts modself modwiki mysubreddits
-                  privatemessages read report save submit subscribe vote wikiedit wikiread)
+      duration: 'permanent',
+      scope: %w(account creddits edit flair history identity livemanage modconfig modcontributors
+                modflair modlog modmail modothers modposts modself modwiki mysubreddits
+                privatemessages read report save submit subscribe vote wikiedit wikiread)
     )
   )
 end
@@ -65,7 +66,8 @@ server.mount_proc '/redirect' do |req, res|
       user_agent: "Ruby:Redd-Quickstart:v#{Redd::VERSION} (by unknown)",
       client_id: 'P4txR-D6TzF8cg',
       redirect_uri: 'http://localhost:8000/redirect',
-      code: req.query['code']
+      code: req.query['code'],
+      auto_refresh: true
     )
     server.stop
   end

@@ -11,7 +11,12 @@ module Redd
       def authenticate
         request_access('client_credentials')
       end
-      alias refresh authenticate
+
+      # Refresh the authentication and return the refreshed access
+      # @return [Access] the new access
+      def refresh(_)
+        authenticate
+      end
     end
   end
 end
