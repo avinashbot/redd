@@ -59,7 +59,6 @@ module Redd
     # @option opts [String] :code the code given by reddit (required for *web* and *installed*)
     # @return [Models::Session] a fresh {Models::Session} for you to make requests with
     def it(opts = {})
-      puts opts
       api_client = script(opts) || web(opts) || userless(opts)
       raise "couldn't guess app type" unless api_client
       Models::Session.new(api_client)
