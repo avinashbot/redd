@@ -393,7 +393,6 @@ module Redd
       end
 
       def add_relationship(**params)
-        # FIXME: add public methods
         @client.post("/r/#{get_attribute(:display_name)}/api/friend", params)
       end
 

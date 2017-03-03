@@ -33,8 +33,8 @@ module Redd
 
       def after_initialize
         @attributes[:replies] =
-          if !@attributes.key?(:replies) || @attributes[:replies] == ''
-            Listing.new(@client, children: [])
+          if @attributes[:replies] == ''
+            nil
           else
             @client.unmarshal(@attributes[:replies])
           end

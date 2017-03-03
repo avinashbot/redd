@@ -59,6 +59,7 @@ module Redd
     # @option opts [String] :code the code given by reddit (required for *web* and *installed*)
     # @return [Models::Session] a fresh {Models::Session} for you to make requests with
     def it(opts = {})
+      puts opts
       api_client = script(opts) || web(opts) || userless(opts)
       raise "couldn't guess app type" unless api_client
       Models::Session.new(api_client)
@@ -111,7 +112,7 @@ module Redd
 
     def userless(opts = {})
       return unless %i(client_id secret).all? { |o| opts.include?(o) }
-      auth = AuthStrategies::Script.new(filter_auth(opts))
+      auth = AuthStrategies::Userless.new(filter_auth(opts))
       api = APIClient.new(auth, **filter_api(opts))
       api.tap(&:authenticate)
     end

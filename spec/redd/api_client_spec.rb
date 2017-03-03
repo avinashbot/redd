@@ -22,8 +22,11 @@ describe Redd::APIClient do
   describe '#refresh' do
     it 'calls #refresh on the auth strategy' do
       auth_strategy = instance_double('Redd::AuthStrategies::AuthStrategy')
-      expect(auth_strategy).to receive(:refresh).with('some-code')
-      Redd::APIClient.new(auth_strategy).refresh('some-code')
+      api_client = Redd::APIClient.new(auth_strategy)
+      api_client.access = double('Redd::Models::Access')
+
+      expect(auth_strategy).to receive(:refresh).with(api_client.access)
+      api_client.refresh
     end
 
     it "sets the client's access to the result of the call" do
