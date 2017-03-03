@@ -96,11 +96,11 @@ Reddit.instance_exec do
     # Subscribing to subreddits
     "reddit.subreddit('EarthPorn').subscribe",
     # Upvoting
-    'reddit.front_page.hot(time: :month).upvote',
+    'reddit.front_page.hot(time: :month).first.upvote',
     # Add friend
     "reddit.user('Mustermind').friend",
     # List friends
-    'reddit.me.friends.each { |friend| puts friend.display_name }',
+    'reddit.friends.each { |friend| puts friend.name };',
     # Hiding / Duplicates
     'reddit.front_page.hot.each { |l| l.hide if l.duplicates.count > 2 }'
   ]
