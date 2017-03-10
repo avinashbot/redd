@@ -33,10 +33,10 @@ module Redd
 
       def after_initialize
         @attributes[:replies] =
-          if @attributes[:replies] == ''
-            nil
-          else
+          if @attributes[:replies].is_a?(Hash)
             @client.unmarshal(@attributes[:replies])
+          else
+            Models::Listing.new(@client, children: [], after: nil, before: nil)
           end
         @attributes[:author] = User.from_id(@client, @attributes.fetch(:author))
         @attributes[:subreddit] = Subreddit.from_id(@client, @attributes.fetch(:subreddit))

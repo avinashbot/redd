@@ -10,13 +10,11 @@ module Redd
       # @param link [Submission] the submission the object belongs to
       # @param sort [String] the sort order of the submission
       # @return [Listing<Comment, MoreComments>] the expanded children
-      def expand(link:, sort: 'best')
-        @client.model(
-          :get, '/api/morechildren',
-          link_id: link.name,
-          children: get_attribute(:children).join(','),
-          sort: sort
-        )
+      def expand(link:, sort: nil)
+        params = { link_id: link.name, children: get_attribute(:children).join(',') }
+        params[:sort] = sort if sort
+        params[:sort] = link.sort_order if link.sort_order
+        @client.model(:get, '/api/morechildren', params)
       end
 
       # Keep expanding until all top-level MoreComments are converted to comments.
@@ -25,7 +23,7 @@ module Redd
       # @param lookup [Hash] a hash of comments to add future replies to
       # @param depth [Number] the maximum recursion depth
       # @return [Array<Comment, MoreComments>] the expanded comments or self if past depth
-      def recursive_expand(link:, sort: 'best', lookup: {}, depth: 10)
+      def recursive_expand(link:, sort: nil, lookup: {}, depth: 10)
         return [self] if depth == 0
 
         expand(link: link, sort: sort).flat_map do |thing|
