@@ -22,6 +22,11 @@ module Redd
     end
   end
 
+  # An error returned by AuthStrategy.
+  # @note A common cause of this error is not having a bot account registered as a developer on
+  #   the app.
+  class AuthenticationError < ResponseError; end
+
   # An error with Redd, probably (let me know!)
   class BadRequest < ResponseError; end
 
