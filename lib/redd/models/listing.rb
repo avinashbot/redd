@@ -19,12 +19,6 @@ module Redd
           get_attribute(:children).public_send(method_name, *args, &block)
         end
       end
-
-      private
-
-      def after_initialize
-        @attributes.fetch(:children).map! { |el| @client.unmarshal(el) }
-      end
     end
   end
 end

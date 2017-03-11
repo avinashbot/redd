@@ -14,7 +14,6 @@ module Redd
         't5'           => Models::Subreddit,
         'more'         => Models::MoreComments,
         'wikipage'     => Models::WikiPage,
-        'Listing'      => Models::Listing,
         'modaction'    => Models::Subreddit::ModAction,
         'LabeledMulti' => Models::Multireddit,
         'LiveUpdate'   => Models::LiveThread::LiveUpdate
@@ -24,18 +23,40 @@ module Redd
         @client = client
       end
 
-      def unmarshal(response)
-        if response[:json] && response[:json][:data]
-          if response[:json][:data][:things]
-            Models::Listing.new(@client, children: response[:json][:data][:things])
-          else
-            Models::BasicModel.new(@client, response[:json][:data])
-          end
-        elsif MAPPING.key?(response[:kind])
-          MAPPING[response[:kind]].new(@client, response[:data])
-        else
-          raise "unknown type to unmarshal: #{response[:kind].inspect}"
-        end
+      def unmarshal(res)
+        model = js_listing(res) || js_model(res) || api_listing(res) || api_model(res)
+        raise "cannot unmarshal: #{res.inspect}" if model.nil?
+        model
+      end
+
+      private
+
+      # Unmarshal frontent API-style listings
+      def js_listing(res)
+        # One day I'll get to deprecate Ruby 2.2 and jump into the world of Hash#dig.
+        return nil unless res[:json] && res[:json][:data] && res[:json][:data][:things]
+        Models::Listing.new(@client, children: res[:json][:data][:things].map { |t| unmarshal(t) })
+      end
+
+      # Unmarshal frontend API-style models.
+      def js_model(res)
+        # FIXME: deprecate this? this shouldn't be happening in the API, so this is better handled
+        #   in the respective classes.
+        Models::BasicModel.new(@client, res[:json][:data]) if res[:json] && res[:json][:data]
+      end
+
+      # Unmarshal API-provided listings.
+      def api_listing(res)
+        return nil unless res[:kind] == 'Listing'
+        attributes = res[:data]
+        attributes[:children].map! { |child| unmarshal(child) }
+        Models::Listing.new(@client, attributes)
+      end
+
+      # Unmarshal API-provided model.
+      def api_model(res)
+        return nil unless MAPPING[res[:kind]]
+        MAPPING[res[:kind]].new(@client, res[:data])
       end
     end
   end
