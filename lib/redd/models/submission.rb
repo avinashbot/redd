@@ -111,7 +111,7 @@ module Redd
       def set_suggested_sort(suggested)
         @client.post(
           '/api/set_suggested_sort',
-          id: get_attribute(:id),
+          id: get_attribute(:fullname),
           sort: suggested
         )
       end
