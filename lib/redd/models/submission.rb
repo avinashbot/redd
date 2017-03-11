@@ -105,6 +105,17 @@ module Redd
         @client.post('/api/unlock', id: get_attribute(:name))
       end
 
+      # Set the suggested sort order for comments for all users.
+      # `suggested` should be one of: ['', 'confidence', 'top', 'new',
+      # 'controversial', 'old', 'random', 'qa', 'live']
+      def set_suggested_sort(suggested)
+        @client.post(
+          '/api/set_suggested_sort',
+          id: get_attribute(:id),
+          sort: suggested
+        )
+      end
+
       private
 
       def default_loader
