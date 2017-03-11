@@ -234,16 +234,14 @@ module Redd
         nil
       end
 
-      # Remove the flair from a Submission or User
-      # @param thing [User, Submission] an object from which to remove flair
-      def delete_flair(thing)
-        key = thing.is_a?(User) ? :name : :link
-
-        params = { key => thing.name }
+      # Remove the flair from a user
+      # @param thing [User, String] a User from which to remove flair
+      def delete_flair(user)
+        name = user.is_a?(User) ? user.name : user
 
         @client.post(
           "/r/#{get_attribute(:display_name)}/api/deleteflair",
-          params
+          name: name
         )
       end
 
