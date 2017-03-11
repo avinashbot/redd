@@ -238,30 +238,17 @@ module Redd
       # @param thing [User, String] a User from which to remove flair
       def delete_flair(user)
         name = user.is_a?(User) ? user.name : user
-
-        @client.post(
-          "/r/#{get_attribute(:display_name)}/api/deleteflair",
-          name: name
-        )
+        @client.post("/r/#{get_attribute(:display_name)}/api/deleteflair", name: name)
       end
 
-      # Set a flair template for a Submission or User
+      # Set a Submission's or User's flair based on a flair template id.
       # @param thing [User, Submission] an object to assign a template to
       # @param template_id [String] the UUID of the flair template to assign
       # @param text [String] optional text for the flair
       def set_flair_template(thing, template_id, text: nil)
         key = thing.is_a?(User) ? :name : :link
-
-        params = {
-          key => thing.name,
-          flair_template_id: template_id,
-          text: text
-        }
-
-        @client.post(
-          "/r/#{get_attribute(:display_name)}/api/selectflair",
-          params
-        )
+        params = { key => thing.name, flair_template_id: template_id, text: text }
+        @client.post("/r/#{get_attribute(:display_name)}/api/selectflair", params)
       end
 
       # Add the subreddit to the user's subscribed subreddits.

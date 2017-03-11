@@ -32,11 +32,16 @@ module Redd
       end
 
       # Set the sort order of the comments and reload if necessary.
-      # @param order [:confidence, :top, :controversial, :old, :qa] the sort order
-      def sort_order=(order)
-        @sort_order = order
-        reload if @definitely_fully_loaded
-        order
+      # @param new_order [:confidence, :top, :controversial, :old, :qa] the sort order
+      def sort_order=(new_order)
+        # If the comments were loaded in a different sort order, delete them and invalidate this
+        # model.
+        if @attributes.key?(:comments) && @sort_order != new_order
+          @attributes.delete(:comments)
+          @definitely_fully_loaded = false
+        end
+
+        @sort_order = new_order
       end
 
       # Get all submissions for the same url.
@@ -106,14 +111,12 @@ module Redd
       end
 
       # Set the suggested sort order for comments for all users.
-      # `suggested` should be one of: ['', 'confidence', 'top', 'new',
-      # 'controversial', 'old', 'random', 'qa', 'live']
-      def set_suggested_sort(suggested)
-        @client.post(
-          '/api/set_suggested_sort',
-          id: get_attribute(:name),
-          sort: suggested
-        )
+      # @param suggested ['blank', 'confidence', 'top', 'new', 'controversial', 'old', 'random',
+      #   'qa', 'live'] the sort type
+      def set_suggested_sort(suggested) # rubocop:disable Style/AccessorMethodName
+        # Style/AccessorMethodName is disabled because it feels wrong for accessor methods to make
+        # HTTP requests.
+        @client.post('/api/set_suggested_sort', id: get_attribute(:name), sort: suggested)
       end
 
       private
