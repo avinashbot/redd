@@ -31,10 +31,14 @@ module Redd
           else
             Models::BasicModel.new(@client, response[:json][:data])
           end
-        elsif MAPPING.key?(response[:kind])
-          MAPPING[response[:kind]].new(@client, response[:data])
+        elsif response[:kind]
+          if MAPPING.key?(response[:kind])
+            MAPPING[response[:kind]].new(@client, response[:data])
+          else
+            raise "unknown type to unmarshal: #{response[:kind].inspect}"
+          end
         else
-          raise "unknown type to unmarshal: #{response[:kind].inspect}"
+          response
         end
       end
     end
