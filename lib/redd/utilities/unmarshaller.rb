@@ -35,7 +35,7 @@ module Redd
           if MAPPING.key?(response[:kind])
             return MAPPING[response[:kind]].new(@client, response[:data])
           end
-          
+
           raise "unknown type to unmarshal: #{response[:kind].inspect}"
         else
           response
