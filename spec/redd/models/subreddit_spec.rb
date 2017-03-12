@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Redd::Models::Subreddit do
+RSpec.describe Redd::Models::Subreddit do
   describe '#wiki_pages' do
     it 'returns an array of strings' do
       stub_api(:get, '/r/test/wiki/pages') { response(kind: 'wikipagelisting', data: %w(one two)) }

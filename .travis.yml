@@ -11,5 +11,5 @@ matrix:
   - rvm: ruby-head
   - rvm: jruby-head
 
-before_install: gem install bundler -v 1.13.7
+before_install: gem install bundler -v 1.14.6
 cache: bundler

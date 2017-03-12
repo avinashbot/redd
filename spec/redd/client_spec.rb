@@ -1,6 +1,12 @@
 # frozen_string_literal: true
 
-describe Redd::Client do
+require 'webmock/rspec'
+
+RSpec.describe Redd::Client do
+  before do
+    WebMock.disable_net_connect!
+  end
+
   describe '#get' do
     it 'makes a GET request' do
       request = stub_request(:get, 'https://test.com/get_request').with(query: { 'param' => '1' })

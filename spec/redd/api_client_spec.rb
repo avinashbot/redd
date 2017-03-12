@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-describe Redd::APIClient do
+RSpec.describe Redd::APIClient do
   describe '#authenticate' do
-    it 'calls #authenticate on the auth strategy' do
+    it 'calls #authenticate on the auth strategy with a given code' do
       auth_strategy = instance_double('Redd::AuthStrategies::AuthStrategy')
       expect(auth_strategy).to receive(:authenticate).with('some-code')
       Redd::APIClient.new(auth_strategy).authenticate('some-code')
@@ -60,5 +60,5 @@ describe Redd::APIClient do
   # TODO: expand into context blocks and implement
   it 'calls authenticate if auto_login is enabled and access is unset'
   it 'calls refresh if auto_refresh is enabled and access is expired'
-  it 'retries a call if max_retries > 0 is enabled and response code is 5xx'
+  it 'retries a call if max_retries > 0 is enabled and a TimeoutError or a ServerError is raised'
 end

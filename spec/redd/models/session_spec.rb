@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Redd::Models::Session do
+RSpec.describe Redd::Models::Session do
   describe '#front_page' do
     it 'returns a FrontPage' do
       session = Redd::Models::Session.new(client)
