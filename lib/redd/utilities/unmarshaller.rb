@@ -24,6 +24,7 @@ module Redd
       end
 
       def unmarshal(res)
+        # I'm loving the hell out of this pattern.
         model = js_listing(res) || js_model(res) || api_listing(res) || api_model(res)
         raise "cannot unmarshal: #{res.inspect}" if model.nil?
         model
