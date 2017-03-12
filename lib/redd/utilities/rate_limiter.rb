@@ -4,8 +4,8 @@ module Redd
   module Utilities
     # Manages rate limiting by sleeping.
     class RateLimiter
-      def initialize(gap = 1)
-        @gap = 1
+      def initialize(gap)
+        @gap = gap
         @last_request_time = Time.now - gap
       end
 
