@@ -24,25 +24,21 @@ module Redd
       # @param depth [Number] the maximum recursion depth
       # @return [Array<Comment, MoreComments>] the expanded comments or self if past depth
       def recursive_expand(link:, sort: nil, lookup: {}, depth: 10)
-        return [self] if depth == 0
+        return [self] if depth <= 0
 
-        expand(link: link, sort: sort).flat_map do |thing|
-          if thing.is_a?(MoreComments) && thing.count > 0
-            # Get an array of expanded comments from the thing.
-            ary = thing.recursive_expand(link: link, sort: sort, lookup: lookup, depth: depth - 1)
-            # If we can't find its parent (or if the parent is the submission), add it to the root.
-            next ary unless lookup.key?(thing.parent_id)
-            # Since the thing has a parent that we're tracking, attach it to the parent.
-            lookup[thing.parent_id].replies.children.concat(ary)
-          elsif thing.is_a?(Comment)
+        expand(link: link, sort: sort).each_with_object([]) do |thing, coll|
+          target = (lookup.key?(thing.parent_id) ? lookup[thing.parent_id].replies.children : coll)
+
+          if thing.is_a?(Comment)
             # Add the comment to a lookup hash.
             lookup[thing.name] = thing
             # If the parent is not in the lookup hash, add it to the root listing.
-            next thing unless lookup.key?(thing.parent_id)
-            # If the parent was found, add the child to the parent's replies instead.
-            lookup[thing.parent_id].replies.children << thing
+            target.push(thing)
+          elsif thing.is_a?(MoreComments) && thing.count > 0
+            # Get an array of expanded comments from the thing.
+            ary = thing.recursive_expand(link: link, sort: sort, lookup: lookup, depth: depth - 1)
+            target.concat(ary)
           end
-          []
         end
       end
 

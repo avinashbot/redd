@@ -43,15 +43,17 @@ module Redd
       end
 
       def default_loader
-        # Ensure we have the comment's id.
-        id = @attributes.fetch(:id) { @attributes.fetch(:name).sub('t1_', '') }
+        @attributes.key?(:link_id) ? load_with_comments : load_without_comments
+      end
 
-        # If we have the link_id, we can load the listing with replies.
-        if @attributes.key?(:link_id)
-          link_id = @attributes[:link_id].sub('t3_', '')
-          return @client.get("/comments/#{link_id}/_/#{id}").body[1][:data][:children][0][:data]
-        end
-        # We can only load the comment in isolation if we don't have the link_id.
+      def load_with_comments
+        id = @attributes.fetch(:id) { @attributes.fetch(:name).sub('t1_', '') }
+        link_id = @attributes[:link_id].sub('t3_', '')
+        @client.get("/comments/#{link_id}/_/#{id}").body[1][:data][:children][0][:data]
+      end
+
+      def load_without_comments
+        id = @attributes.fetch(:id) { @attributes.fetch(:name).sub('t1_', '') }
         @client.get('/api/info', id: "t1_#{id}").body[:data][:children][0][:data]
       end
     end
