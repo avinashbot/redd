@@ -9,7 +9,7 @@ module Redd
       # @return [Comment, PrivateMessage] The created reply.
       def reply(text)
         fullname = get_attribute(:name)
-        @client.model(:post, '/api/comment/', text: text, thing_id: fullname).first
+        @client.model(:post, '/api/comment', text: text, thing_id: fullname).first
       end
     end
   end
