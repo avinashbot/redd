@@ -1,7 +1,7 @@
 <div align="center">
   <p>
     <!-- Redd -->
-    <img src="logo.png" width="500"><br>
+    <img src="https://raw.githubusercontent.com/avinashbot/redd/master/logo.png" width="500"><br>
 
     <!-- Badges -->
     <a href="https://rubygems.org/gems/redd">
