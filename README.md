@@ -2,7 +2,6 @@
   <p>
     <!-- Redd -->
     <img src="https://raw.githubusercontent.com/avinashbot/redd/master/logo.png" width="500"><br>
-
     <!-- Badges -->
     <a href="https://rubygems.org/gems/redd">
       <img src="http://img.shields.io/gem/v/redd.svg?style=flat-square" alt="Gem Version">
@@ -14,7 +13,6 @@
       <img src="http://img.shields.io/gem/dt/redd.svg?style=flat-square" alt="Gem Downloads">
     </a>
   </p>
-
   <!-- Intro Text -->
   <p>
     <strong>Redd</strong> is a <strong>batteries-included</strong>
