@@ -60,15 +60,17 @@ end
 
 [**Gem**](http://www.rubydoc.info/gems/redd/Redd/Models/Session) / [**GitHub**](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Session)
 
+#### Where can I ask for help if I'm having issues?
+Check out the [**official subreddit**](https://www.reddit.com/r/Redd) or raise a [**GitHub issue**](https://github.com/avinashbot/redd/issues/new).
+
 #### How do I request a feature / contribute?
 
-- The quickest way to get a feature into Redd is to raise a GitHub issue.
+- The quickest way to get a feature into Redd is to raise a raise a [**GitHub issue**](https://github.com/avinashbot/redd/issues/new).
 - Pull requests are also appreciated!
 - Don't hesitate! There are no stupid questions!
 
 #### How can I contact you?
 [Reddit](https://www.reddit.com/message/compose/?to=Mustermind) /
-[GitHub](https://github.com/avinashbot/redd/issues/new) /
 [Email](mailto:avinash@dwarapu.me)
 
 ---
