@@ -42,6 +42,9 @@ module Redd
   # Returned when reddit raises a 404 error.
   class NotFound < ResponseError; end
 
+  # Too many requests and not enough rate limiting.
+  class TooManyRequests < ResponseError; end
+
   # An unknown error on reddit's end. Usually fixed with a retry.
   class ServerError < ResponseError; end
 end

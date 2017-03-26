@@ -14,6 +14,7 @@ module Redd
         400 => Redd::BadRequest,
         403 => Redd::Forbidden,
         404 => Redd::NotFound,
+        429 => Redd::TooManyRequests,
         500 => Redd::ServerError,
         502 => Redd::ServerError,
         503 => Redd::ServerError,
