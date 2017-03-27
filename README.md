@@ -65,7 +65,7 @@ Check out the [**official subreddit**](https://www.reddit.com/r/Redd) or raise a
 
 #### How do I request a feature / contribute?
 
-- The quickest way to get a feature into Redd is to raise a raise a [**GitHub issue**](https://github.com/avinashbot/redd/issues/new).
+- The quickest way to get a feature into Redd is to raise a [**GitHub issue**](https://github.com/avinashbot/redd/issues/new).
 - Pull requests are also appreciated!
 - Don't hesitate! There are no stupid questions!
 
