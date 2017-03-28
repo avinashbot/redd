@@ -20,11 +20,10 @@ module Redd
     # @option opts [Array<String>] :scope (['identity']) a list of scopes to request
     # @option opts ['temporary', 'permanent'] :duration ('permanent') the duration to request the
     #   code for.
-    # @option opts [String] :auth_via ('/auth/reddit') the path in the application that redirects
-    #   a user to reddit
+    # @option opts [String] :via ('/auth/reddit') the relative path in the application that
+    #   redirects a user to reddit
     def initialize(app, opts = {})
       @app = app
-
       strategy_opts = opts.select { |k| %i(user_agent client_id secret redirect_uri).include?(k) }
       @strategy = Redd::AuthStrategies::Web.new(strategy_opts)
 
@@ -33,7 +32,7 @@ module Redd
       @redirect_uri = opts.fetch(:redirect_uri)
       @scope        = opts.fetch(:scope, ['identity'])
       @duration     = opts.fetch(:duration, 'permanent')
-      @auth_via     = opts.fetch(:auth_via, '/auth/reddit')
+      @via          = opts.fetch(:via, '/auth/reddit')
     end
 
     def call(env)
@@ -44,15 +43,13 @@ module Redd
 
     def thread_unsafe_call(env)
       @request = Rack::Request.new(env)
-      @request.env['redd.error'] = nil
 
       # Redirect user to reddit for authentication.
-      return redirect_to_reddit! if @request.path == @auth_via
+      return redirect_to_reddit! if @request.path == @via
       # Convert the code to an access token if returning from authentication.
-      if @request.base_url + @request.path == @redirect_uri
-        create_session!
-        @request.session[:redd_state] = nil
-      end
+      create_session! if @request.base_url + @request.path == @redirect_uri
+      # Clear the state for any other request.
+      @request.session[:redd_state] = nil
       # Load a Session model from the access token in the user's cookies.
       @request.env['redd.session'] = parse_session
       # Go through the rest of the app.
