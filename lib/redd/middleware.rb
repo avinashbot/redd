@@ -45,8 +45,10 @@ module Redd
       return redirect_to_reddit! if @request.path == @via
 
       before_call
-      @app.call(env)
+      response = @app.call(env)
       after_call
+
+      response
     end
 
     private
@@ -79,7 +81,7 @@ module Redd
         state: state
       )
       @request.session[:redd_state] = state
-      [302, { 'Location' => url, 'Content-Type' => 'text/html' }, ["<a href=\"#{url}\">Login</a>"]]
+      [302, { 'Location' => url }, []]
     end
 
     # Assigns a single string representing a reddit authentication errors.
