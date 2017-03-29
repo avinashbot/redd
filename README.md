@@ -65,7 +65,9 @@ use Redd::Middleware,
     via:          '/auth/reddit'
 
 get '/' do
-  if request.env['redd.session']
+  reddit = request.env['redd.session']
+
+  if reddit
     name = request.env['redd.session'].me.name
     "Hello /u/#{name}! <a href='/logout'>Logout</a>"
   else
@@ -86,7 +88,7 @@ end
 
 ### FAQ
 
-#### Is that bot fully functional?
+#### Are those examples fully functional?
 **Yes**, that's all there is to it! You don't need to handle rate-limiting, refresh access tokens or protect against issues on reddit's end (like 5xx errors).
 
 #### Where can I find the documentation?
