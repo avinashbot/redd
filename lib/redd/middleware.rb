@@ -49,7 +49,6 @@ module Redd
       before_call
       response = @app.call(env)
       after_call
-
       response
     end
 
@@ -81,46 +80,43 @@ module Redd
 
     # Do any cleanup or changes after calling the application.
     def after_call
-      # Clear the session if the app explicitly set 'redd.session' to nil.
-      # XXX: does this seem like a good approach?
-      @request.session.delete(:redd_session) if @request.env['redd.session'].nil?
+      env_session = @request.env['redd.session']
+      if env_session && env_session.client.access
+        # Make sure to flush any changes made to the Session client to the browser.
+        @request.session[:redd_session] = env_session.client.access.to_h
+      else
+        # Clear the session if the app explicitly set 'redd.session' to nil.
+        @request.session.delete(:redd_session)
+      end
     end
 
     # Assigns a single string representing a reddit authentication errors.
-    # TODO: would be preferable if we assigned an exception object instead...
-    def handle_error
-      return 'invalid_state' if @request.GET['state'] != @request.session[:redd_state]
-      return @request.GET['error'] if @request.GET['error']
-      nil
+    def handle_token_error
+      message = nil
+      message = 'invalid_state' if @request.GET['state'] != @request.session[:redd_state]
+      message = @request.GET['error'] if @request.GET['error']
+      raise Redd::TokenRetrievalError, message if message
     end
 
-    # Store the access token and other details in the user's browser.
+    # Store the access token and other details in the user's browser, assigning any errors to
+    # the 'redd.error' env variable.
     def create_session!
       # Skip authorizing if there was an error from the authorization.
-      @request.env['redd.error'] = handle_error
-      if @request.env['redd.error']
-        @request.session.delete(:redd_session)
-        return
-      end
-
+      handle_token_error
       # Try to get a code (the rescue block will also prevent crazy crashes)
       access = @strategy.authenticate(@request.GET['code'])
-      @request.session[:redd_session] = { token: access.to_h, authorized_at: Time.now.to_i }
-    rescue Redd::ResponseError => e
-      @request.env['redd.error'] = e
+      @request.session[:redd_session] = access.to_h
+    rescue Redd::TokenRetrievalError, Redd::ResponseError => error
+      @request.env['redd.error'] = error
     end
 
     # Return a {Redd::Models::Session} based on the hash saved into the browser's session.
     def parse_session
-      session = @request.session[:redd_session]
-      token = session[:token].dup
-      token[:expires_in] = session[:authorized_at] + token[:expires_in] - Time.now.to_i
-
       client = Redd::APIClient.new(
         @strategy,
         user_agent: @user_agent, limit_time: 0, auto_refresh: @auto_refresh
       )
-      client.access = Redd::Models::Access.new(@strategy, token)
+      client.access = Redd::Models::Access.new(@strategy, @request.session[:redd_session])
       Redd::Models::Session.new(client)
     end
   end

@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 module Redd
+  # An error raised by {Redd::Middleware} when there was an error returned by reddit.
+  class TokenRetrievalError < StandardError; end
+
   # An error with the API.
   class APIError < StandardError
     attr_reader :response, :name
