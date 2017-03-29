@@ -68,8 +68,7 @@ get '/' do
   reddit = request.env['redd.session']
 
   if reddit
-    name = request.env['redd.session'].me.name
-    "Hello /u/#{name}! <a href='/logout'>Logout</a>"
+    "Hello /u/#{reddit.me.name}! <a href='/logout'>Logout</a>"
   else
     "<a href='/auth/reddit'>Sign in with reddit</a>"
   end
