@@ -54,7 +54,8 @@ module Redd
       # Stream newly submitted posts.
       def post_stream(**params, &block)
         params[:limit] ||= 100
-        stream = Utilities::Stream.new do |before|
+        stream = Utilities::Stream.new do |previous|
+          before = previous ? previous.first.name : nil
           listing(:new, params.merge(before: before))
         end
         block_given? ? stream.stream(&block) : stream.enum_for(:stream)
@@ -63,7 +64,8 @@ module Redd
       # Stream newly submitted comments.
       def comment_stream(**params, &block)
         params[:limit] ||= 100
-        stream = Utilities::Stream.new do |before|
+        stream = Utilities::Stream.new do |previous|
+          before = previous ? previous.first.name : nil
           listing(:comments, params.merge(before: before))
         end
         block_given? ? stream.stream(&block) : stream.enum_for(:stream)

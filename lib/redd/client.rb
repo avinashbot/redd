@@ -33,6 +33,9 @@ module Redd
     # @option options [Hash] :body the direct body contents
     # @return [Response] the response
     def request(verb, path, options = {})
+      # Uncomment if desperate
+      # puts "#{verb} #{path}: #{options}"
+
       response = connection.request(verb, path, **options)
       Response.new(response.status.code, response.headers, response.body.to_s)
     end

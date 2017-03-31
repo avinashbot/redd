@@ -2,14 +2,14 @@
 
 RSpec.describe Redd::Utilities::Stream do
   describe '#next_request' do
-    it 'calls the loader with the latest processed request' do
+    it 'calls the loader with the previously returned listing' do
       first_listing = true
-      stream = Redd::Utilities::Stream.new do |latest|
+      stream = Redd::Utilities::Stream.new do |previous|
         if first_listing
           first_listing = false
           Redd::Models::Listing.new(nil, children: [double(name: 'newer'), double(name: 'new')])
         else
-          expect(latest).to eq('newer')
+          expect(previous.first.name).to eq('newer')
           Redd::Models::Listing.new(nil, children: [])
         end
       end
