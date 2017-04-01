@@ -405,6 +405,19 @@ module Redd
         remove_relationship(type: 'wikibanned', name: user.name)
       end
 
+      # Upload a subreddit-specific image.
+      # @param file [String, IO] the image file to upload
+      # @param image_type ['jpg', 'png'] the image type
+      # @param upload_type ['img', 'header', 'icon', 'banner'] where to upload the image
+      # @param image_name [String] the name of the image (if upload_type is 'img')
+      # @return [String] the url of the uploaded file
+      def upload_image(file:, image_type:, upload_type:, image_name: nil)
+        file_data = HTTP::FormData::File.new(file)
+        params = { img_type: image_type, upload_type: upload_type, file: file_data }
+        params[:name] = image_name if upload_type.to_s == 'img'
+        @client.post("/r/#{display_name}/api/upload_sr_img", params).body[:img_src]
+      end
+
       private
 
       def default_loader
