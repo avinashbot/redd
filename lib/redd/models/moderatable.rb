@@ -16,11 +16,14 @@ module Redd
       end
 
       # Distinguish a link or comment with a sigil to show that it has been created by a moderator.
-      # @param how [:yes, :no, :admin, :special] how to distinguish the thing
-      # @param sticky [Boolean] (for comments) whether to sticky the comment to the top
-      def distinguish(how = :yes, sticky: nil)
+      # @param how [:yes, :no, :admin, :special, :sticky] how to distinguish the thing
+      # @note :sticky is for comments. see {Submission#make_sticky} for posts.
+      def distinguish(how = :yes)
         params = { id: get_attribute(:name), how: how }
-        params[:sticky] = sticky unless sticky.nil?
+        if how == :sticky
+          params[:how] = :yes
+          params[:sticky] = true
+        end
         @client.post('/api/distinguish', params)
       end
 
