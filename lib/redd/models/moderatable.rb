@@ -15,11 +15,13 @@ module Redd
         @client.post('/api/remove', id: get_attribute(:name), spam: spam)
       end
 
-      # Distinguish a link or comment with a sigil to show that it has
-      # been created by a moderator.
+      # Distinguish a link or comment with a sigil to show that it has been created by a moderator.
       # @param how [:yes, :no, :admin, :special] how to distinguish the thing
-      def distinguish(how = :yes)
-        @client.post('/api/distinguish', id: get_attribute(:name), how: how)
+      # @param sticky [Boolean] (for comments) whether to sticky the comment to the top
+      def distinguish(how = :yes, sticky: nil)
+        params = { id: get_attribute(:name), how: how }
+        params[:sticky] = sticky unless sticky.nil?
+        @client.post('/api/distinguish', params)
       end
 
       # Remove the sigil that shows a thing was created by a moderator.

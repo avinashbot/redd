@@ -55,7 +55,7 @@ module Redd
 
       # Deal with those annoying errors that come with perfect 200 status codes.
       def api_error(res)
-        return nil unless res.body[:json] && res.body[:json][:errors] &&
+        return nil unless res.body.is_a?(Hash) && res.body[:json] && res.body[:json][:errors] &&
                           !res.body[:json][:errors].empty?
         APIError.new(res)
       end
