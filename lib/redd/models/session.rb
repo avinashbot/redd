@@ -125,7 +125,7 @@ module Redd
         end
       end
 
-      # @return [Array<User>] users blocked by the logged-in user
+      # @return [Array<User>] users trusted by the logged-in user
       def trusted
         @client.get('/prefs/trusted').body[:data][:children].map do |h|
           User.new(@client, name: h[:name], id: h[:id].sub('t2_', ''), since: h[:date])
