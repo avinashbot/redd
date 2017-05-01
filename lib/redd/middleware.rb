@@ -112,11 +112,13 @@ module Redd
 
     # Return a {Redd::Models::Session} based on the hash saved into the browser's session.
     def parse_session
-      client = Redd::APIClient.new(
-        @strategy,
-        user_agent: @user_agent, limit_time: 0, auto_refresh: @auto_refresh
-      )
-      client.access = Redd::Models::Access.new(@strategy, @request.session[:redd_session])
+      parsed_session = @request.session[:redd_session]
+                               .each_with_object({}) { |(k, v), h| h[k.to_sym] = v }
+      client = Redd::APIClient.new(@strategy,
+                                   user_agent: @user_agent,
+                                   limit_time: 0,
+                                   auto_refresh: @auto_refresh)
+      client.access = Redd::Models::Access.new(@strategy, parsed_session)
       Redd::Models::Session.new(client)
     end
   end
