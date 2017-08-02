@@ -25,6 +25,11 @@ module Redd
         raise 'abstract method: this strategy cannot authenticate with reddit'
       end
 
+      # @return [Boolean] whether the access object can be refreshed
+      def refreshable?(_access)
+        false
+      end
+
       # @abstract Refresh the authentication and return the refreshed access
       # @param _access [Access, String] the access to refresh
       # @return [Access] the new access

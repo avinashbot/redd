@@ -18,6 +18,11 @@ module Redd
         request_access('authorization_code', code: code, redirect_uri: @redirect_uri)
       end
 
+      # @return [Boolean] whether the access has a refresh token
+      def refreshable?(access)
+        access.permanent?
+      end
+
       # Refresh the authentication and return a new refreshed access
       # @return [Access] the new access
       def refresh(access)

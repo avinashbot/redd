@@ -12,6 +12,13 @@ module Redd
         request_access('client_credentials')
       end
 
+      # Since the access isn't used for refreshing, the strategy is inherently
+      # refreshable.
+      # @return [true]
+      def refreshable?(_access)
+        true
+      end
+
       # Refresh the authentication and return the refreshed access
       # @return [Access] the new access
       def refresh(_)
