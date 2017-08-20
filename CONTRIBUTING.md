@@ -4,7 +4,7 @@ This is the documentation that contains information on contributing to Redd.
 Note that I would appreciate contributions to this document itself.
 
 There isn't an official code of conduct, just
-[don't be a dick](https://twitter.com/wilw/status/5966220832.).
+[don't be a dick](https://twitter.com/wilw/status/5966220832).
 
 ### Filing an Issue / Making a Pull Request
 
