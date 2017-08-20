@@ -31,6 +31,8 @@
 
 ### Demo
 
+#### Reddit Bot
+
 ```ruby
 require 'redd'
 
@@ -50,6 +52,8 @@ session.subreddit('all').comment_stream do |comment|
   end
 end
 ```
+
+#### Web Application
 
 ```ruby
 require 'sinatra'
@@ -98,10 +102,7 @@ end
 Check out the [**official subreddit**](https://www.reddit.com/r/Redd) or raise a [**GitHub issue**](https://github.com/avinashbot/redd/issues/new).
 
 #### How do I request a feature / contribute?
-
-- The quickest way to get a feature into Redd is to raise a [**GitHub issue**](https://github.com/avinashbot/redd/issues/new).
-- Pull requests are also appreciated!
-- Don't hesitate! There are no stupid questions!
+Take a look at  [**CONTRIBUTING.md**](https://github.com/avinashbot/redd/blob/master/CONTRIBUTING.md).
 
 #### How can I contact you?
 [Reddit](https://www.reddit.com/message/compose/?to=Mustermind) /
