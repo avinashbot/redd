@@ -45,9 +45,9 @@ server.mount_proc '/authenticate' do |_, res|
       state: '0',
       redirect_uri: 'http://localhost:8000/redirect',
       duration: 'permanent',
-      scope: %w(account creddits edit flair history identity livemanage modconfig modcontributors
+      scope: %w[account creddits edit flair history identity livemanage modconfig modcontributors
                 modflair modlog modmail modothers modposts modself modwiki mysubreddits
-                privatemessages read report save submit subscribe vote wikiedit wikiread)
+                privatemessages read report save submit subscribe vote wikiedit wikiread]
     )
   )
 end

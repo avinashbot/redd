@@ -32,13 +32,20 @@ module Redd
       private
 
       def after_initialize
-        @attributes[:replies] =
-          if @attributes[:replies].is_a?(Hash)
-            @client.unmarshal(@attributes[:replies])
-          else
-            Models::Listing.new(@client, children: [], after: nil, before: nil)
-          end
-        @attributes[:author] = User.from_id(@client, @attributes.fetch(:author))
+        if @attributes[:replies]
+          @attributes[:replies] =
+            if @attributes[:replies].is_a?(Hash)
+              @client.unmarshal(@attributes[:replies])
+            else
+              Models::Listing.new(@client, children: [], after: nil, before: nil)
+            end
+        end
+
+        if @attributes[:author]
+          @attributes[:author] = User.from_id(@client, @attributes.fetch(:author))
+        end
+
+        return unless @attributes[:subreddit]
         @attributes[:subreddit] = Subreddit.from_id(@client, @attributes.fetch(:subreddit))
       end
 
@@ -54,7 +61,9 @@ module Redd
 
       def load_without_comments
         id = @attributes.fetch(:id) { @attributes.fetch(:name).sub('t1_', '') }
-        @client.get('/api/info', id: "t1_#{id}").body[:data][:children][0][:data]
+        response = @client.get('/api/info', id: "t1_#{id}").body[:data][:children][0][:data]
+        response.delete(:replies) # Make sure replies are lazy-loaded later.
+        response
       end
     end
   end
