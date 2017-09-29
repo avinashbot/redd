@@ -95,7 +95,7 @@ module Redd
       message = nil
       message = 'invalid_state' if @request.GET['state'] != @request.session[:redd_state]
       message = @request.GET['error'] if @request.GET['error']
-      raise Redd::TokenRetrievalError, message if message
+      raise Errors::TokenRetrievalError, message if message
     end
 
     # Store the access token and other details in the user's browser, assigning any errors to
@@ -106,7 +106,7 @@ module Redd
       # Try to get a code (the rescue block will also prevent crazy crashes)
       access = @strategy.authenticate(@request.GET['code'])
       @request.session[:redd_session] = access.to_h
-    rescue Redd::TokenRetrievalError, Redd::ResponseError => error
+    rescue Errors::TokenRetrievalError, Errors::ResponseError => error
       @request.env['redd.error'] = error
     end
 

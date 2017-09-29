@@ -8,6 +8,8 @@ require_relative 'redd/version'
 Dir[File.join(__dir__, 'redd', 'models', '*.rb')].each { |f| require f }
 # Authentication Clients
 Dir[File.join(__dir__, 'redd', 'auth_strategies', '*.rb')].each { |f| require f }
+# Error Classes
+require_relative 'redd/errors'
 # Regular Client
 require_relative 'redd/api_client'
 

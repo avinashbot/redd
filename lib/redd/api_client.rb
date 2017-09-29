@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require_relative 'client'
-require_relative 'error'
 require_relative 'utilities/error_handler'
 require_relative 'utilities/rate_limiter'
 require_relative 'utilities/unmarshaller'
@@ -92,7 +91,7 @@ module Redd
 
     def handle_retryable_errors
       response = yield
-    rescue Redd::ServerError, HTTP::TimeoutError => e
+    rescue Errors::ServerError, HTTP::TimeoutError => e
       # FIXME: maybe only retry GET requests, for obvious reasons?
       @failures += 1
       raise e if @failures > @max_retries

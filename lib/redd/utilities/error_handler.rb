@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative '../error'
+require_relative '../errors'
 
 module Redd
   module Utilities
@@ -11,14 +11,14 @@ module Redd
       INSUFFICIENT_SCOPE = 'insufficient_scope'
 
       HTTP_ERRORS = {
-        400 => Redd::BadRequest,
-        403 => Redd::Forbidden,
-        404 => Redd::NotFound,
-        429 => Redd::TooManyRequests,
-        500 => Redd::ServerError,
-        502 => Redd::ServerError,
-        503 => Redd::ServerError,
-        504 => Redd::ServerError
+        400 => Errors::BadRequest,
+        403 => Errors::Forbidden,
+        404 => Errors::NotFound,
+        429 => Errors::TooManyRequests,
+        500 => Errors::ServerError,
+        502 => Errors::ServerError,
+        503 => Errors::ServerError,
+        504 => Errors::ServerError
       }
 
       def check_error(res, raw:)

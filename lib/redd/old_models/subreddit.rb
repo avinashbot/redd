@@ -271,7 +271,7 @@ module Redd
       def stylesheet
         url = @client.get("/r/#{get_attribute(:display_name)}/stylesheet").headers['location']
         HTTP.get(url).body.to_s
-      rescue Redd::NotFound
+      rescue Errors::NotFound
         nil
       end
 
@@ -432,7 +432,7 @@ module Redd
       # Load the attributes using the subreddit fullname (not so best option).
       def load_from_fullname
         response = @client.get('/api/info', id: get_attribute(:name))
-        raise Redd::NotFound.new(response) if response.body[:data][:children].empty?
+        raise Errors::NotFound.new(response) if response.body[:data][:children].empty?
         response.body[:data][:children][0][:data]
       end
 
