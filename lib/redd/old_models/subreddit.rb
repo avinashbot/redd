@@ -419,7 +419,21 @@ module Redd
       private
 
       def default_loader
-        @client.get("/r/#{@attributes.fetch(:display_name)}/about").body[:data]
+        return load_from_display_name if @attributes.key?(:display_name)
+        return load_from_fullname if @attributes.key?(:name)
+        get_attribute(:display_name) # Raises an error that display_name wasn't found.
+      end
+
+      # Return the attributes using the display_name (best option).
+      def load_from_display_name
+        @client.get("/r/#{get_attribute(:display_name)}/about").body[:data]
+      end
+
+      # Load the attributes using the subreddit fullname (not so best option).
+      def load_from_fullname
+        response = @client.get('/api/info', id: get_attribute(:name))
+        raise Redd::NotFound.new(response) if response.body[:data][:children].empty?
+        response.body[:data][:children][0][:data]
       end
 
       def add_relationship(**params)

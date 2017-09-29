@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
-require_relative 'model'
+require_relative 'lazy_model'
 require_relative 'searchable'
 
 module Redd
   module Models
     # The starter class.
-    class Session < Model
+    class Session < BasicModel
       include Searchable
 
       # @return [ModMail] the new modmail
@@ -38,7 +38,7 @@ module Redd
       # @param name [String] the username
       # @return [User]
       def user(name)
-        User.new(@client, name: name)
+        User.from_id(@client, name)
       end
 
       # Get a (lazily loaded) subreddit by its name.
@@ -63,7 +63,7 @@ module Redd
       # Get submissions or comments by their fullnames.
       # @param fullnames [String, Array<String>] one or an array of fullnames (e.g. t3_abc1234)
       # @return [Listing<Submission, Comment>]
-      # @deprecated Try the lazier {#from_fullnames} instead.
+      # @deprecated Try the more lazy {#from_fullname} instead.
       def from_ids(fullnames)
         # XXX: Could we use better methods for t1_ and t3_?
         @client.model(:get, '/api/info', id: Array(fullnames).join(','))
@@ -72,7 +72,7 @@ module Redd
       # Create lazily-loaded objects from their fullnames (e.g. t1_abc123).
       # @param fullname [String, Array<String>] fullname for a submission, comment, or subreddit.
       # @return [Array<Submission, Comment, Subreddit>]
-      def from_fullnames(*fullnames)
+      def from_fullname(*fullnames)
         fullnames.map do |name|
           if name.start_with?('t1_')
             Comment.from_id(@client, name)

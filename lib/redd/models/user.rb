@@ -1,52 +1,13 @@
 # frozen_string_literal: true
 
-require_relative 'lazy_model'
+require_relative 'model'
 require_relative 'messageable'
 
 module Redd
   module Models
     # A reddit user.
-    class User < LazyModel
+    class User < Model
       include Messageable
-
-      # Create a User from their name.
-      # @param client [APIClient] the api client to initialize the object with
-      # @param id [String] the username
-      # @return [User]
-      def self.from_id(client, id)
-        new(client, name: id)
-      end
-
-      # Unblock a previously blocked user.
-      # @param me [User] (optional) the person doing the unblocking
-      def unblock(me: nil)
-        my_id = 't2_' + (me.is_a?(User) ? user.id : @client.get('/api/v1/me').body[:id])
-        # Talk about an unintuitive endpoint
-        @client.post('/api/unfriend', container: my_id, name: get_attribute(:name), type: 'enemy')
-      end
-
-      # Compose a message to the moderators of a subreddit.
-      #
-      # @param subject [String] the subject of the message
-      # @param text [String] the message text
-      # @param from [Subreddit, nil] the subreddit to send the message on behalf of
-      def send_message(subject:, text:, from: nil)
-        super(to: get_attribute(:name), subject: subject, text: text, from: from)
-      end
-
-      # Add the user as a friend.
-      # @param note [String] a note for the friend
-      def friend(note = nil)
-        name = get_attribute(:name)
-        body = JSON.generate(note ? { name: name, note: note } : { name: name })
-        @client.request(:put, "/api/v1/me/friends/#{name}", body: body)
-      end
-
-      # Unfriend the user.
-      def unfriend
-        name = get_attribute(:name)
-        @client.request(:delete, "/api/v1/me/friends/#{name}", raw: true, form: { id: name })
-      end
 
       # Get the appropriate listing.
       # @param type [:overview, :submitted, :comments, :liked, :disliked, :hidden, :saved, :gilded]
@@ -65,7 +26,7 @@ module Redd
       # @return [Listing<Submission>]
       def listing(type, **params)
         params[:t] = params.delete(:time) if params.key?(:time)
-        @client.model(:get, "/user/#{get_attribute(:name)}/#{type}.json", params)
+        client.model(:get, "/user/#{read_attribute(:name)}/#{type}.json", params)
       end
 
       # @!method overview(**params)
@@ -78,20 +39,173 @@ module Redd
       # @!method gilded(**params)
       #
       # @see #listing
-      %i(overview submitted comments liked disliked hidden saved gilded).each do |type|
+      %i[overview submitted comments liked disliked hidden saved gilded].each do |type|
         define_method(type) { |**params| listing(type, **params) }
+      end
+
+      # Compose a message to the moderators of a subreddit.
+      #
+      # @param subject [String] the subject of the message
+      # @param text [String] the message text
+      # @param from [Subreddit, nil] the subreddit to send the message on behalf of
+      def send_message(subject:, text:, from: nil)
+        super(to: get_attribute(:name), subject: subject, text: text, from: from)
+      end
+
+      # Unblock a previously blocked user.
+      # @param me [User] (optional) the person doing the unblocking
+      def unblock(me: nil)
+        my_id = 't2_' + (me.is_a?(User) ? user.id : @client.get('/api/v1/me').body[:id])
+        # Talk about an unintuitive endpoint
+        @client.post('/api/unfriend', container: my_id, name: get_attribute(:name), type: 'enemy')
+      end
+
+      # Add the user as a friend.
+      # @param note [String] a note for the friend
+      def friend(note = nil)
+        name = get_attribute(:name)
+        body = JSON.generate(note ? { name: name, note: note } : { name: name })
+        @client.request(:put, "/api/v1/me/friends/#{name}", body: body)
+      end
+
+      # Unfriend the user.
+      def unfriend
+        name = get_attribute(:name)
+        @client.request(:delete, "/api/v1/me/friends/#{name}", raw: true, form: { id: name })
       end
 
       # Gift a redditor reddit gold.
       # @param months [Integer] the number of months of gold to gift
       def gift_gold(months: 1)
-        @client.post("/api/v1/gold/give/#{get_attribute(:name)}", months: months)
+        @client.post("/api/v1/gold/give/#{read_attribute(:name)}", months: months)
       end
+
+      # @!attribute [r] name
+      #   @return [String] the user's username
+      property :name
+
+      # @!attribute [r] employee?
+      #   @return [Boolean] whether the user is a reddit employee
+      property :employee?, from: :is_employee
+
+      # @!attribute [r] features
+      #   @return [Hash] a hash of features
+      property :features
+
+      # @!attribute [r] friend?
+      #   @return [Boolean] whether the user is your friend
+      property :friend?, from: :is_friend
+
+      # @!attribute [r] no_profanity?
+      #   @return [Boolean] whether the user chooses to filter profanity
+      property :no_profanity?, from: :pref_no_profanity
+
+      # @!attribute [r] suspended?
+      #   @return [Boolean] whether the user is suspended
+      property :suspended?, from: :is_suspended
+
+      # @!attribute [r] geopopular
+      #   @return [String]
+      property :geopopular, from: :pref_geopopular
+
+      # @!attribute [r] subreddit
+      #   @return [Subreddit] the user's personal "subreddit"
+      property :subreddit, with: ->(name) { Subreddit.new(client, display_name: name) if name }
+
+      # @!attribute [r] sponsor?
+      #   @return [Boolean]
+      property :sponsor?, from: :is_sponsor
+
+      # @!attribute [r] gold_expiration
+      #   @return [Time, nil] the time when the user's gold expires
+      property :gold_expiration, with: ->(epoch) { Time.at(epoch) if epoch }
+
+      # @!attribute [r] id
+      #   @return [String] the user's base36 id
+      property :id
+
+      # @!attribute [r] suspension_expiration
+      #   @return [Time, nil] the time when the user's suspension expires
+      property :suspension_expiration, from: :suspension_expiration_utc,
+                                       with: ->(epoch) { Time.at(epoch) if epoch }
+
+      # @!attribute [r] verified?
+      #   @return [Boolean] whether the user is verified (?)
+      property :verified?, from: :verified
+
+      # @!attribute [r] new_modmail_exists?
+      #   @return [Boolean] whether the user has mail in the new modmail
+      property :new_modmail_exists?, from: :new_modmail_exists
+
+      # @!attribute [r] over_18?
+      #   @return [Boolean] whether the user has indicated they're over 18
+      property :over_18?, from: :over_18
+
+      # @!attribute [r] gold?
+      #   @return [Boolean] whether the user currently has gold
+      property :gold?, from: :is_gold
+
+      # @!attribute [r] mod?
+      #   @return [Boolean] whether the user is a moderator
+      property :mod?, from: :is_mod
+
+      # @!attribute [r] has_verified_email?
+      #   @return [Boolean] whether the user's email has been verified
+      property :has_verified_email?, from: :has_verified_email
+
+      # @!attribute [r] has_mod_mail?
+      #   @return [Boolean] whether the user has old-style mod mail
+      property :has_mod_mail?, from: :has_mod_mail
+
+      # @!attribute [r] hidden_from_robots?
+      #   @return [Boolean] whether the user chose to hide from Google
+      property :hidden_from_robots?, from: :hide_from_robots
+
+      # @!attribute [r] link_karma
+      #   @return [Integer] the user's link karma
+      property :link_karma
+
+      # @!attribute [r] inbox_count
+      #   @return [Integer] the number of messages in the user's inbox
+      property :inbox_count
+
+      # @!attribute [r] show_top_karma_subreddits?
+      #   @return [Boolean] whether top karma subreddits are shown on the user's page
+      property :show_top_karma_subreddits?, from: :pref_top_karma_subreddits
+
+      # @!attribute [r] has_mail?
+      #   @return [Boolean] whether the user has new messages
+      property :has_mail?, from: :has_mail
+
+      # @!attribute [r] show_snoovatar?
+      #   @return [Boolean] whether the user's snoovatar is shown
+      property :show_snoovatar?, from: :pref_show_snoovatar
+
+      # @!attribute [r] created_at
+      #   @return [Time] the time the user signed up
+      property :created_at, from: :created_utc, with: ->(epoch) { Time.at(epoch) }
+
+      # @!attribute [r] gold_creddits
+      #   @return [Integer] the number of gold creddits the user has
+      property :gold_creddits
+
+      # @!attribute [r] in_beta?
+      #   @return [Boolean] whether the user is in beta
+      property :in_beta?, from: :in_beta
+
+      # @!attribute [r] comment_karma
+      #   @return [Integer] the user's comment karma
+      property :comment_karma
+
+      # @!attribute [r] has_subscribed?
+      #   @return [Boolean]
+      property :has_subscribed?, from: :has_subscribed
 
       private
 
-      def default_loader
-        @client.get("/user/#{@attributes.fetch(:name)}/about").body[:data]
+      def lazer_reload
+        self.fully_loaded = true
+        client.get("/user/#{read_attribute(:name)}/about").body[:data]
       end
     end
   end

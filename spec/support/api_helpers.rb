@@ -4,14 +4,14 @@ require_relative 'stub_client'
 
 module APIHelpers
   def client
-    @client ||= StubClient.new
+    StubClient.new
   end
 
   def stub_api(verb, path, params = {}, &block)
     if params.empty?
-      allow(client).to receive(verb, &block).with(path)
+      allow_any_instance_of(StubClient).to receive(verb, &block).with(path)
     else
-      allow(client).to receive(verb, &block).with(path, params)
+      allow_any_instance_of(StubClient).to receive(verb, &block).with(path, params)
     end
   end
 

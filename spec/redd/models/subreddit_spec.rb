@@ -3,9 +3,12 @@
 RSpec.describe Redd::Models::Subreddit do
   describe '#wiki_pages' do
     it 'returns an array of strings' do
-      stub_api(:get, '/r/test/wiki/pages') { response(kind: 'wikipagelisting', data: %w(one two)) }
+      stub_api(:get, '/r/test/wiki/pages') do
+        response(kind: 'wikipagelisting', data: %w[one two])
+      end
+
       subreddit = Redd::Models::Subreddit.from_id(client, 'test')
-      expect(subreddit.wiki_pages).to match_array(%w(one two))
+      expect(subreddit.wiki_pages).to match_array(%w[one two])
     end
   end
 
