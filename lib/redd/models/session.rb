@@ -45,7 +45,7 @@ module Redd
       # @param display_name [String] the subreddit's display name
       # @return [Subreddit]
       def subreddit(display_name)
-        Subreddit.from_id(client, display_name)
+        Subreddit.new(client, display_name: display_name)
       end
 
       # @return [Array<Multireddit>] array of multireddits belonging to the user
