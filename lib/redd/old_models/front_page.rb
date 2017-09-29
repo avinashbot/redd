@@ -47,7 +47,7 @@ module Redd
       # @!method gilded(**params)
       #
       # @see #listing
-      %i(hot new top controversial comments rising gilded).each do |sort|
+      %i[hot new top controversial comments rising gilded].each do |sort|
         define_method(sort) { |**params| listing(sort, **params) }
       end
 

@@ -18,7 +18,7 @@ RSpec.describe Redd::Utilities::Stream do
     end
 
     it 'calls the yielded block in the reverse order' do
-      expected_order = %w(new newer)
+      expected_order = %w[new newer]
       stream = Redd::Utilities::Stream.new do
         Redd::Models::Listing.new(nil, children: [double(name: 'newer'), double(name: 'new')])
       end

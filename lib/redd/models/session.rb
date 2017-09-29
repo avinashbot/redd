@@ -11,7 +11,7 @@ module Redd
 
       # @return [ModMail] the new modmail
       def mod_mail
-        ModMail.new(@client)
+        ModMail.new(client)
       end
 
       # @return [LiveThread] the live thread
@@ -21,43 +21,43 @@ module Redd
 
       # @return [FrontPage] the user's front page
       def front_page
-        FrontPage.new(@client)
+        FrontPage.new(client)
       end
 
       # @return [Hash] a breakdown of karma over subreddits
       def karma_breakdown
-        @client.get('/api/v1/me/karma').body[:data]
+        client.get('/api/v1/me/karma').body[:data]
       end
 
       # @return [User] the logged-in user
       def me
-        User.new(@client) { |client| client.get('/api/v1/me').body }
+        Self.new(client)
       end
 
       # Get a (lazily loaded) reddit user by their name.
       # @param name [String] the username
       # @return [User]
       def user(name)
-        User.new(@client, name: name)
+        User.new(client, name: name)
       end
 
       # Get a (lazily loaded) subreddit by its name.
       # @param display_name [String] the subreddit's display name
       # @return [Subreddit]
       def subreddit(display_name)
-        Subreddit.from_id(@client, display_name)
+        Subreddit.from_id(client, display_name)
       end
 
       # @return [Array<Multireddit>] array of multireddits belonging to the user
       def my_multis
-        @client.get('/api/multi/mine').body.map { |m| @client.unmarshal(m) }
+        client.get('/api/multi/mine').body.map { |m| client.unmarshal(m) }
       end
 
       # Get a (lazily loaded) multi by its path.
       # @param path [String] the multi's path, surrounded by a leading and trailing /
       # @return [Multireddit]
       def multi(path)
-        Multireddit.from_id(@client, path)
+        Multireddit.from_id(client, path)
       end
 
       # Get submissions or comments by their fullnames.
@@ -66,20 +66,20 @@ module Redd
       # @deprecated Try the lazier {#from_fullnames} instead.
       def from_ids(fullnames)
         # XXX: Could we use better methods for t1_ and t3_?
-        @client.model(:get, '/api/info', id: Array(fullnames).join(','))
+        client.model(:get, '/api/info', id: Array(fullnames).join(','))
       end
 
       # Create lazily-loaded objects from their fullnames (e.g. t1_abc123).
-      # @param fullname [String, Array<String>] fullname for a submission, comment, or subreddit.
+      # @param fullnames [String] fullname for a submission, comment, or subreddit.
       # @return [Array<Submission, Comment, Subreddit>]
       def from_fullnames(*fullnames)
         fullnames.map do |name|
           if name.start_with?('t1_')
-            Comment.from_id(@client, name)
+            Comment.from_id(client, name)
           elsif name.start_with?('t3_')
-            Submission.from_id(@client, name)
+            Submission.from_id(client, name)
           elsif name.start_with?('t5_')
-            Subreddit.new(@client, name: name)
+            Subreddit.new(client, name: name)
           else
             raise "unknown fullname #{name}"
           end
@@ -90,7 +90,7 @@ module Redd
       # @param url [String] the object's url
       # @return [Submission, Comment, nil] the object, or nil if not found
       def from_url(url)
-        @client.model(:get, '/api/info', url: url).first
+        client.model(:get, '/api/info', url: url).first
       end
 
       # Return a listing of the user's inbox (including comment replies and private messages).
@@ -104,17 +104,17 @@ module Redd
       # @option params [1..100] :limit (25) the maximum number of things to return
       # @return [Listing<Comment, PrivateMessage>]
       def my_messages(category: 'inbox', mark: false, **params)
-        @client.model(:get, "/message/#{category}.json", params.merge(mark: mark))
+        client.model(:get, "/message/#{category}.json", params.merge(mark: mark))
       end
 
       # Mark all messages as read.
       def read_all_messages
-        @client.post('/api/read_all_messages')
+        client.post('/api/read_all_messages')
       end
 
       # @return [Hash] the user's preferences
       def my_preferences
-        @client.get('/api/v1/me/prefs').body
+        client.get('/api/v1/me/prefs').body
       end
 
       # Edit the user's preferences.
@@ -122,7 +122,7 @@ module Redd
       # @return [Hash] the new preferences
       # @see #my_preferences
       def edit_preferences(new_prefs = {})
-        @client.request(
+        client.request(
           :patch, '/api/v1/me/prefs',
           headers: { 'Content-Type' => 'application/json' },
           body: JSON.generate(new_prefs)
@@ -131,28 +131,28 @@ module Redd
 
       # @return [Array<User>] the logged-in user's friends
       def friends
-        @client.get('/api/v1/me/friends').body[:data][:children].map do |h|
-          User.new(@client, name: h[:name], id: h[:id].sub('t2_', ''), since: h[:date])
+        client.get('/api/v1/me/friends').body[:data][:children].map do |h|
+          User.new(client, name: h[:name], id: h[:id].sub('t2_', ''), since: h[:date])
         end
       end
 
       # @return [Array<User>] users blocked by the logged-in user
       def blocked
-        @client.get('/prefs/blocked').body[:data][:children].map do |h|
-          User.new(@client, name: h[:name], id: h[:id].sub('t2_', ''), since: h[:date])
+        client.get('/prefs/blocked').body[:data][:children].map do |h|
+          User.new(client, name: h[:name], id: h[:id].sub('t2_', ''), since: h[:date])
         end
       end
 
       # @return [Array<User>] users trusted by the logged-in user
       def trusted
-        @client.get('/prefs/trusted').body[:data][:children].map do |h|
-          User.new(@client, name: h[:name], id: h[:id].sub('t2_', ''), since: h[:date])
+        client.get('/prefs/trusted').body[:data][:children].map do |h|
+          User.new(client, name: h[:name], id: h[:id].sub('t2_', ''), since: h[:date])
         end
       end
 
       # @return [Array<String>] a list of categories the user's items are saved in
       def saved_categories
-        @client.get('/api/saved_categories').body
+        client.get('/api/saved_categories').body
       end
 
       # Return a listing of the user's subreddits.
@@ -165,7 +165,7 @@ module Redd
       # @option params [1..100] :limit (25) the maximum number of things to return
       # @return [Listing<Subreddit>]
       def my_subreddits(type, **params)
-        @client.model(:get, "/subreddits/mine/#{type}", params)
+        client.model(:get, "/subreddits/mine/#{type}", params)
       end
     end
   end

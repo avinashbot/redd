@@ -88,29 +88,29 @@ module Redd
     private
 
     def filter_auth(opts)
-      opts.select { |k| %i(client_id secret username password redirect_uri user_agent).include?(k) }
+      opts.select { |k| %i[client_id secret username password redirect_uri user_agent].include?(k) }
     end
 
     def filter_api(opts)
-      opts.select { |k| %i(user_agent limit_time max_retries auto_refresh).include?(k) }
+      opts.select { |k| %i[user_agent limit_time max_retries auto_refresh].include?(k) }
     end
 
     def script(opts = {})
-      return unless %i(client_id secret username password).all? { |o| opts.include?(o) }
+      return unless %i[client_id secret username password].all? { |o| opts.include?(o) }
       auth = AuthStrategies::Script.new(filter_auth(opts))
       api = APIClient.new(auth, **filter_api(opts))
       api.tap(&:authenticate)
     end
 
     def web(opts = {})
-      return unless %i(client_id redirect_uri code).all? { |o| opts.include?(o) }
+      return unless %i[client_id redirect_uri code].all? { |o| opts.include?(o) }
       auth = AuthStrategies::Web.new(**filter_auth(opts))
       api = APIClient.new(auth, **filter_api(opts))
       api.tap { |c| c.authenticate(opts[:code]) }
     end
 
     def userless(opts = {})
-      return unless %i(client_id secret).all? { |o| opts.include?(o) }
+      return unless %i[client_id secret].all? { |o| opts.include?(o) }
       auth = AuthStrategies::Userless.new(filter_auth(opts))
       api = APIClient.new(auth, **filter_api(opts))
       api.tap(&:authenticate)

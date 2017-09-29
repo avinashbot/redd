@@ -19,7 +19,7 @@ module Redd
         502 => Redd::ServerError,
         503 => Redd::ServerError,
         504 => Redd::ServerError
-      }.freeze
+      }
 
       def check_error(res, raw:)
         # Check for status code-based errors first and return it if we found one.

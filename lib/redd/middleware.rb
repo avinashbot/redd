@@ -22,7 +22,7 @@ module Redd
     #   redirects a user to reddit
     def initialize(app, opts = {})
       @app = app
-      strategy_opts = opts.select { |k| %i(user_agent client_id secret redirect_uri).include?(k) }
+      strategy_opts = opts.select { |k| %i[user_agent client_id secret redirect_uri].include?(k) }
       @strategy = Redd::AuthStrategies::Web.new(strategy_opts)
 
       @user_agent   = opts.fetch(:user_agent, "Redd:Web Application:v#{Redd::VERSION} (by unknown)")
