@@ -16,7 +16,7 @@ module Redd
 
       # @return [LiveThread] the live thread
       def live_thread(id)
-        LiveThread.from_id(client, id)
+        LiveThread.new(client, id: id)
       end
 
       # @return [FrontPage] the user's front page
@@ -57,7 +57,7 @@ module Redd
       # @param path [String] the multi's path, surrounded by a leading and trailing /
       # @return [Multireddit]
       def multi(path)
-        Multireddit.from_id(client, path)
+        Multireddit.new(client, path: path)
       end
 
       # Get submissions or comments by their fullnames.

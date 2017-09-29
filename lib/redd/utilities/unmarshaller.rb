@@ -17,7 +17,7 @@ module Redd
         'wikipage'     => Models::WikiPage,
         'modaction'    => Models::ModAction,
         'LabeledMulti' => Models::Multireddit,
-        # 'LiveUpdate'   => Models::LiveThread::LiveUpdate
+        'LiveUpdate'   => Models::LiveUpdate
       }
 
       def initialize(client)

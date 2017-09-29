@@ -38,14 +38,14 @@ module Redd
       def invalid_access_error(res)
         return nil unless res.code == 401 && res.headers[AUTH_HEADER] &&
                           res.headers[AUTH_HEADER].include?(INVALID_TOKEN)
-        InvalidAccess.new(res)
+        Errors::InvalidAccess.new(res)
       end
 
       # Deal with an error caused by not having enough the correct scope
       def insufficient_scope_error(res)
         return nil unless res.code == 403 && res.headers[AUTH_HEADER] &&
                           res.headers[AUTH_HEADER].include?(INSUFFICIENT_SCOPE)
-        InsufficientScope.new(res)
+        Errors::InsufficientScope.new(res)
       end
 
       # Deal with an error signalled by the HTTP response code.
@@ -57,7 +57,7 @@ module Redd
       def api_error(res)
         return nil unless res.body.is_a?(Hash) && res.body[:json] && res.body[:json][:errors] &&
                           !res.body[:json][:errors].empty?
-        APIError.new(res)
+        Errors::APIError.new(res)
       end
     end
   end
