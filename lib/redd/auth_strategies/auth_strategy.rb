@@ -60,7 +60,7 @@ module Redd
       def request_access(grant_type, options = {})
         response = post('/api/v1/access_token', { grant_type: grant_type }.merge(options))
         raise AuthenticationError.new(response) if response.body.key?(:error)
-        Models::Access.new(self, response.body)
+        Models::Access.new(response.body)
       end
     end
   end

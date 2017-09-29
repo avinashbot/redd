@@ -1,8 +1,11 @@
 AllCops:
-  TargetRubyVersion: 2.3
+  TargetRubyVersion: 2.1
 
 Metrics/LineLength:
   Max: 100
+
+Style/MutableConstant:
+  Enabled: false
 
 # Dumb, but also brand new.
 Style/NumericPredicate:

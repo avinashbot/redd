@@ -13,7 +13,7 @@ module Redd
       def send_message(to:, subject:, text:, from: nil)
         params = { to: to, subject: subject, text: text }
         params[:from_sr] = from.display_name if from
-        @client.post('/api/compose', params)
+        client.post('/api/compose', params)
       end
     end
   end

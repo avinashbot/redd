@@ -78,7 +78,7 @@ module Redd
       # @!method gilded(**params)
       #
       # @see #listing
-      %i(overview submitted comments liked disliked hidden saved gilded).each do |type|
+      %i[overview submitted comments liked disliked hidden saved gilded].each do |type|
         define_method(type) { |**params| listing(type, **params) }
       end
 

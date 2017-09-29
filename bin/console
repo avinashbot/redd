@@ -2,8 +2,8 @@
 # frozen_string_literal: true
 
 require 'webrick'
-require 'redd'
 require 'pry'
+require_relative '../lib/redd'
 
 # The REPL session to initialize Pry in.
 module Reddit
@@ -20,7 +20,7 @@ server = WEBrick::HTTPServer.new(
 )
 
 server.mount_proc '/' do |_, res|
-  res.body = <<-EOS
+  res.body = <<-HTML
     <!doctype html>
     <title>Redd Quickstart</title>
     <style>
@@ -33,7 +33,7 @@ server.mount_proc '/' do |_, res|
       <a href="/authenticate" target="_blank" id="btn">Start</a>
       <span>a new session in your terminal?</span>
     </div>
-  EOS
+  HTML
 end
 
 server.mount_proc '/authenticate' do |_, res|
@@ -55,11 +55,11 @@ end
 server.mount_proc '/redirect' do |req, res|
   err = req.query['error']
   should_exit = err.nil? || err == 'access_denied'
-  res.body = <<-EOS
+  res.body = <<-HTML
     <!doctype html>
     <title>Done!</title>
     #{should_exit ? '<script>window.close();</script>' : "<p>Uh oh, there was an error: #{err}</p>"}
-  EOS
+  HTML
 
   unless err
     Reddit.reddit = Redd.it(

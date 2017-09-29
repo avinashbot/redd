@@ -25,9 +25,9 @@ module Redd
         if params[:restrict_to]
           subreddit = params.delete(:restrict_to)
           params[:restrict_sr] = true
-          @client.model(:get, "/r/#{subreddit}/search", params)
+          client.model(:get, "/r/#{subreddit}/search", params)
         else
-          @client.model(:get, '/search', params)
+          client.model(:get, '/search', params)
         end
       end
     end

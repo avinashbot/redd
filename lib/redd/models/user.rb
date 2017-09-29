@@ -49,40 +49,40 @@ module Redd
       # @param text [String] the message text
       # @param from [Subreddit, nil] the subreddit to send the message on behalf of
       def send_message(subject:, text:, from: nil)
-        super(to: get_attribute(:name), subject: subject, text: text, from: from)
+        super(to: read_attribute(:name), subject: subject, text: text, from: from)
       end
 
       # Unblock a previously blocked user.
       # @param me [User] (optional) the person doing the unblocking
       def unblock(me: nil)
-        my_id = 't2_' + (me.is_a?(User) ? user.id : @client.get('/api/v1/me').body[:id])
+        my_id = 't2_' + (me.is_a?(User) ? user.id : client.get('/api/v1/me').body[:id])
         # Talk about an unintuitive endpoint
-        @client.post('/api/unfriend', container: my_id, name: get_attribute(:name), type: 'enemy')
+        client.post('/api/unfriend', container: my_id, name: read_attribute(:name), type: 'enemy')
       end
 
       # Add the user as a friend.
       # @param note [String] a note for the friend
       def friend(note = nil)
-        name = get_attribute(:name)
+        name = read_attribute(:name)
         body = JSON.generate(note ? { name: name, note: note } : { name: name })
-        @client.request(:put, "/api/v1/me/friends/#{name}", body: body)
+        client.request(:put, "/api/v1/me/friends/#{name}", body: body)
       end
 
       # Unfriend the user.
       def unfriend
-        name = get_attribute(:name)
-        @client.request(:delete, "/api/v1/me/friends/#{name}", raw: true, form: { id: name })
+        name = read_attribute(:name)
+        client.request(:delete, "/api/v1/me/friends/#{name}", raw: true, form: { id: name })
       end
 
       # Gift a redditor reddit gold.
       # @param months [Integer] the number of months of gold to gift
       def gift_gold(months: 1)
-        @client.post("/api/v1/gold/give/#{read_attribute(:name)}", months: months)
+        client.post("/api/v1/gold/give/#{read_attribute(:name)}", months: months)
       end
 
       # @!attribute [r] name
       #   @return [String] the user's username
-      property :name
+      property :name, :required
 
       # @!attribute [r] employee?
       #   @return [Boolean] whether the user is a reddit employee
@@ -204,7 +204,7 @@ module Redd
       private
 
       def lazer_reload
-        self.fully_loaded = true
+        fully_loaded!
         client.get("/user/#{read_attribute(:name)}/about").body[:data]
       end
     end

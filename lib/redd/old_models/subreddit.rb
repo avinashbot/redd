@@ -20,7 +20,7 @@ module Redd
         content_options: :link_type,
         default_set: :allow_top,
         header_hover_text: :'header-title'
-      }.freeze
+      }
 
       # Represents a moderator action, part of a moderation log.
       # @see Subreddit#log
@@ -84,7 +84,7 @@ module Redd
       # @!method gilded(**params)
       #
       # @see #listing
-      %i(hot new top controversial comments rising gilded).each do |sort|
+      %i[hot new top controversial comments rising gilded].each do |sort|
         define_method(sort) { |**params| listing(sort, **params) }
       end
 
@@ -112,7 +112,7 @@ module Redd
       # @!method edited(**params)
       #
       # @see #moderator_listing
-      %i(reports spam modqueue unmoderated edited).each do |type|
+      %i[reports spam modqueue unmoderated edited].each do |type|
         define_method(type) { |**params| moderator_listing(type, **params) }
       end
 
@@ -145,7 +145,7 @@ module Redd
       # @!method moderators(**params)
       #
       # @see #relationship_listing
-      %i(banned muted wikibanned contributors wikicontributors moderators).each do |type|
+      %i[banned muted wikibanned contributors wikicontributors moderators].each do |type|
         define_method(type) { |**params| relationship_listing(type, **params) }
       end
 

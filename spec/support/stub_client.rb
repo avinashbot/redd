@@ -22,7 +22,7 @@ class StubClient
     unmarshal(send(verb, path, params).body)
   end
 
-  %i(get post put patch delete).each do |verb|
+  %i[get post put patch delete].each do |verb|
     define_method(verb) { |_path, _params = {}| raise 'stub this method' }
   end
 end
