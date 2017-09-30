@@ -30,7 +30,7 @@ module Redd
       # @option options [String] :after return results after the given fullname
       # @option options [String] :before return results before the given fullname
       # @option options [Integer] :count the number of items already seen in the listing
-      # @option options [1..100] :limit the maximum number of things to return
+      # @option options [Integer, nil] :limit maximum number of items to return (nil for no limit)
       # @option options [:hour, :day, :week, :month, :year, :all] :time the time period to consider
       #   when sorting
       #
@@ -38,7 +38,12 @@ module Redd
       # @return [Listing<Submission, Comment>]
       def listing(sort, **options)
         options[:t] = options.delete(:time) if options.key?(:time)
-        client.model(:get, "/r/#{read_attribute(:display_name)}/#{sort}", options)
+        PaginatedListing.new(after: options[:after], limit: options[:limit]) do |l_after, l_limit|
+          client.model(
+            :get, "/r/#{read_attribute(:display_name)}/#{sort}",
+            options.merge(after: l_after, limit: l_limit)
+          )
+        end
       end
 
       # @!method hot(**options)

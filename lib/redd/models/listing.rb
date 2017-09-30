@@ -18,9 +18,10 @@ module Redd
       end
 
       # @return [Array<Comment, Submission, PrivateMessage>] an array representation of self
-      def to_ary
+      def to_a
         read_attribute(:children)
       end
+      alias to_ary to_a
 
       %i[[] each empty? first last].each do |method_name|
         define_method(method_name) do |*args, &block|
