@@ -9,9 +9,9 @@ module Redd
     class Session < Model
       include Searchable
 
-      # @return [ModMail] the new modmail
-      def mod_mail
-        ModMail.new(client)
+      # @return [Modmail] the new modmail
+      def modmail
+        Modmail.new(client)
       end
 
       # @return [LiveThread] the live thread
