@@ -44,7 +44,7 @@ session = Redd.it(
   password:   'hunter2'
 )
 
-session.subreddit('all').comment_stream do |comment|
+session.subreddit('all').comments.stream do |comment|
   if comment.body.include?('roll a dice')
     comment.reply("It's a #{rand(1..6)}!")
   elsif comment.body.include?('flip a coin')

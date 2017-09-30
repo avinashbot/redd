@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require_relative 'model'
-require_relative '../utilities/stream'
 
 module Redd
   module Models
@@ -50,24 +49,6 @@ module Redd
       # @see #listing
       %i[hot new top controversial comments rising gilded].each do |sort|
         define_method(sort) { |**params| listing(sort, **params) }
-      end
-
-      # Stream newly submitted posts.
-      def post_stream(**params, &block)
-        params[:limit] ||= 100
-        stream = Utilities::Stream.new do |before|
-          listing(:new, params.merge(before: before))
-        end
-        block_given? ? stream.stream(&block) : stream.enum_for(:stream)
-      end
-
-      # Stream newly submitted comments.
-      def comment_stream(**params, &block)
-        params[:limit] ||= 100
-        stream = Utilities::Stream.new do |before|
-          listing(:comments, params.merge(before: before))
-        end
-        block_given? ? stream.stream(&block) : stream.enum_for(:stream)
       end
     end
   end

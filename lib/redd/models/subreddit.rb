@@ -3,7 +3,6 @@
 require_relative 'model'
 require_relative 'messageable'
 require_relative 'searchable'
-require_relative '../utilities/stream'
 
 module Redd
   module Models
@@ -139,24 +138,6 @@ module Redd
       def search(query, **params)
         restricted_params = { restrict_to: read_attribute(:display_name) }.merge(params)
         super(query, restricted_params)
-      end
-
-      # Stream newly submitted posts.
-      def post_stream(**params, &block)
-        params[:limit] ||= 100
-        stream = Utilities::Stream.new do |before|
-          listing(:new, params.merge(before: before))
-        end
-        block_given? ? stream.stream(&block) : stream.enum_for(:stream)
-      end
-
-      # Stream newly submitted comments.
-      def comment_stream(**params, &block)
-        params[:limit] ||= 100
-        stream = Utilities::Stream.new do |before|
-          listing(:comments, params.merge(before: before))
-        end
-        block_given? ? stream.stream(&block) : stream.enum_for(:stream)
       end
 
       # Submit a link or a text post to the subreddit.
