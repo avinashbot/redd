@@ -241,7 +241,7 @@ module Redd
 
       # @!attribute [r] edited
       #   @return [Time, false] the time of the last edit
-      property :edited, with: ->() { Time.at(t) if t }
+      property :edited, with: ->(t) { Time.at(t) if t }
 
       # @!attribute [r] author_flair_text
       #   @return [String] the author flair text
@@ -335,7 +335,7 @@ module Redd
 
       # @!attribute [r] created_at
       #   @return [Time] creation time
-      property :created_at, from: :created_utc, with: ->() { Time.at(t) }
+      property :created_at, from: :created_utc, with: ->(t) { Time.at(t) }
 
       # @!attribute [r] subreddit_name_prefixed
       #   @return [String] r/[subreddit name]

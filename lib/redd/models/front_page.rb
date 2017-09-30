@@ -23,20 +23,19 @@ module Redd
       # Get the appropriate listing.
       # @param sort [:hot, :new, :top, :controversial, :comments, :rising, :gilded] the type of
       #   listing
-      # @param params [Hash] a list of params to send with the request
-      # @option params [String] :after return results after the given fullname
-      # @option params [String] :before return results before the given fullname
-      # @option params [Integer] :count the number of items already seen in the listing
+      # @param options [Hash] a list of options to send with the request
+      # @option options [String] :after return results after the given fullname
+      # @option options [String] :before return results before the given fullname
       # @option options [Integer, nil] :limit maximum number of items to return (nil for no limit)
-      # @option params [:hour, :day, :week, :month, :year, :all] :time the time period to consider
+      # @option options [:hour, :day, :week, :month, :year, :all] :time the time period to consider
       #   when sorting.
       #
       # @note The option :time only applies to the top and controversial sorts.
       # @return [PaginatedListing<Submission>]
-      def listing(sort, **params)
-        params[:t] = params.delete(:time) if params.key?(:time)
-        PaginatedListing.new(after: params[:after], limit: params[:limit]) do |l_after, l_limit|
-          client.model(:get, "/#{sort}", params.merge(after: l_after, limit: l_limit))
+      def listing(sort, **options)
+        options[:t] = options.delete(:time) if options.key?(:time)
+        PaginatedListing.new(client, options) do |**req_options|
+          client.model(:get, "/#{sort}", options.merge(req_options))
         end
       end
 
