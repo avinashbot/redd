@@ -52,6 +52,11 @@ module Redd
         super(to: read_attribute(:name), subject: subject, text: text, from: from)
       end
 
+      # Block this user.
+      def block
+        client.post('/api/block_user', account_id: read_attribute(:id))
+      end
+
       # Unblock a previously blocked user.
       # @param me [User] (optional) the person doing the unblocking
       def unblock(me: nil)

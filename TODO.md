@@ -7,7 +7,7 @@ implementations in Redd. The API docs are located
 ## Account
 
 - **GET /api/v1/me**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Session#me](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Session#me-instance_method)
 - **GET /api/v1/me/karma**
   - TODO: add implementation/documentation link
 - **GET /api/v1/me/prefs**
@@ -22,7 +22,7 @@ implementations in Redd. The API docs are located
 ## Captcha
 
 - **GET /api/needs_captcha**
-  - **Not Implemented**: Not necessary for OAuth2 clients
+  - **Won't Implement**: Not necessary for OAuth2 clients
 
 ## Flair
 
@@ -63,33 +63,33 @@ implementations in Redd. The API docs are located
 ## Links & Comments
 
 - **POST /api/comment**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::Replyable#reply](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Replyable#reply-instance_method)
 - **POST /api/del**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::Postable#delete](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Postable#delete-instance_method)
 - **POST /api/editusertext**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::Postable#edit](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Postable#edit-instance_method)
 - **POST /api/hide**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::Postable#hide](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Postable#hide-instance_method)
 - **GET [/r/subreddit]/api/info**
-  - TODO: add implementation/documentation link
+  - **Won't Implement**: This is probably deprecated. See [#31](https://github.com/avinashbot/redd/issues/31).
 - **POST /api/lock**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::Submission#lock](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Submission#lock-instance_method)
 - **POST /api/marknsfw**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::Submission#mark_as_nsfw](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Submission#mark_as_nsfw-instance_method)
 - **GET /api/morechildren**
   - TODO: add implementation/documentation link
 - **POST /api/report**
   - TODO: add implementation/documentation link
 - **POST /api/save**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::Postable#save](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Postable#save-instance_method)
 - **GET /api/saved_categories**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::Session#saved_categories](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Session#saved_categories-instance_method)
 - **POST /api/sendreplies**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::Postable#enable_inbox_replies](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Postable#enable_inbox_replies-instance_method)
 - **POST /api/set_contest_mode**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::Submission#enable_contest_mode](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Submission#enable_contest_mode-instance_method)
 - **POST /api/set_subreddit_sticky**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::Submission#make_sticky](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Submission#make_sticky-instance_method)
 - **POST /api/set_suggested_sort**
   - TODO: add implementation/documentation link
 - **POST /api/spoiler**
@@ -176,25 +176,25 @@ implementations in Redd. The API docs are located
 ## Private Messages
 
 - **POST /api/block**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::Inboxable#block](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Inboxable#block-instance_method)
 - **POST /api/collapse_message**
   - TODO: add implementation/documentation link
 - **POST /api/compose**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::Messageable#send_message](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Messageable#send_message-instance_method)
 - **POST /api/del_msg**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::PrivateMessage#delete](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/PrivateMessage#delete-instance_method)
 - **POST /api/read_all_messages**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::Session#read_all_messages](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Session#read_all_messages-instance_method)
 - **POST /api/read_message**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::Inboxable#mark_as_read](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Inboxable#mark_as_read-instance_method)
 - **POST /api/unblock_subreddit**
   - TODO: add implementation/documentation link
 - **POST /api/uncollapse_message**
   - TODO: add implementation/documentation link
 - **POST /api/unread_message**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::Inboxable#mark_as_unread](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Inboxable#mark_as_unread-instance_method)
 - **GET /message/where**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::Session#my_messages](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Session#my_messages-instance_method)
 
 ## Miscellaneous
 
