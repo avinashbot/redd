@@ -8,7 +8,7 @@ module Redd
     class Self < User
       # @!attribute [r] name
       #   @return [String] the logged-in user's username
-      property :name
+      property :name, required: false
 
       private
 
