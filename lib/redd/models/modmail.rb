@@ -15,7 +15,7 @@ module Redd
       # @return [Array<Subreddit>] moderated subreddits that are enrolled in the new modmail
       def enrolled
         client.get('/api/mod/conversations/subreddits').body[:subreddits].map do |_, s|
-          Subreddit.new(@client, s.merge(last_updated: s.delete(:lastUpdated)))
+          Subreddit.new(client, s.merge(last_updated: s.delete(:lastUpdated)))
         end
       end
 
@@ -43,7 +43,7 @@ module Redd
       # @param body [String] the message body
       # @return [ModmailConversation] the created conversation
       def create(from:, to:, subject:, body:, hidden: false)
-        ModmailConversation.new(@client, @client.post(
+        ModmailConversation.new(client, client.post(
           '/api/mod/conversations',
           srName: from.display_name, to: to.name,
           subject: subject, body: body, isAuthorHidden: hidden

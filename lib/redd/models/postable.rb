@@ -9,7 +9,6 @@ module Redd
       # @return [self] the edited thing
       def edit(text)
         client.post('/api/editusertext', thing_id: read_attribute(:name), text: text)
-        @attributes[is_a?(Submission) ? :selftext : :body] = text
         self
       end
 
@@ -73,7 +72,6 @@ module Redd
       def vote(direction)
         fullname = read_attribute(:name)
         client.post('/api/vote', id: fullname, dir: direction)
-        @attributes[:ups] += direction
       end
     end
   end

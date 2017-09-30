@@ -40,25 +40,21 @@ module Redd
       # Mark the link as "Not Suitable For Work".
       def mark_as_nsfw
         client.get('/api/marknsfw', id: read_attribute(:name))
-        @attributes[:over_18] = true
       end
 
       # No longer mark the link as "Not Suitable For Work".
       def unmark_as_nsfw
         client.get('/api/unmarknsfw', id: read_attribute(:name))
-        @attributes[:over_18] = false
       end
 
       # Mark the link as a spoiler.
       def mark_as_spoiler
         client.get('/api/spoiler', id: read_attribute(:name))
-        @attributes[:spoiler] = true
       end
 
       # No longer mark the link as a spoiler.
       def unmark_as_spoiler
         client.get('/api/unspoiler', id: read_attribute(:name))
-        @attributes[:spoiler] = false
       end
 
       # Set the submission to "contest mode" (comments are randomly sorted)

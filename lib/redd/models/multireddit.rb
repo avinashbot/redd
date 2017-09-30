@@ -21,7 +21,7 @@ module Redd
       # @return [Listing<Submission>]
       def listing(sort, **params)
         params[:t] = params.delete(:time) if params.key?(:time)
-        @client.model(:get, "#{get_attribute(:path)}#{sort}", params)
+        client.model(:get, "#{read_attribute(:path)}#{sort}", params)
       end
 
       # @!method hot(**params)
