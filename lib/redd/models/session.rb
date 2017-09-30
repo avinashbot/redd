@@ -75,9 +75,9 @@ module Redd
       def from_fullnames(*fullnames)
         fullnames.map do |name|
           if name.start_with?('t1_')
-            Comment.from_id(client, name)
+            Comment.new(client, name: name)
           elsif name.start_with?('t3_')
-            Submission.from_id(client, name)
+            Submission.new(client, name: name)
           elsif name.start_with?('t5_')
             Subreddit.new(client, name: name)
           else
