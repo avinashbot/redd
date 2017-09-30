@@ -100,11 +100,11 @@ module Redd
       property :last_updated, from: :lastUpdated, with: ->(t) { Time.parse(t) }
 
       # @!attribute [r] authors
-      #   @return [Boolean] FIXME: apply conversions
+      #   @return [Array<Hash>] FIXME: apply conversions
       property :authors
 
       # @!attribute [r] owner
-      #   @return [Boolean] FIXME: do shit
+      #   @return [Hash] FIXME: do shit
       property :owner
 
       # @!attribute [r] highlighted?
