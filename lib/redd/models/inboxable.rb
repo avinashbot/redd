@@ -9,6 +9,16 @@ module Redd
         client.post('/api/block', id: read_attribute(:name))
       end
 
+      # Collapse the item.
+      def collapse
+        client.post('/api/collapse_message', id: read_attribute(:name))
+      end
+
+      # Uncollapse the item.
+      def uncollapse
+        client.post('/api/uncollapse_message', id: read_attribute(:name))
+      end
+
       # Mark this thing as read.
       def mark_as_read
         client.post('/api/read_message', id: read_attribute(:name))
