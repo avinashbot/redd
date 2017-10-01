@@ -243,175 +243,177 @@ implementations in Redd. The API docs are located
 ## New Modmail
 
 - **POST /api/mod/bulk_read**
-  - TODO: add implementation/documentation link
+  - **Not Implemented**
 - **GET /api/mod/conversations**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::Modmail#conversations](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Modmail#conversations-instance_method)
 - **POST /api/mod/conversations**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::Modmail#create](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Modmail#create-instance_method)
 - **GET /api/mod/conversations/:conversation_id**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::Modmail#get](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Modmail#get-instance_method)
 - **POST /api/mod/conversations/:conversation_id**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::ModmailConversation#reply](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/ModmailConversation#reply-instance_method)
 - **POST /api/mod/conversations/:conversation_id/archive**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::ModmailConversation#archive](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/ModmailConversation#archive-instance_method)
 - **DELETE /api/mod/conversations/:conversation_id/highlight**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::ModmailConversation#unhighlight](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/ModmailConversation#unhighlight-instance_method)
 - **POST /api/mod/conversations/:conversation_id/highlight**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::ModmailConversation#highlight](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/ModmailConversation#highlight-instance_method)
 - **POST /api/mod/conversations/:conversation_id/mute**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::ModmailConversation#mute](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/ModmailConversation#mute-instance_method)
 - **POST /api/mod/conversations/:conversation_id/unarchive**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::ModmailConversation#unarchive](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/ModmailConversation#unarchive-instance_method)
 - **POST /api/mod/conversations/:conversation_id/unmute**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::ModmailConversation#unmute](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/ModmailConversation#unmute-instance_method)
 - **GET /api/mod/conversations/:conversation_id/user**
-  - TODO: add implementation/documentation link
+  - **Not Implemented**
 - **POST /api/mod/conversations/read**
-  - TODO: add implementation/documentation link
+  - **Not Implemented**
 - **GET /api/mod/conversations/subreddits**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::Modmail#enrolled](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Modmail#enrolled-instance_method)
 - **POST /api/mod/conversations/unread**
-  - TODO: add implementation/documentation link
+  - **Not Implemented**
 - **GET /api/mod/conversations/unread/count**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::Modmail#unread_count](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Modmail#unread_count-instance_method)
 
 ## Multis
 
 - **POST /api/multi/copy**
-  - TODO: add implementation/documentation link
+  - **Not Implemented**
 - **GET /api/multi/mine**
-  - TODO: add implementation/documentation link
+  - **Not Implemented**
 - **POST /api/multi/rename**
-  - TODO: add implementation/documentation link
+  - **Not Implemented**
 - **GET /api/multi/user/username**
-  - TODO: add implementation/documentation link
+  - **Not Implemented**
 - **DELETE /api/multi/multipath**
-  - TODO: add implementation/documentation link
+  - **Not Implemented**
 - **GET /api/multi/multipath**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::Session#multi](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Session#multi-instance_method)
 - **POST /api/multi/multipath**
-  - TODO: add implementation/documentation link
+  - **Not Implemented**
 - **PUT /api/multi/multipath**
-  - TODO: add implementation/documentation link
+  - **Not Implemented**
 - **GET /api/multi/multipath/description**
-  - TODO: add implementation/documentation link
+  - **Not Implemented**
 - **PUT /api/multi/multipath/description**
-  - TODO: add implementation/documentation link
+  - **Not Implemented**
 - **DELETE /api/multi/multipath/r/srname**
-  - TODO: add implementation/documentation link
+  - **Not Implemented**
 - **GET /api/multi/multipath/r/srname**
-  - TODO: add implementation/documentation link
+  - **Not Implemented**
 - **PUT /api/multi/multipath/r/srname**
-  - TODO: add implementation/documentation link
+  - **Not Implemented**
 
 ## Search
 
 - **GET [/r/subreddit]/search**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::Searchable#search](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Searchable#search-instance_method)
 
 ## Subreddits
 
 - **GET [/r/subreddit]/about/where**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::Subreddit#relationship_listing](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Subreddit#relationship_listing-instance_method)
 - **POST [/r/subreddit]/api/delete_sr_banner**
-  - TODO: add implementation/documentation link
+  - **Not Implemented**
 - **POST [/r/subreddit]/api/delete_sr_header**
-  - TODO: add implementation/documentation link
+  - **Not Implemented**
 - **POST [/r/subreddit]/api/delete_sr_icon**
-  - TODO: add implementation/documentation link
+  - **Not Implemented**
 - **POST [/r/subreddit]/api/delete_sr_img**
-  - TODO: add implementation/documentation link
+  - **Not Implemented**
 - **GET /api/recommend/sr/srnames**
-  - TODO: add implementation/documentation link
+  - **Not Implemented**
 - **POST /api/search_reddit_names**
-  - TODO: add implementation/documentation link
+  - **Not Implemented**
 - **POST /api/search_subreddits**
-  - TODO: add implementation/documentation link
+  - **Not Implemented**
 - **POST /api/site_admin**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::Subreddit#modify_settings](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Subreddit#modify_settings-instance_method)
 - **GET [/r/subreddit]/api/submit_text**
-  - TODO: add implementation/documentation link
+  - **Won't Implement**: Already covered by the Subreddit model.
 - **GET /api/subreddit_autocomplete**
-  - TODO: add implementation/documentation link
+  - **Not Implemented**
 - **POST [/r/subreddit]/api/subreddit_stylesheet**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::Subreddit#update_stylesheet](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Subreddit#update_stylesheet-instance_method)
 - **GET /api/subreddits_by_topic**
-  - TODO: add implementation/documentation link
+  - **Not Implemented**
 - **POST /api/subscribe**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::Subreddit#subscribe](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Subreddit#subscribe-instance_method)
 - **POST [/r/subreddit]/api/upload_sr_img**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::Subreddit#upload_image](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Subreddit#upload_image-instance_method)
 - **GET /r/subreddit/about**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::Session#subreddit](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Session#subreddit-instance_method)
 - **GET /r/subreddit/about/edit**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::Subreddit#settings](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Subreddit#settings-instance_method)
 - **GET /r/subreddit/about/rules**
-  - TODO: add implementation/documentation link
+  - **Not Implemented**
 - **GET /r/subreddit/about/traffic**
-  - TODO: add implementation/documentation link
+  - **Not Implemented**
 - **GET [/r/subreddit]/sidebar**
-  - TODO: add implementation/documentation link
+  - **Won't Implement**: Already covered by Subreddit's "description" property.
 - **GET [/r/subreddit]/sticky**
-  - TODO: add implementation/documentation link
+  - **Not Implemented**
 - **GET /subreddits/mine/where**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::Session#my_subreddits](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Session#my_subreddits-instance_method)
 - **GET /subreddits/search**
-  - TODO: add implementation/documentation link
+  - **Not Implemented**
 - **GET /subreddits/where**
-  - TODO: add implementation/documentation link
+  - **Not Implemented**
 - **GET /users/where**
-  - TODO: add implementation/documentation link
+  - **Not Implemented**
 
 ## Users
 
 - **POST /api/block_user**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::User#block](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/User#block-instance_method)
 - **POST [/r/subreddit]/api/friend**
   - TODO: add implementation/documentation link
 - **POST /api/report_user**
-  - TODO: add implementation/documentation link
+  - **Not Implemented**
 - **POST [/r/subreddit]/api/setpermissions**
-  - TODO: add implementation/documentation link
+  - **Not Implemented**
 - **POST [/r/subreddit]/api/unfriend**
   - TODO: add implementation/documentation link
 - **GET /api/user_data_by_account_ids**
-  - TODO: add implementation/documentation link
+  - **Not Implemented**
 - **GET /api/username_available**
-  - TODO: add implementation/documentation link
+  - **Not Implemented**
 - **DELETE /api/v1/me/friends/username**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::User#unfriend](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/User#unfriend-instance_method)
 - **GET /api/v1/me/friends/username**
   - TODO: add implementation/documentation link
 - **PUT /api/v1/me/friends/username**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::User#friend](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/User#friend-instance_method)
 - **GET /api/v1/user/username/trophies**
   - TODO: add implementation/documentation link
 - **GET /user/username/about**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::Session#user](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Session#user-instance_method)
 - **GET /user/username/where**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::User#listing](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/User#listing-instance_method)
 
 ## Wiki
 
 - **POST [/r/subreddit]/api/wiki/alloweditor/act**
-  - TODO: add implementation/documentation link
+  - **Not Implemented**
 - **POST [/r/subreddit]/api/wiki/edit**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::WikiPage#edit](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/WikiPage#edit-instance_method)
 - **POST [/r/subreddit]/api/wiki/hide**
-  - TODO: add implementation/documentation link
+  - **Not Implemented**
 - **POST [/r/subreddit]/api/wiki/revert**
-  - TODO: add implementation/documentation link
+  - **Not Implemented**
 - **GET [/r/subreddit]/wiki/discussions/page**
-  - TODO: add implementation/documentation link
+  - **Not Implemented**
 - **GET [/r/subreddit]/wiki/pages**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::FrontPage#wiki_pages](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/FrontPage#wiki_pages-instance_method)
+  - **Implemented**: [Redd::Models::Subreddit#wiki_pages](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Subreddit#wiki_pages-instance_method)
 - **GET [/r/subreddit]/wiki/revisions**
-  - TODO: add implementation/documentation link
+  - **Not Implemented**
 - **GET [/r/subreddit]/wiki/revisions/page**
-  - TODO: add implementation/documentation link
+  - **Not Implemented**
 - **GET [/r/subreddit]/wiki/settings/page**
-  - TODO: add implementation/documentation link
+  - **Not Implemented**
 - **POST [/r/subreddit]/wiki/settings/page**
-  - TODO: add implementation/documentation link
+  - **Not Implemented**
 - **GET [/r/subreddit]/wiki/page**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::FrontPage#wiki_page](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/FrontPage#wiki_page-instance_method)
+  - **Implemented**: [Redd::Models::Subreddit#wiki_page](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Subreddit#wiki_page-instance_method)
