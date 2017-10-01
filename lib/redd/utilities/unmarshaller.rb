@@ -38,7 +38,7 @@ module Redd
       def js_listing(res)
         # One day I'll get to deprecate Ruby 2.2 and jump into the world of Hash#dig.
         return nil unless res[:json] && res[:json][:data] && res[:json][:data][:things]
-        Models::Listing.new(@client, children: res[:json][:data][:things].map { |t| unmarshal(t) })
+        Models::Listing.new(@client, children: res[:json][:data][:things])
       end
 
       # Unmarshal frontend API-style models.
