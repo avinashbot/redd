@@ -101,6 +101,7 @@ module Redd
     rescue Errors::RateLimitError => e
       warn "Redd was rate limited for #{e.duration} seconds, waiting..."
       sleep e.duration
+      retry
     else
       @failures = 0
       response

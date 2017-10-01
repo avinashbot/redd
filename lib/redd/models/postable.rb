@@ -17,6 +17,11 @@ module Redd
         client.post('/api/del', id: read_attribute(:name))
       end
 
+      # @return [Boolean] whether the item is probably deleted
+      def deleted?
+        read_attribute(:author).name == '[deleted]'
+      end
+
       # Save a link or comment to the user's account.
       # @param category [String] a category to save to
       def save(category = nil)
