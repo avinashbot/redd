@@ -15,6 +15,7 @@ module Redd
     attr_accessor :access
 
     # Create a new API client with an auth strategy.
+    # TODO: Give user option to pass through all retryable errors.
     # @param auth [AuthStrategies::AuthStrategy] the auth strategy to use
     # @param endpoint [String] the API endpoint
     # @param user_agent [String] the user agent to send
@@ -97,6 +98,9 @@ module Redd
       raise e if @failures > @max_retries
       warn "Redd got a #{e.class.name} error (#{e.message}), retrying..."
       retry
+    rescue Errors::RateLimitError => e
+      warn "Redd was rate limited for #{e.duration} seconds, waiting..."
+      sleep e.duration
     else
       @failures = 0
       response
