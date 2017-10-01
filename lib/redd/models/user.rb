@@ -94,7 +94,7 @@ module Redd
 
       # @!attribute [r] name
       #   @return [String] the user's username
-      property :name, :required
+      property :name
 
       # @!attribute [r] employee?
       #   @return [Boolean] whether the user is a reddit employee
@@ -135,6 +135,14 @@ module Redd
       # @!attribute [r] id
       #   @return [String] the user's base36 id
       property :id
+
+      # @!attribute [r] profile_image
+      #   @return [String] a link to the user's profile image
+      property :profile_image, from: :profile_img
+
+      # @!attribute [r] over_18?
+      #   @return [Boolean] whether the user's profile is considered over 18.
+      property :over_18?, from: :profile_over_18
 
       # @!attribute [r] suspension_expiration
       #   @return [Time, nil] the time when the user's suspension expires
@@ -216,8 +224,13 @@ module Redd
       private
 
       def lazer_reload
+        # return load_from_fullname if self[:id] && !self[:name]
         fully_loaded!
         client.get("/user/#{read_attribute(:name)}/about").body[:data]
+      end
+
+      def load_from_fullname
+        client.get('/api/user_data_by_account_ids', ids: read_attribute(:id)).body.values.first
       end
     end
   end

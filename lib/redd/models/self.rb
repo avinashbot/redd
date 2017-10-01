@@ -6,10 +6,6 @@ module Redd
   module Models
     # The user that the bot is running under.
     class Self < User
-      # @!attribute [r] name
-      #   @return [String] the logged-in user's username
-      property :name, required: false
-
       private
 
       def lazer_reload
