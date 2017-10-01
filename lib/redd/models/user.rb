@@ -57,6 +57,13 @@ module Redd
         client.post('/api/block_user', account_id: read_attribute(:id))
       end
 
+      # @return [Array<Trophy>] this user's trophies
+      def trophies
+        client.get("/api/v1/user/#{read_attribute(:name)}/trophies")
+              .body[:data][:trophies]
+              .map { |t| client.unmarshal(t) }
+      end
+
       # Unblock a previously blocked user.
       # @param me [User] (optional) the person doing the unblocking
       def unblock(me: nil)

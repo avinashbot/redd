@@ -15,7 +15,7 @@ implementations in Redd. The API docs are located
 - **PATCH /api/v1/me/prefs**
   - **Implemented**: [Redd::Models::Session#edit_preferences](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Session#edit_preferences-instance_method)
 - **GET /api/v1/me/trophies**
-  - **Not Implemented**
+  - **Won't Implement**: Already implemented for User.
 - **GET /prefs/where**
   - **Partially Implemented**: [Redd::Models::Session](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Session) (for friends, blocked, and trusted)
 
@@ -385,7 +385,7 @@ implementations in Redd. The API docs are located
 - **PUT /api/v1/me/friends/username**
   - **Implemented**: [Redd::Models::User#friend](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/User#friend-instance_method)
 - **GET /api/v1/user/username/trophies**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::User#trophies](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/User#trophies-instance_method)
 - **GET /user/username/about**
   - **Implemented**: [Redd::Models::Session#user](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Session#user-instance_method)
 - **GET /user/username/where**
