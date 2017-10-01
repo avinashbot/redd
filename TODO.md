@@ -7,17 +7,17 @@ implementations in Redd. The API docs are located
 ## Account
 
 - **GET /api/v1/me**
-  - **Implemented**: [Session#me](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Session#me-instance_method)
+  - **Implemented**: [Redd::Models::Session#me](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Session#me-instance_method)
 - **GET /api/v1/me/karma**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::Session#karma_breakdown](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Session#karma_breakdown-instance_method)
 - **GET /api/v1/me/prefs**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::Session#my_preferences](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Session#my_preferences-instance_method)
 - **PATCH /api/v1/me/prefs**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::Session#edit_preferences](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Session#edit_preferences-instance_method)
 - **GET /api/v1/me/trophies**
-  - TODO: add implementation/documentation link
+  - **Not Implemented**
 - **GET /prefs/where**
-  - TODO: add implementation/documentation link
+  - **Partially Implemented**: [Redd::Models::Session](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Session) (for friends, blocked, and trusted)
 
 ## Captcha
 
@@ -27,38 +27,38 @@ implementations in Redd. The API docs are located
 ## Flair
 
 - **POST [/r/subreddit]/api/clearflairtemplates**
-  - TODO: add implementation/documentation link
+  - **Not Implemented**
 - **POST [/r/subreddit]/api/deleteflair**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::Subreddit#delete_flair](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Subreddit#delete_flair-instance_method)
 - **POST [/r/subreddit]/api/deleteflairtemplate**
-  - TODO: add implementation/documentation link
+  - **Not Implemented**
 - **POST [/r/subreddit]/api/flair**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::Subreddit#set_flair](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Subreddit#set_flair-instance_method)
 - **POST [/r/subreddit]/api/flairconfig**
-  - TODO: add implementation/documentation link
+  - **Not Implemented**
 - **POST [/r/subreddit]/api/flaircsv**
-  - TODO: add implementation/documentation link
+  - **Not Implemented**
 - **GET [/r/subreddit]/api/flairlist**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::Subreddit#flair_listing](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Subreddit#flair_listing-instance_method)
 - **POST [/r/subreddit]/api/flairselector**
-  - TODO: add implementation/documentation link
+  - **Not Implemented**
 - **POST [/r/subreddit]/api/flairtemplate**
-  - TODO: add implementation/documentation link
+  - **Not Implemented**
 - **GET [/r/subreddit]/api/link_flair**
-  - TODO: add implementation/documentation link
+  - **Not Implemented**
 - **POST [/r/subreddit]/api/selectflair**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::Subreddit#set_flair_template](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Subreddit#set_flair_template-instance_method)
 - **POST [/r/subreddit]/api/setflairenabled**
-  - TODO: add implementation/documentation link
+  - **Not Implemented**
 - **GET [/r/subreddit]/api/user_flair**
-  - TODO: add implementation/documentation link
+  - **Not Implemented**
 
 ## Reddit Gold
 
 - **POST /api/v1/gold/gild/fullname**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::Gildable#gild](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Gildable#gild-instance_method)
 - **POST /api/v1/gold/give/username**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::User#gift_gold](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/User#gift_gold-instance_method)
 
 ## Links & Comments
 
@@ -71,7 +71,9 @@ implementations in Redd. The API docs are located
 - **POST /api/hide**
   - **Implemented**: [Redd::Models::Postable#hide](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Postable#hide-instance_method)
 - **GET [/r/subreddit]/api/info**
-  - **Won't Implement**: This is probably deprecated. See [#31](https://github.com/avinashbot/redd/issues/31).
+  - **Implemented**
+    - [Redd::Models::Session#from_fullnames](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Session#from_fullnames-instance_method)
+    - Also implemented as part of lazy loaders.
 - **POST /api/lock**
   - **Implemented**: [Redd::Models::Submission#lock](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Submission#lock-instance_method)
 - **POST /api/marknsfw**
@@ -79,7 +81,7 @@ implementations in Redd. The API docs are located
 - **GET /api/morechildren**
   - TODO: add implementation/documentation link
 - **POST /api/report**
-  - TODO: add implementation/documentation link
+  - **Not Implemented**
 - **POST /api/save**
   - **Implemented**: [Redd::Models::Postable#save](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Postable#save-instance_method)
 - **GET /api/saved_categories**
@@ -91,94 +93,102 @@ implementations in Redd. The API docs are located
 - **POST /api/set_subreddit_sticky**
   - **Implemented**: [Redd::Models::Submission#make_sticky](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Submission#make_sticky-instance_method)
 - **POST /api/set_suggested_sort**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::Submission#set_suggested_sort](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Submission#set_suggested_sort-instance_method)
 - **POST /api/spoiler**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::Submission#mark_as_spoiler](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Submission#mark_as_spoiler-instance_method)
 - **POST /api/store_visits**
-  - TODO: add implementation/documentation link
+  - **Not Implemented**
 - **POST /api/submit**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::Subreddit#submit](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Subreddit#submit-instance_method)
 - **POST /api/unhide**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::Postable#unhide](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Postable#unhide-instance_method)
 - **POST /api/unlock**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::Submission#unlock](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Submission#unlock-instance_method)
 - **POST /api/unmarknsfw**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::Submission#unmark_as_nsfw](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Submission#unmark_as_nsfw-instance_method)
 - **POST /api/unsave**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::Postable#unsave](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Postable#unsave-instance_method)
 - **POST /api/unspoiler**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::Submission#unmark_as_spoiler](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Submission#unmark_as_spoiler-instance_method)
 - **POST /api/vote**
-  - TODO: add implementation/documentation link
+  - **Implemented**:
+    - [Redd::Models::Postable#upvote](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Postable#upvote-instance_method)
+    - [Redd::Models::Postable#downvote](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Postable#downvote-instance_method)
+    - [Redd::Models::Postable#undo_vote](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Postable#undo_vote-instance_method)
 
 ## Listings
 
 - **GET /api/trending_subreddits**
-  - TODO: add implementation/documentation link
+  - **Not Implemented**
 - **GET /by_id/names**
-  - TODO: add implementation/documentation link
+  - **Not Implemented**: See `/api/info`.
 - **GET [/r/subreddit]/comments/article**
-  - TODO: add implementation/documentation link
+  - **Implemented**: Part of lazy-loading in Submission and Comment.
 - **GET /duplicates/article**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::Submission#duplicates](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Submission#duplicates-instance_method)
 - **GET [/r/subreddit]/hot**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::FrontPage#hot](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/FrontPage#hot-instance_method)
+  - **Implemented**: [Redd::Models::Submission#hot](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Submission#hot-instance_method)
 - **GET [/r/subreddit]/new**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::FrontPage#new](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/FrontPage#new-instance_method)
+  - **Implemented**: [Redd::Models::Submission#new](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Submission#new-instance_method)
 - **GET [/r/subreddit]/random**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::FrontPage#random](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/FrontPage#random-instance_method)
+  - **Implemented**: [Redd::Models::Submission#random](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Submission#random-instance_method)
 - **GET [/r/subreddit]/rising**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::FrontPage#rising](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/FrontPage#rising-instance_method)
+  - **Implemented**: [Redd::Models::Submission#rising](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Submission#rising-instance_method)
 - **GET [/r/subreddit]/sort**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::FrontPage#listing](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/FrontPage#listing-instance_method)
+  - **Implemented**: [Redd::Models::Submission#listing](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Submission#listing-instance_method)
 
 ## Live Threads
 
 - **GET /api/live/by_id/names**
-  - TODO: add implementation/documentation link
+  - **Not Implemented**
 - **POST /api/live/create**
-  - TODO: add implementation/documentation link
+  - **Not Implemented**
 - **GET /api/live/happening_now**
-  - TODO: add implementation/documentation link
+  - **Not Implemented**
 - **POST /api/live/thread/accept_contributor_invite**
-  - TODO: add implementation/documentation link
+  - **Not Implemented**
 - **POST /api/live/thread/close_thread**
-  - TODO: add implementation/documentation link
+  - **Not Implemented**
 - **POST /api/live/thread/delete_update**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::LiveThread#delete_update](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/LiveThread#delete_update-instance_method)
 - **POST /api/live/thread/edit**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::LiveThread#configure](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/LiveThread#configure-instance_method)
 - **POST /api/live/thread/invite_contributor**
-  - TODO: add implementation/documentation link
+  - **Not Implemented**
 - **POST /api/live/thread/leave_contributor**
-  - TODO: add implementation/documentation link
+  - **Not Implemented**
 - **POST /api/live/thread/report**
-  - TODO: add implementation/documentation link
+  - **Not Implemented**
 - **POST /api/live/thread/rm_contributor**
-  - TODO: add implementation/documentation link
+  - **Not Implemented**
 - **POST /api/live/thread/rm_contributor_invite**
-  - TODO: add implementation/documentation link
+  - **Not Implemented**
 - **POST /api/live/thread/set_contributor_permissions**
-  - TODO: add implementation/documentation link
+  - **Not Implemented**
 - **POST /api/live/thread/strike_update**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::LiveThread#strike_update](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/LiveThread#strike_update-instance_method)
 - **POST /api/live/thread/update**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::LiveThread#update](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/LiveThread#update-instance_method)
 - **GET /live/thread**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::LiveThread#updates](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/LiveThread#updates-instance_method)
 - **GET /live/thread/about**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::Session#live_thread](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Session#live_thread-instance_method)
 - **GET /live/thread/contributors**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::LiveThread#contributors](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/LiveThread#contributors-instance_method)
 - **GET /live/thread/discussions**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::LiveThread#discussions](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/LiveThread#discussions-instance_method)
 
 ## Private Messages
 
 - **POST /api/block**
   - **Implemented**: [Redd::Models::Inboxable#block](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Inboxable#block-instance_method)
 - **POST /api/collapse_message**
-  - TODO: add implementation/documentation link
+  - **Not Implemented**
 - **POST /api/compose**
   - **Implemented**: [Redd::Models::Messageable#send_message](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Messageable#send_message-instance_method)
 - **POST /api/del_msg**
@@ -188,9 +198,9 @@ implementations in Redd. The API docs are located
 - **POST /api/read_message**
   - **Implemented**: [Redd::Models::Inboxable#mark_as_read](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Inboxable#mark_as_read-instance_method)
 - **POST /api/unblock_subreddit**
-  - TODO: add implementation/documentation link
+  - **Not Implemented**
 - **POST /api/uncollapse_message**
-  - TODO: add implementation/documentation link
+  - **Not Implemented**
 - **POST /api/unread_message**
   - **Implemented**: [Redd::Models::Inboxable#mark_as_unread](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Inboxable#mark_as_unread-instance_method)
 - **GET /message/where**
@@ -199,36 +209,36 @@ implementations in Redd. The API docs are located
 ## Miscellaneous
 
 - **GET /api/v1/scopes**
-  - TODO: add implementation/documentation link
+  - **Not Implemented**
 
 ## Moderation
 
 - **GET [/r/subreddit]/about/log**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::Subreddit#mod_log](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Subreddit#mod_log-instance_method)
 - **GET [/r/subreddit]/about/location**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::Subreddit#moderator_listing](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Subreddit#moderator_listing-instance_method)
 - **POST [/r/subreddit]/api/accept_moderator_invite**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::Subreddit#accept_moderator_invite](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Subreddit#accept_moderator_invite-instance_method)
 - **POST /api/approve**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::Moderatable#approve](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Moderatable#approve-instance_method)
 - **POST /api/distinguish**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::Moderatable#distinguish](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Moderatable#distinguish-instance_method)
 - **POST /api/ignore_reports**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::Moderatable#ignore_reports](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Moderatable#ignore_reports-instance_method)
 - **POST /api/leavecontributor**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::Subreddit#leave_contributor](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Subreddit#leave_contributor-instance_method)
 - **POST /api/leavemoderator**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::Subreddit#leave_moderator](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Subreddit#leave_moderator-instance_method)
 - **POST /api/mute_message_author**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::PrivateMessage#mute_author](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/PrivateMessage#mute_author-instance_method)
 - **POST /api/remove**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::Moderatable#remove](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Moderatable#remove-instance_method)
 - **POST /api/unignore_reports**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::Moderatable#unignore_reports](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Moderatable#unignore_reports-instance_method)
 - **POST /api/unmute_message_author**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::PrivateMessage#unmute_author](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/PrivateMessage#unmute_author-instance_method)
 - **GET [/r/subreddit]/stylesheet**
-  - TODO: add implementation/documentation link
+  - **Implemented**: [Redd::Models::Subreddit#stylesheet](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Subreddit#stylesheet-instance_method)
 
 ## New Modmail
 
