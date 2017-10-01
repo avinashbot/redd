@@ -9,9 +9,19 @@ module Redd
     class Session < Model
       include Searchable
 
+      # @return [User] the logged-in user
+      def me
+        @me ||= Self.new(client)
+      end
+
+      # @return [FrontPage] the user's front page
+      def front_page
+        @front_page ||= FrontPage.new(client)
+      end
+
       # @return [Modmail] the new modmail
       def modmail
-        Modmail.new(client)
+        @modmail ||= Modmail.new(client)
       end
 
       # @return [LiveThread] the live thread
@@ -19,19 +29,9 @@ module Redd
         LiveThread.new(client, id: id)
       end
 
-      # @return [FrontPage] the user's front page
-      def front_page
-        FrontPage.new(client)
-      end
-
       # @return [Hash] a breakdown of karma over subreddits
       def karma_breakdown
         client.get('/api/v1/me/karma').body[:data]
-      end
-
-      # @return [User] the logged-in user
-      def me
-        Self.new(client)
       end
 
       # Get a (lazily loaded) reddit user by their name.
