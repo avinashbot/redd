@@ -69,15 +69,17 @@ module Redd
       # Go backward through the listing.
       # @yield [Object] the object returned in the listings
       def _stream(&block)
-        reverse_each(&block) if @limit > 0
         buffer = RingBuffer.new(100)
+        remaining = @limit > 0 ? reverse_each.to_a : []
+
         loop do
-          remaining = fetch_prev_listing
+          remaining.push(*fetch_prev_listing)
           remaining.reverse_each do |o|
             next if buffer.include?(o.id)
-            yield o
             buffer.add(o.id)
+            yield o
           end
+          remaining.clear
         end
       end
 
