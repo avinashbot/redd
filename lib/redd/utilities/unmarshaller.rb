@@ -13,6 +13,7 @@ module Redd
         't3'           => Models::Submission,
         't4'           => Models::PrivateMessage,
         't5'           => Models::Subreddit,
+        't6'           => Models::Trophy,
         'more'         => Models::MoreComments,
         'wikipage'     => Models::WikiPage,
         'modaction'    => Models::ModAction,
