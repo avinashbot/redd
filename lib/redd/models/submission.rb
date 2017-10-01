@@ -5,6 +5,7 @@ require_relative 'gildable'
 require_relative 'moderatable'
 require_relative 'postable'
 require_relative 'replyable'
+require_relative 'reportable'
 
 require_relative 'user'
 require_relative 'subreddit'
@@ -17,6 +18,7 @@ module Redd
       include Moderatable
       include Postable
       include Replyable
+      include Reportable
 
       # Set the sort order of the comments and reload the comments.
       # @param new_order [:confidence, :top, :controversial, :old, :qa] the sort order

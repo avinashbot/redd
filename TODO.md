@@ -81,7 +81,7 @@ implementations in Redd. The API docs are located
 - **GET /api/morechildren**
   - TODO: add implementation/documentation link
 - **POST /api/report**
-  - **Not Implemented**
+  - **Implemented**: [Redd::Models::Reportable#report](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Reportable#report-instance_method)
 - **POST /api/save**
   - **Implemented**: [Redd::Models::Postable#save](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Postable#save-instance_method)
 - **GET /api/saved_categories**

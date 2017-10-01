@@ -3,6 +3,7 @@
 require_relative 'model'
 require_relative 'inboxable'
 require_relative 'replyable'
+require_relative 'reportable'
 
 module Redd
   module Models
@@ -10,6 +11,7 @@ module Redd
     class PrivateMessage < Model
       include Inboxable
       include Replyable
+      include Reportable
 
       # Delete the message from the user's inbox.
       def delete
