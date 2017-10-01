@@ -41,6 +41,13 @@ module Redd
         User.new(client, name: name)
       end
 
+      # Returns whether a username is available.
+      # @param username [String] the username to check
+      # @return [Boolean] whether the username is available
+      def username_available?(username)
+        client.get('/api/username_available', user: username).body
+      end
+
       # Get a (lazily loaded) subreddit by its name.
       # @param display_name [String] the subreddit's display name
       # @return [Subreddit]
@@ -64,14 +71,13 @@ module Redd
       # @param fullnames [String, Array<String>] one or an array of fullnames (e.g. t3_abc1234)
       # @return [Listing<Submission, Comment>]
       # @deprecated Try the lazier {#from_fullnames} instead.
-      def from_ids(fullnames)
-        # XXX: Could we use better methods for t1_ and t3_?
-        client.model(:get, '/api/info', id: Array(fullnames).join(','))
+      def from_ids(*fullnames)
+        client.model(:get, '/api/info', id: fullnames.join(','))
       end
 
       # Create lazily-loaded objects from their fullnames (e.g. t1_abc123).
       # @param fullnames [String] fullname for a submission, comment, or subreddit.
-      # @return [Array<Submission, Comment, Subreddit>]
+      # @return [Array<Submission, Comment, User, Subreddit>]
       def from_fullnames(*fullnames)
         fullnames.map do |name|
           if name.start_with?('t1_')

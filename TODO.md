@@ -316,13 +316,13 @@ implementations in Redd. The API docs are located
 - **GET [/r/subreddit]/about/where**
   - **Implemented**: [Redd::Models::Subreddit#relationship_listing](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Subreddit#relationship_listing-instance_method)
 - **POST [/r/subreddit]/api/delete_sr_banner**
-  - **Not Implemented**
+  - **Implemented**: [Redd::Models::Subreddit#delete_image](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Subreddit#delete_image-instance_method)
 - **POST [/r/subreddit]/api/delete_sr_header**
-  - **Not Implemented**
+  - **Implemented**: [Redd::Models::Subreddit#delete_image](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Subreddit#delete_image-instance_method)
 - **POST [/r/subreddit]/api/delete_sr_icon**
-  - **Not Implemented**
+  - **Implemented**: [Redd::Models::Subreddit#delete_image](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Subreddit#delete_image-instance_method)
 - **POST [/r/subreddit]/api/delete_sr_img**
-  - **Not Implemented**
+  - **Implemented**: [Redd::Models::Subreddit#delete_image](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Subreddit#delete_image-instance_method)
 - **GET /api/recommend/sr/srnames**
   - **Not Implemented**
 - **POST /api/search_reddit_names**
@@ -369,17 +369,19 @@ implementations in Redd. The API docs are located
 - **POST /api/block_user**
   - **Implemented**: [Redd::Models::User#block](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/User#block-instance_method)
 - **POST [/r/subreddit]/api/friend**
-  - TODO: add implementation/documentation link
+  - **Implemented**: Used in multiple methods.
 - **POST /api/report_user**
   - **Not Implemented**
 - **POST [/r/subreddit]/api/setpermissions**
   - **Not Implemented**
 - **POST [/r/subreddit]/api/unfriend**
-  - TODO: add implementation/documentation link
+  - **Implemented**: Used in multiple methods.
 - **GET /api/user_data_by_account_ids**
-  - **Not Implemented**
+  - **Not Implemented**: [Redd::Models::Session#from_fullnames](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Session#from_fullnames-instance_method)
+  - Currently commented out (will uncoment when adding cache check feature to lazy_lazer).
+  - Not implemented for batch calls, only individual.
 - **GET /api/username_available**
-  - **Not Implemented**
+  - **Implemented**: [Redd::Models::Session#username_available?](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Session#username_available?-instance_method)
 - **DELETE /api/v1/me/friends/username**
   - **Implemented**: [Redd::Models::User#unfriend](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/User#unfriend-instance_method)
 - **GET /api/v1/me/friends/username**

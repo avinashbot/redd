@@ -384,7 +384,19 @@ module Redd
         file_data = HTTP::FormData::File.new(file)
         params = { img_type: image_type, upload_type: upload_type, file: file_data }
         params[:name] = image_name if upload_type.to_s == 'img'
-        client.post("/r/#{display_name}/api/upload_sr_img", params).body[:img_src]
+        client.post("/r/#{read_attribute(:display_name)}/api/upload_sr_img", params).body[:img_src]
+      end
+
+      # Delete a subreddit-specific image.
+      # @param upload_type ['img', 'header', 'icon', 'banner'] the image to delete
+      # @param image_name [String] the image name (if upload_type is 'img')
+      def delete_image(upload_type:, image_name: nil)
+        unless %w[img header icon banner].include?(upload_type)
+          raise ArgumentError, 'unknown upload_type'
+        end
+        params = {}
+        params[:name] = image_name if upload_type.to_s == 'img'
+        client.post("/r/#{read_attribute(:display_name)}/api/delete_sr_#{upload_type}", params)
       end
 
       # @!attribute [r] display_name
