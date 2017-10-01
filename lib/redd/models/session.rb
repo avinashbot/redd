@@ -95,7 +95,8 @@ module Redd
 
       # Return a listing of the user's inbox (including comment replies and private messages).
       #
-      # @param category ['inbox', 'unread', 'sent', 'moderator'] the category of messages to view
+      # @param category ['inbox', 'unread', 'sent', 'moderator', 'messages'] the category of
+      #   messages to view
       # @param mark [Boolean] whether to remove the orangered from the user's inbox
       # @param params [Hash] a list of optional params to send with the request
       # @option params [String] :after return results after the given fullname
@@ -166,6 +167,25 @@ module Redd
       # @return [Listing<Subreddit>]
       def my_subreddits(type, **params)
         client.model(:get, "/subreddits/mine/#{type}", params)
+      end
+
+      # Return trending subreddits.
+      # @return [Hash]
+      # @example
+      #   session.trending_subreddits
+      #   => {
+      #     "subreddit_names": [
+      #       "AskLibertarians",
+      #       "OpTicGaming",
+      #       "Cuphead",
+      #       "AlmostParkour",
+      #       "TheGoodPlace"
+      #     ],
+      #     "comment_count": 176,
+      #     "comment_url": "/r/trendingsubreddits/comments/73dkin/trending_subreddits_for_20170930_rasklibertarians/"
+      #   }
+      def trending_subreddits
+        client.get('/api/trending_subreddits').body
       end
     end
   end

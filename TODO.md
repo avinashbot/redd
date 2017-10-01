@@ -119,7 +119,7 @@ implementations in Redd. The API docs are located
 ## Listings
 
 - **GET /api/trending_subreddits**
-  - **Not Implemented**
+  - **Implemented**: [Redd::Models::Session#trending_subreddits](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Session#trending_subreddits-instance_method)
 - **GET /by_id/names**
   - **Not Implemented**: See `/api/info`.
 - **GET [/r/subreddit]/comments/article**
@@ -188,7 +188,7 @@ implementations in Redd. The API docs are located
 - **POST /api/block**
   - **Implemented**: [Redd::Models::Inboxable#block](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Inboxable#block-instance_method)
 - **POST /api/collapse_message**
-  - **Not Implemented**
+  - **Implemented**: [Redd::Models::Inboxable#collapse](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Inboxable#collapse-instance_method)
 - **POST /api/compose**
   - **Implemented**: [Redd::Models::Messageable#send_message](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Messageable#send_message-instance_method)
 - **POST /api/del_msg**
@@ -200,7 +200,7 @@ implementations in Redd. The API docs are located
 - **POST /api/unblock_subreddit**
   - **Not Implemented**
 - **POST /api/uncollapse_message**
-  - **Not Implemented**
+  - **Implemented**: [Redd::Models::Inboxable#uncollapse](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Inboxable#uncollapse-instance_method)
 - **POST /api/unread_message**
   - **Implemented**: [Redd::Models::Inboxable#mark_as_unread](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Inboxable#mark_as_unread-instance_method)
 - **GET /message/where**
@@ -267,11 +267,13 @@ implementations in Redd. The API docs are located
 - **GET /api/mod/conversations/:conversation_id/user**
   - **Not Implemented**
 - **POST /api/mod/conversations/read**
-  - **Not Implemented**
+  - **Partially Implemented**: [Redd::Models::ModmailConversation#mark_as_read](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/ModmailConversation#mark_as_read-instance_method)
+  - Bulk read not implemented
 - **GET /api/mod/conversations/subreddits**
   - **Implemented**: [Redd::Models::Modmail#enrolled](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Modmail#enrolled-instance_method)
 - **POST /api/mod/conversations/unread**
-  - **Not Implemented**
+   - **Partially Implemented**: [Redd::Models::ModmailConversation#mark_as_unread](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/ModmailConversation#mark_as_unread-instance_method)
+  - Bulk unread not implemented
 - **GET /api/mod/conversations/unread/count**
   - **Implemented**: [Redd::Models::Modmail#unread_count](http://www.rubydoc.info/github/avinashbot/redd/master/Redd/Models/Modmail#unread_count-instance_method)
 
