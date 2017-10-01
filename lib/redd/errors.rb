@@ -17,6 +17,16 @@ module Redd
       end
     end
 
+    # Indicates that you were rate limited. This should be taken care of automatically.
+    class RateLimitError < APIError
+      attr_reader :duration
+
+      def initialize(response)
+        super(response)
+        @duration = response.body[:json][:ratelimit]
+      end
+    end
+
     # Represents an error from reddit returned in a response.
     class ResponseError < StandardError
       attr_accessor :response

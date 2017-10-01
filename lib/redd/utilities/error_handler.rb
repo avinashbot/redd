@@ -29,7 +29,7 @@ module Redd
         # If there wasn't an status code error and we're allowed to look into the response, parse
         # it and check for errors.
         # TODO: deal with errors of type { fields:, explanation:, message:, reason: }
-        api_error(res)
+        rate_limit_error(res) || other_api_error(res)
       end
 
       private
@@ -53,8 +53,14 @@ module Redd
         HTTP_ERRORS[res.code].new(res) if HTTP_ERRORS.key?(res.code)
       end
 
+      def rate_limit_error(res)
+        # {"json": {"ratelimit": 487.423861, "errors": [["RATELIMIT", "you are doing that too much. try again in 8 minutes.", "ratelimit"]]}}
+        return nil unless res.body.is_a?(Hash) && res.body[:json] && res.body[:json][:ratelimit]
+        Errors::RateLimitError.new(res)
+      end
+
       # Deal with those annoying errors that come with perfect 200 status codes.
-      def api_error(res)
+      def other_api_error(res)
         return nil unless res.body.is_a?(Hash) && res.body[:json] && res.body[:json][:errors] &&
                           !res.body[:json][:errors].empty?
         Errors::APIError.new(res)
