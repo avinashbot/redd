@@ -74,9 +74,9 @@ module Redd
         loop do
           remaining = fetch_prev_listing
           remaining.reverse_each do |o|
-            next if buffer.include?(o)
+            next if buffer.include?(o.id)
             yield o
-            buffer.add(o)
+            buffer.add(o.id)
           end
         end
       end
