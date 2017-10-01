@@ -6,6 +6,7 @@ require_relative 'inboxable'
 require_relative 'moderatable'
 require_relative 'postable'
 require_relative 'replyable'
+require_relative 'reportable'
 
 require_relative 'listing'
 require_relative 'subreddit'
@@ -20,6 +21,7 @@ module Redd
       include Moderatable
       include Postable
       include Replyable
+      include Reportable
 
       # @!attribute [r] subreddit_id
       #   @return [String] the subreddit fullname
