@@ -6,105 +6,119 @@ require 'pry'
 require_relative '../lib/redd'
 
 # The REPL session to initialize Pry in.
-module Reddit
-  class << self
-    attr_accessor :reddit
-  end
+class Reddit
+  attr_accessor :session
 end
+reddit = Reddit.new
 
-server = WEBrick::HTTPServer.new(
-  Port: 8000,
-  BindAddress: '0.0.0.0',
-  Logger: WEBrick::Log.new(File.open(File::NULL, 'w')),
-  AccessLog: []
-)
-
-server.mount_proc '/' do |_, res|
-  res.body = <<-HTML
-    <!doctype html>
-    <title>Redd Quickstart</title>
-    <style>
-      html, body { margin: 0; height: 100vh; }
-      .wrapper { padding-top: 30vh; text-align: center; font-family: sans-serif; }
-      #btn { background-color: #3D9970; margin: 5px; border-radius: 5px; padding: 10px; color: #fff; text-decoration: none; }
-    </style>
-    <div class="wrapper">
-      <h1>redd // quickstart</h1>
-      <a href="/authenticate" target="_blank" id="btn">Start</a>
-      <span>a new session in your terminal?</span>
-    </div>
-  HTML
-end
-
-server.mount_proc '/authenticate' do |_, res|
-  res.set_redirect(
-    WEBrick::HTTPStatus[302],
-    Redd.url(
-      client_id: 'P4txR-D6TzF8cg',
-      response_type: 'code',
-      state: '0',
-      redirect_uri: 'http://localhost:8000/redirect',
-      duration: 'permanent',
-      scope: %w[account creddits edit flair history identity livemanage modconfig modcontributors
-                modflair modlog modmail modothers modposts modself modwiki mysubreddits
-                privatemessages read report save submit subscribe vote wikiedit wikiread]
-    )
+redd_file_path = File.join(Dir.home, '.redd.key')
+if File.exist?(redd_file_path)
+  auth = Redd::AuthStrategies::Web.new(
+    client_id: 'P4txR-D6TzF8cg',
+    redirect_uri: 'http://localhost:8000/redirect'
   )
-end
+  access = Redd::Models::Access.new(refresh_token: File.read(redd_file_path))
+  client = Redd::APIClient.new(auth, user_agent: "Ruby:Redd-Quickstart:v#{Redd::VERSION} (by /u/Mustermind)")
+  client.access = auth.refresh(access)
+  reddit.session = Redd::Models::Session.new(client)
+else
+  server = WEBrick::HTTPServer.new(
+    Port: 8000,
+    BindAddress: '0.0.0.0',
+    Logger: WEBrick::Log.new(File.open(File::NULL, 'w')),
+    AccessLog: []
+  )
 
-server.mount_proc '/redirect' do |req, res|
-  err = req.query['error']
-  should_exit = err.nil? || err == 'access_denied'
-  res.body = <<-HTML
-    <!doctype html>
-    <title>Done!</title>
-    #{should_exit ? '<script>window.close();</script>' : "<p>Uh oh, there was an error: #{err}</p>"}
-  HTML
+  server.mount_proc '/' do |_, res|
+    res.body = <<-HTML
+      <!doctype html>
+      <title>Redd Quickstart</title>
+      <style>
+        html, body { margin: 0; height: 100vh; }
+        .wrapper { padding-top: 30vh; text-align: center; font-family: sans-serif; }
+        #btn { background-color: #3D9970; margin: 5px; border-radius: 5px; padding: 10px; color: #fff; text-decoration: none; }
+      </style>
+      <div class="wrapper">
+        <h1>redd // quickstart</h1>
+        <a href="/authenticate" target="_blank" id="btn">Start</a>
+        <span>a new session in your terminal?</span>
+      </div>
+    HTML
+  end
 
-  unless err
-    Reddit.reddit = Redd.it(
-      user_agent: "Ruby:Redd-Quickstart:v#{Redd::VERSION} (by unknown)",
-      client_id: 'P4txR-D6TzF8cg',
-      redirect_uri: 'http://localhost:8000/redirect',
-      code: req.query['code'],
-      auto_refresh: true
+  server.mount_proc '/authenticate' do |_, res|
+    res.set_redirect(
+      WEBrick::HTTPStatus[302],
+      Redd.url(
+        client_id: 'P4txR-D6TzF8cg',
+        response_type: 'code',
+        state: '0',
+        redirect_uri: 'http://localhost:8000/redirect',
+        duration: 'permanent',
+        scope: %w[account creddits edit flair history identity livemanage modconfig modcontributors
+                  modflair modlog modmail modothers modposts modself modwiki mysubreddits
+                  privatemessages read report save submit subscribe vote wikiedit wikiread]
+      )
     )
-    server.stop
+  end
+
+  server.mount_proc '/redirect' do |req, res|
+    err = req.query['error']
+    should_exit = err.nil? || err == 'access_denied'
+    res.body = <<-HTML
+      <!doctype html>
+      <title>Done!</title>
+      #{should_exit ? '<script>window.close();</script>' : "<p>Uh oh, there was an error: #{err}</p>"}
+    HTML
+
+    unless err
+      server.stop
+      reddit.session = Redd.it(
+        user_agent: "Ruby:Redd-Quickstart:v#{Redd::VERSION} (by /u/Mustermind)",
+        client_id: 'P4txR-D6TzF8cg',
+        redirect_uri: 'http://localhost:8000/redirect',
+        code: req.query['code'],
+        auto_refresh: true
+      )
+      File.open(redd_file_path, 'w') do |f|
+        f.write(reddit.session.client.access.refresh_token)
+      end
+    end
+  end
+
+  # Get the server going and shut it all down if user hits Ctrl-C
+  begin
+    puts "Listening at \e[34mhttp://localhost:8000\e[0m..."
+    server.start
+  rescue Interrupt
+    server.shutdown
+    exit
   end
 end
 
-# Get the server going and shut it all down if user hits Ctrl-C
-begin
-  puts "Listening at \e[34mhttp://localhost:8000\e[0m..."
-  server.start
-rescue Interrupt
-  server.shutdown
-  exit
-end
-
-Reddit.instance_exec do
+reddit.instance_exec do
   # Post a colourful welcome message
   suggestions = [
     # Session#me
-    'reddit.me.link_karma',
+    'session.me.link_karma',
     # Subreddit listings
-    "reddit.subreddit('pics').hot.first.title",
+    "session.subreddit('pics').hot.first.title",
     # User listings
-    'puts reddit.me.comments(sort: :top).first.body',
+    'puts session.me.comments(sort: :top).first.body',
     # Sending messages
-    "reddit.user('Mustermind').send_message(subject: 'Hi!', text: 'How are you?')",
+    "session.user('Mustermind').send_message(subject: 'Hi!', text: 'How are you?')",
     # Subscribing to subreddits
-    "reddit.subreddit('EarthPorn').subscribe",
+    "session.subreddit('EarthPorn').subscribe",
     # Upvoting
-    'reddit.front_page.hot(time: :month).first.upvote',
+    'session.front_page.hot(time: :month).first.upvote',
     # Add friend
-    "reddit.user('Mustermind').friend",
+    "session.user('Mustermind').friend",
     # List friends
-    'reddit.friends.each { |friend| puts friend.name };',
+    'session.friends.each { |friend| puts friend.name };',
     # Hiding / Duplicates
-    'reddit.front_page.hot.each { |l| l.hide if l.duplicates.count > 2 }'
+    'session.front_page.hot.each { |l| l.hide if l.duplicates.count > 2 }'
   ]
-  puts "Hi \e[35m/u/#{reddit.me.name}\e[0m! Try `\e[34m#{suggestions.sample}\e[0m`."
+  puts "Hi \e[35m/u/#{session.me.name}\e[0m! Try `\e[34m#{suggestions.sample}\e[0m`."
 
   # Load Pry
   Pry.start(self)

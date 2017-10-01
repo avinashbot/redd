@@ -29,7 +29,7 @@ module Redd
         token = access.is_a?(String) ? refresh_token : access.refresh_token
         response = post('/api/v1/access_token', grant_type: 'refresh_token', refresh_token: token)
         # When refreshed, the response doesn't include an access token, so we have to add it.
-        Models::Access.new(self, response.body.merge(refresh_token: token))
+        Models::Access.new(response.body.merge(refresh_token: token))
       end
     end
   end
