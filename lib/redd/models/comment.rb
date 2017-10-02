@@ -49,7 +49,9 @@ module Redd
 
       # @!attribute [r] replies
       #   @return [Listing<Comment>] the comment replies
-      property :replies, with: ->(l) { Listing.new(client, l[:data]) if l.is_a?(Hash) }
+      property :replies,
+               default: ->() { Listing.empty(client) },
+               with: ->(r) { r.is_a?(Hash) ? Listing.new(client, r[:data]) : Listing.empty(client) }
 
       # @!attribute [r] user_reports
       #   @return [Array<String>] user reports
@@ -152,7 +154,7 @@ module Redd
       property :subreddit, with: ->(n) { Subreddit.new(client, display_name: n) }
 
       # @!attribute [r] score_hidden
-      #   @return [Boolean] whether the comment score is hidden 
+      #   @return [Boolean] whether the comment score is hidden
       property :score_hidden?, from: :score_hidden
 
       # @!attribute [r] subreddit_type

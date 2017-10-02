@@ -12,8 +12,7 @@ module Redd
 
       def initialize(response)
         @response = response
-        @name, message = response.body[:json][:errors][0]
-        super(message)
+        super(response.body[:json][:errors][0].join(', '))
       end
     end
 

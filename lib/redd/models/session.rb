@@ -188,7 +188,7 @@ module Redd
       #       "TheGoodPlace"
       #     ],
       #     "comment_count": 176,
-      #     "comment_url": "/r/trendingsubreddits/comments/73dkin/trending_subreddits_for_20170930_rasklibertarians/"
+      #     "comment_url": "/r/trendingsubreddits/comments/73dkin/trending_subreddits_for_..."
       #   }
       def trending_subreddits
         client.get('/api/trending_subreddits').body
