@@ -68,7 +68,7 @@ module Redd
 
       # Go backward through the listing.
       # @yield [Object] the object returned in the listings
-      def _stream(&block)
+      def _stream
         buffer = RingBuffer.new(100)
         remaining = @limit > 0 ? reverse_each.to_a : []
 

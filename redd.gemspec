@@ -22,7 +22,7 @@ Gem::Specification.new do |spec| # rubocop:disable Metrics/BlockLength
   spec.require_paths = ['lib']
 
   spec.add_dependency 'http', '~> 2.2'
-  spec.add_dependency 'lazy_lazer', '~> 0.6'
+  spec.add_dependency 'lazy_lazer', '~> 0.7.0'
 
   spec.add_development_dependency 'pry', '~> 0.10'
   spec.add_development_dependency 'bundler', '~> 1.14'

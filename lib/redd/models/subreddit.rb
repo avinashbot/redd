@@ -613,7 +613,7 @@ module Redd
       property :link_flair_enabled?, from: :link_flair_enabled
 
       # @!attribute [r] allow_images?
-      #   @return [Boolean] whether images are allowed 
+      #   @return [Boolean] whether images are allowed
       property :allow_images?, from: :allow_images
 
       # @!attribute [r] show_media_preview

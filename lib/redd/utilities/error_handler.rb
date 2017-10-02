@@ -54,7 +54,6 @@ module Redd
       end
 
       def rate_limit_error(res)
-        # {"json": {"ratelimit": 487.423861, "errors": [["RATELIMIT", "you are doing that too much. try again in 8 minutes.", "ratelimit"]]}}
         return nil unless res.body.is_a?(Hash) && res.body[:json] && res.body[:json][:ratelimit]
         Errors::RateLimitError.new(res)
       end
