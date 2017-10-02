@@ -12,6 +12,8 @@ Dir[File.join(__dir__, 'redd', 'auth_strategies', '*.rb')].each { |f| require f 
 require_relative 'redd/errors'
 # Regular Client
 require_relative 'redd/api_client'
+# Assists
+Dir[File.join(__dir__, 'redd', 'assist', '*.rb')].each { |f| require f }
 
 # Redd is a simple and intuitive API wrapper.
 module Redd
