@@ -107,7 +107,7 @@ module Redd
       # Fetch the previous listing with @caller and update @before.
       def fetch_prev_listing
         listing = @caller.call(before: @before, after: nil, limit: 100)
-        @before = listing.first.name unless listing.empty?
+        @before = listing.empty? ? nil : listing.first.name
         listing
       end
     end
