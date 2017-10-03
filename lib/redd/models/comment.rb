@@ -50,7 +50,6 @@ module Redd
       # @!attribute [r] replies
       #   @return [Listing<Comment>] the comment replies
       property :replies,
-               default: ->() { Listing.empty(client) },
                with: ->(r) { r.is_a?(Hash) ? Listing.new(client, r[:data]) : Listing.empty(client) }
 
       # @!attribute [r] user_reports
