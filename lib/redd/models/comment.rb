@@ -65,6 +65,11 @@ module Redd
       #   @return [String] the comment id
       property :id
 
+      # @!attribute [r] title
+      #   @return ["comment reply", "post reply", "username mention"] the comment "title" (only
+      #     visible in messages)
+      property :title, :nil
+
       # @!attribute [r] banned_at
       #   @return [Time, nil] the time when the comment was banned
       property :banned_at, from: :banned_at_utc, with: ->(t) { Time.at(t) if t }
