@@ -29,11 +29,15 @@ module Redd
       # @param under_score [Integer] the maximum score that the comment must have to be kept
       # @param minimum_age [Integer] the minimum age for deletion (seconds)
       # @return [Array<String>] the deleted item fullnames
-      def delete_badly_scoring!(under_score: 0, minimum_age: 15 * 60)
+      def delete_badly_scoring!(under_score: 1, minimum_age: 15 * 60)
         delete_if do |comment|
-          # optimization: break now since all future comments will be younger
-          return [] if comment.created_at + minimum_age > Time.now
-          comment.score < under_score && !comment.deleted? && !comment.archived? ? :delete : :keep
+          if comment.created_at + minimum_age > Time.now
+            :skip
+          elsif comment.score < under_score && !comment.deleted? && !comment.archived?
+            :delete
+          else
+            :keep
+          end
         end
       end
 
@@ -53,6 +57,7 @@ module Redd
           end
           action == :keep || action == :delete
         end
+        deleted
       end
     end
   end
