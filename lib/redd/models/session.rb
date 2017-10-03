@@ -101,8 +101,8 @@ module Redd
 
       # Return a listing of the user's inbox (including comment replies and private messages).
       #
-      # @param category ['inbox', 'unread', 'sent', 'moderator', 'messages'] the category of
-      #   messages to view
+      # @param category ['inbox', 'unread', 'sent', 'moderator', 'messages', 'comments',
+      #   'selfreply', 'mentions'] the category of messages to view
       # @param mark [Boolean] whether to remove the orangered from the user's inbox
       # @param params [Hash] a list of optional params to send with the request
       # @option params [String] :after return results after the given fullname

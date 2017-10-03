@@ -5,11 +5,16 @@ module Redd
     # Helper class for deleting negative links or comments. You can run this as a separate process,
     # as long as you set your rate limit time higher in your main process.
     # @note Works with {Submission} and {Comment}.
-    class DeleteNegative
-      # Create a DeleteNegative assist.
+    # @example
+    #   assist = Redd::Assist::DeleteBadlyScoring.new(session.client)
+    #   assist.track(comment)
+    #   loop do
+    #     assist.delete_badly_scoring(under_score: 1, minimum_age: 600)
+    #     sleep 30
+    #   end
+    class DeleteBadlyScoring
+      # Create a DeleteBadlyScoring assist.
       # @param client [APIClient] the API client
-      # @example
-      #   assist = Redd::Assist::DeleteNegative.new(session.client)
       def initialize(client)
         @client = client
         @queue = []
@@ -21,43 +26,33 @@ module Redd
       end
 
       # Delete all items that are older than the minimum age and score 0 or below.
+      # @param under_score [Integer] the maximum score that the comment must have to be kept
       # @param minimum_age [Integer] the minimum age for deletion (seconds)
       # @return [Array<String>] the deleted item fullnames
-      def delete_all_not_positive!(minimum_age: 15 * 60)
+      def delete_badly_scoring!(under_score: 0, minimum_age: 15 * 60)
         delete_if do |comment|
           # optimization: break now since all future comments will be younger
-          break if comment.created_at + minimum_age > Time.now
-          comment.score <= 0 && !comment.deleted? && !comment.archived?
-        end
-      end
-
-      # Delete all items that are older than the minimum age and score -1 or below.
-      # @param minimum_age [Integer] the minimum age for deletion (seconds)
-      # @return [Array<String>] the deleted item fullnames
-      def delete_all_negative!(minimum_age: 15 * 60)
-        delete_if do |comment|
-          # optimization: break now since all future comments will be younger
-          break if comment.created_at + minimum_age > Time.now
-          comment.score < 0 && !comment.deleted? && !comment.archived?
+          return [] if comment.created_at + minimum_age > Time.now
+          comment.score < under_score && !comment.deleted? && !comment.archived? ? :delete : :keep
         end
       end
 
       # Delete all items that the block returns true for.
       # @param minimum_age [Integer] the minimum age for deletion
       # @yieldparam comment [Comment] the comment to filter
-      # @yieldreturn [Boolean] whether to delete the comment
+      # @yieldreturn [:keep, :delete, :skip] whether to keep, delete, or check again later
       # @return [Array<String>] the deleted item fullnames
       def delete_if
         deleted = []
         @queue.delete_if do |fullname|
-          should_delete = yield Models::Comment.new(@client, name: fullname).reload
-          if should_delete
+          comment = Models::Comment.new(@client, name: fullname).reload
+          action = yield comment
+          if action == :delete
             comment.delete
             deleted << fullname
           end
-          should_delete
+          action == :keep || action == :delete
         end
-        deleted
       end
     end
   end
