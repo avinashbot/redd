@@ -200,18 +200,18 @@ module Redd
       private
 
       def lazer_reload
-        self[:link] ? load_with_comments : load_without_comments
+        exists_locally?(:link) ? load_with_comments : load_without_comments
       end
 
       def load_with_comments
         fully_loaded!
-        id = self[:id] || read_attribute(:name).sub('t1_', '')
+        id = exists_locally?(:id) ? read_attribute(:id) : read_attribute(:name).sub('t1_', '')
         link_id = read_attribute(:link).name.sub('t3_', '')
         client.get("/comments/#{link_id}/_/#{id}").body[1][:data][:children][0][:data]
       end
 
       def load_without_comments
-        id = self[:id] || read_attribute(:name).sub('t1_', '')
+        id = exists_locally?(:id) ? read_attribute(:id) : read_attribute(:name).sub('t1_', '')
         response = client.get('/api/info', id: "t1_#{id}").body[:data][:children][0][:data]
         response.delete(:replies) # Make sure replies are lazy-loaded later.
         response

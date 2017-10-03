@@ -404,8 +404,12 @@ module Redd
       property :display_name, :required
 
       # @!attribute [r] id
-      #   @return [String] the subreddit's t5_ id.
+      #   @return [String] the subreddit's base36 id.
       property :id
+
+      # @!attribute [r] name
+      #   @return [String] the subreddit's t5_ fullname.
+      property :name
 
       # @!attribute [r] title
       #   @return [String] the subreddit's page title text.
@@ -636,7 +640,7 @@ module Redd
 
       def lazer_reload
         fully_loaded!
-        self[:name] ? load_from_fullname : load_from_display_name
+        exists_locally?(:name) ? load_from_fullname : load_from_display_name
       end
 
       # Return the attributes using the display_name (best option).
