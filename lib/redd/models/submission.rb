@@ -111,7 +111,7 @@ module Redd
 
       # @!attribute [r] approved_at
       #   @return [Time, nil] when the submission was last approved
-      property :approved_at, :approved_at_utc, with: ->(t) { Time.at(t) if t }
+      property :approved_at, from: :approved_at_utc, with: ->(t) { Time.at(t) if t }
 
       # @!attribute [r] banned_by
       #   @return [String] not sure what this does
@@ -382,11 +382,11 @@ module Redd
         fully_loaded!
 
         # Ensure we have the link's id.
-        id = self[:id] ? read_attribute(:id) : read_attribute(:name).sub('t3_', '')
+        id = exists_locally?(:id) ? read_attribute(:id) : read_attribute(:name).sub('t3_', '')
 
         # If a specific sort order was requested, provide it.
         params = {}
-        params[:sort] = read_attribute(:sort_order) if self[:sort_order]
+        params[:sort] = read_attribute(:sort_order) if exists_locally?(:sort_order)
 
         # `response` is a pair (2-element array):
         #   - response[0] is a one-item listing containing the submission

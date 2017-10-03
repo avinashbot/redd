@@ -48,7 +48,7 @@ module Redd
       def lazer_reload
         fully_loaded!
         path = "/wiki/#{read_attribute(:title)}"
-        path = "/r/#{read_attribute(:subreddit).display_name}#{path}" if self[:subreddit]
+        path = "/r/#{read_attribute(:subreddit).display_name}#{path}" if exists_locally?(:subreddit)
         client.get(path).body[:data]
       end
     end
