@@ -108,8 +108,7 @@ module Redd
 
       # @!attribute [r] comments
       #   @return [Array<Comment>] the comment tree
-      property :comments, :nil,
-               with: ->(l) { CommentListing.new(self, l ? Listing.new(client, l) : nil) }
+      property :comments, :nil, with: ->(l) { Listing.new(client, l) if l }
 
       # @!attribute [r] domain
       #   @return [String] the domain name of the link (or self.subreddit_name)
