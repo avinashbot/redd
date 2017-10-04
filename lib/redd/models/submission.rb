@@ -20,6 +20,11 @@ module Redd
       include Replyable
       include Reportable
 
+      # @return [String] the sort order
+      def sort_order
+        exists_locally?(:sort_order) ? read_attribute(:sort_order) : nil
+      end
+
       # Set the sort order of the comments and reload the comments.
       # @param new_order [:confidence, :top, :controversial, :old, :qa] the sort order
       def update_sort_order(new_order)
@@ -103,7 +108,8 @@ module Redd
 
       # @!attribute [r] comments
       #   @return [Array<Comment>] the comment tree
-      property :comments, :nil, with: ->(l) { Listing.new(client, l) if l }
+      property :comments, :nil,
+               with: ->(l) { CommentListing.new(self, l ? Listing.new(client, l) : nil) }
 
       # @!attribute [r] domain
       #   @return [String] the domain name of the link (or self.subreddit_name)

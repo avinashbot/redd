@@ -103,6 +103,10 @@ module Redd
       #   @deprecated is always 0; use {#score} instead
       property :downs
 
+      # @!attribute [r] parent_id
+      #   @return [String] the parent fullname
+      property :parent_id
+
       # @!attribute [r] parent
       #   @return [Comment, Submission] the comment parent
       property :parent,
