@@ -5,6 +5,7 @@ require_relative 'model'
 module Redd
   module Models
     # An enumerable type that covers listings and expands forwards.
+    # TODO: cache fetched pages?
     class PaginatedListing
       include Enumerable
 

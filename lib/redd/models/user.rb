@@ -12,21 +12,23 @@ module Redd
       # Get the appropriate listing.
       # @param type [:overview, :submitted, :comments, :liked, :disliked, :hidden, :saved, :gilded]
       #   the type of listing to request
-      # @param params [Hash] a list of params to send with the request
-      # @option params [:hot, :new, :top, :controversial] :sort the order of the listing
-      # @option params [String] :after return results after the given fullname
-      # @option params [String] :before return results before the given fullname
-      # @option params [Integer] :count the number of items already seen in the listing
-      # @option params [1..100] :limit the maximum number of things to return
-      # @option params [:hour, :day, :week, :month, :year, :all] :time the time period to consider
+      # @param options [Hash] a list of options to send with the request
+      # @option options [:hot, :new, :top, :controversial] :sort the order of the listing
+      # @option options [String] :after return results after the given fullname
+      # @option options [String] :before return results before the given fullname
+      # @option options [Integer] :count the number of items already seen in the listing
+      # @option options [1..100] :limit the maximum number of things to return
+      # @option options [:hour, :day, :week, :month, :year, :all] :time the time period to consider
       #   when sorting
-      # @option params [:given] :show whether to show the gildings given
+      # @option options [:given] :show whether to show the gildings given
       #
       # @note The option :time only applies to the top and controversial sorts.
       # @return [Listing<Submission>]
-      def listing(type, **params)
-        params[:t] = params.delete(:time) if params.key?(:time)
-        client.model(:get, "/user/#{read_attribute(:name)}/#{type}.json", params)
+      def listing(type, **options)
+        options[:t] = options.delete(:time) if options.key?(:time)
+        PaginatedListing.new(client, options) do |**req_opts|
+          client.model(:get, "/user/#{read_attribute(:name)}/#{type}.json", options.merge(req_opts))
+        end
       end
 
       # @!method overview(**params)
