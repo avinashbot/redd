@@ -5,7 +5,9 @@ require_relative 'model'
 module Redd
   module Models
     # An enumerable type that covers listings and expands forwards.
-    # TODO: cache fetched pages?
+    #
+    # If you want to use the #[] operator, you'll need to convert the object to an Array. This can
+    # be done with either {Enumerable#first} or {Enumerable#to_a}.
     class PaginatedListing
       include Enumerable
 

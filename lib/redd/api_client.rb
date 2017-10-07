@@ -57,7 +57,6 @@ module Redd
     end
 
     def model(verb, path, options = {})
-      # XXX: make unmarshal explicit in methods?
       unmarshal(send(verb, path, options).body)
     end
 

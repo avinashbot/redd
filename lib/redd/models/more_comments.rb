@@ -14,7 +14,7 @@ module Redd
         params = { link_id: link.name, children: read_attribute(:children).join(',') }
         params[:sort] = sort if sort
         params[:sort] = link.sort_order if link.sort_order
-        client.model(:get, '/api/morechildren', params)
+        client.model(:post, '/api/morechildren', params)
       end
 
       # Keep expanding until all top-level MoreComments are converted to comments.
