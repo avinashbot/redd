@@ -8,44 +8,16 @@ module Redd
     class MoreComments < Model
       # Expand the object's children into a listing of Comments and MoreComments.
       # @param link [Submission] the submission the object belongs to
-      # @param sort [String] the sort order of the submission
       # @return [Listing<Comment, MoreComments>] the expanded children
-      def expand(link:, sort: nil)
-        params = { link_id: link.name, children: read_attribute(:children).join(',') }
-        params[:sort] = sort if sort
-        params[:sort] = link.sort_order if link.sort_order
-        client.model(:post, '/api/morechildren', params)
-      end
-
-      # Keep expanding until all top-level MoreComments are converted to comments.
-      # @param link [Submission] the object's submission
-      # @param sort [String] the sort order of the returned comments
-      # @param lookup [Hash] a hash of comments to add future replies to
-      # @param depth [Number] the maximum recursion depth
-      # @return [Array<Comment, MoreComments>] the expanded comments or self if past depth
-      def recursive_expand(link:, sort: nil, lookup: {}, depth: 10)
-        return [self] if depth <= 0
-
-        expand(link: link, sort: sort).each_with_object([]) do |thing, coll|
-          target = (lookup.key?(thing.parent_id) ? lookup[thing.parent_id].replies.children : coll)
-
-          if thing.is_a?(Comment)
-            # Add the comment to a lookup hash.
-            lookup[thing.name] = thing
-            # If the parent is not in the lookup hash, add it to the root listing.
-            target.push(thing)
-          elsif thing.is_a?(MoreComments) && thing.count > 0
-            # Get an array of expanded comments from the thing.
-            ary = thing.recursive_expand(link: link, sort: sort, lookup: lookup, depth: depth - 1)
-            target.concat(ary)
-          end
-        end
+      def expand(link:)
+        expand_recursive(link: link, lookup: {})
       end
 
       # @return [Array<String>] an array representation of self
-      def to_ary
+      def to_a
         read_attribute(:children)
       end
+      alias to_ary to_a
 
       # @!attribute [r] count
       #   @return [Integer] the comments under this object
@@ -70,6 +42,55 @@ module Redd
       # @!attribute [r] children
       #   @return [Array<String>] the unexpanded comments
       property :children
+
+      protected
+
+      # Keep expanding until all top-level MoreComments are converted to comments.
+      # @param link [Submission] the object's submission
+      # @param lookup [Hash] a hash of comments to add future replies to
+      # @return [Array<Comment, MoreComments>] the expanded comments or self if past depth
+      def expand_recursive(link:, lookup:)
+        return [self] if depth == 0
+
+        expand_one(link: link).each_with_object([]) do |thing, coll|
+          target =
+            if thing.parent_id == read_attribute(:parent_id)
+              coll
+            elsif lookup.key?(thing.parent_id)
+              lookup[thing.parent_id].replies.children
+            end
+
+          if target.nil?
+            warn "expanding error: orphaned comment #{thing.name}"
+            next
+          end
+
+          if thing.is_a?(Comment)
+            # Add the comment to a lookup hash.
+            lookup[thing.name] = thing
+            # If the parent is not in the lookup hash, add it to the root listing.
+            target.push(thing)
+          elsif thing.is_a?(MoreComments) && thing.count > 0
+            if thing.parent_id == read_attribute(:parent_id)
+              ary = thing.expand_recursive(link: link, lookup: lookup, depth: depth - 1)
+              target.concat(ary)
+            else
+              target.push(thing)
+            end
+          end
+        end
+      end
+
+      private
+
+      # Expand the object's children into a listing of Comments and MoreComments.
+      # @param link [Submission] the submission the object belongs to
+      # @return [Listing<Comment, MoreComments>] the expanded children
+      def expand_one(link:)
+        params = { link_id: link.name, children: read_attribute(:children).join(',') }
+        params[:sort] = link.sort_order if link.sort_order
+        client.model(:post, '/api/morechildren', params)
+      end
     end
   end
 end
