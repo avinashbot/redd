@@ -101,7 +101,7 @@ module Redd
       # Fetch the next listing with @caller and update @after and @limit.
       def fetch_next_listing
         caller_limit = [@limit, 100].min
-        listing = @caller.call(before: nil, after: @after, limit: caller_limit)
+        listing = @caller.call(after: @after, limit: caller_limit)
         @after = listing.after
         @limit -= caller_limit
         listing
@@ -109,6 +109,7 @@ module Redd
 
       # Fetch the previous listing with @caller and update @before.
       def fetch_prev_listing
+        # we're not using the user-provided because a stream isn't supposed to die
         listing = @caller.call(before: @before, after: nil, limit: 100)
         @before = listing.empty? ? nil : listing.first.name
         listing
