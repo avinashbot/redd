@@ -26,7 +26,7 @@ module Redd
       # Refresh the authentication and return a new refreshed access
       # @return [Access] the new access
       def refresh(access)
-        token = access.is_a?(String) ? refresh_token : access.refresh_token
+        token = access.is_a?(String) ? access : access.refresh_token
         response = post('/api/v1/access_token', grant_type: 'refresh_token', refresh_token: token)
         # When refreshed, the response doesn't include an access token, so we have to add it.
         Models::Access.new(response.body.merge(refresh_token: token))
