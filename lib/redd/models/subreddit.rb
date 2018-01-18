@@ -620,6 +620,14 @@ module Redd
       #   @return [Boolean] whether images are allowed
       property :allow_images?, from: :allow_images
 
+      # @!attribute [r] allow_videos?
+      #   @return [Boolean] whether videos are allowed
+      property :allow_videos?, from: :allow_videos
+
+      # @!attribute [r] allow_videogifs?
+      #   @return [Boolean] whether videogifs are allowed
+      property :allow_videogifs?, from: :allow_videogifs
+
       # @!attribute [r] show_media_preview
       #   @return [Boolean] whether media previews are shown
       property :show_media_preview?, from: :show_media_preview
