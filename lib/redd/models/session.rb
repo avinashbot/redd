@@ -57,7 +57,7 @@ module Redd
 
       # @return [Array<Multireddit>] array of multireddits belonging to the user
       def my_multis
-        client.get('/api/multi/mine').body.map {|m| client.unmarshal(m)}
+        client.get('/api/multi/mine').body.map { |m| client.unmarshal(m) }
       end
 
       # Get a (lazily loaded) multi by its path.
@@ -130,9 +130,9 @@ module Redd
       # @see #my_preferences
       def edit_preferences(new_prefs = {})
         client.request(
-            :patch, '/api/v1/me/prefs',
-            headers: {'Content-Type' => 'application/json'},
-            body: JSON.generate(new_prefs)
+          :patch, '/api/v1/me/prefs',
+          headers: {'Content-Type' => 'application/json'},
+          body: JSON.generate(new_prefs)
         ).body
       end
 
