@@ -57,7 +57,7 @@ module Redd
 
       # @return [Array<Multireddit>] array of multireddits belonging to the user
       def my_multis
-        client.get('/api/multi/mine').body.map { |m| client.unmarshal(m) }
+        client.get('/api/multi/mine').body.map {|m| client.unmarshal(m)}
       end
 
       # Get a (lazily loaded) multi by its path.
@@ -130,9 +130,9 @@ module Redd
       # @see #my_preferences
       def edit_preferences(new_prefs = {})
         client.request(
-          :patch, '/api/v1/me/prefs',
-          headers: { 'Content-Type' => 'application/json' },
-          body: JSON.generate(new_prefs)
+            :patch, '/api/v1/me/prefs',
+            headers: {'Content-Type' => 'application/json'},
+            body: JSON.generate(new_prefs)
         ).body
       end
 
@@ -205,6 +205,21 @@ module Redd
       # @return [Listing<Subreddit>]
       def list_subreddits(order = 'default', **params)
         client.model(:get, "/subreddits/#{order}", params)
+      end
+
+      # Search subreddits
+      #
+      # @param query [String] the search query
+      # @param params [Hash] the search params
+      # @option params [String] :after return results after the given fullname
+      # @option params [String] :before return results before the given fullname
+      # @option params [Integer] :count the number of items already seen in the listing
+      # @option params [1..100] :limit the maximum number of things to return
+      # @option params [:relevance, :activity] :sort the sort order of results
+      # @return [Listing<Subreddit>] the search results
+      def search_subreddits(query, **params)
+        params[:q] = query
+        client.model(:get, '/subreddits/search', params)
       end
     end
   end
