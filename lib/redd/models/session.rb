@@ -131,7 +131,7 @@ module Redd
       def edit_preferences(new_prefs = {})
         client.request(
           :patch, '/api/v1/me/prefs',
-          headers: {'Content-Type' => 'application/json'},
+          headers: { 'Content-Type' => 'application/json' },
           body: JSON.generate(new_prefs)
         ).body
       end
