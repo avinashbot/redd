@@ -1,15 +1,24 @@
 sudo: false
 language: ruby
+
 rvm:
+  - 2.1.10
+  - 2.2.9
+  - 2.3.6
+  - 2.4.3
+  - 2.5.0
+  - jruby-9.1.9.0
   - ruby-head
-  - 2.4.0
-  - 2.1.0
   - jruby-head
-  - jruby-9.1.7.0
+
 matrix:
   allow_failures:
   - rvm: ruby-head
   - rvm: jruby-head
 
-before_install: gem install bundler -v 1.14.6
 cache: bundler
+
+before_install:
+  - gem update --system
+  - gem update --no-document
+  - gem cleanup
