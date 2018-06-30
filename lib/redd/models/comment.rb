@@ -209,7 +209,7 @@ module Redd
       def comment_link
         link.link + id
       end
-      
+
       private
 
       def lazer_reload
