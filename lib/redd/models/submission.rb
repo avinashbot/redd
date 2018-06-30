@@ -106,7 +106,7 @@ module Redd
       def link
         "https://www.reddit.com#{permalink}"
       end
-      
+
       # @!attribute [r] sort_order
       #   @return [Symbol] the comment sort order
       property :sort_order, :nil
