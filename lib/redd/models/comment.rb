@@ -205,8 +205,8 @@ module Redd
       #   @return [Boolean] whether the comment is distinguished
       property :distinguished?, from: :distinguished
 
-      # @return [String] the link to this specific comment
-      def comment_link
+      # @return [String] the url to this specific comment
+      def comment_url
         link.link + id
       end
 
