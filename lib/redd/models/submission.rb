@@ -103,7 +103,7 @@ module Redd
       end
 
       # @return [String] the **absolute** url to the submission
-      def link
+      def url
         "https://www.reddit.com#{permalink}"
       end
 
