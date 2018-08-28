@@ -102,6 +102,11 @@ module Redd
         client.post('/api/set_suggested_sort', id: read_attribute(:name), sort: suggested)
       end
 
+      # @return [String] the **absolute** url to the submission
+      def url
+        "https://www.reddit.com#{permalink}"
+      end
+
       # @!attribute [r] sort_order
       #   @return [Symbol] the comment sort order
       property :sort_order, :nil
