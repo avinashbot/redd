@@ -222,6 +222,27 @@ module Redd
         client.post("/r/#{read_attribute(:display_name)}/api/selectflair", params)
       end
 
+      # @return [Array<Hash>] a list of emojis available on this subreddit
+      # @example
+      #   session.subreddit("NFL").emojis
+      #   => [
+      #     {
+      #       "url":"https://emoji.redditmedia.com/0pem6mx2wcg21_t5_2qmg3/NFL",
+      #       "id":"NFL",
+      #       "created_by":"#<Redd::Models::User:0x0000000003d0a2c0>"
+      #     }
+      #     ...
+      #   ]
+      def emojis
+        client.get("/api/v1/#{read_attribute(:display_name)}/emojis/all").body[:"#{read_attribute(:name)}"].map do |key, values|
+          out = {
+              :url        => values[:url],
+              :id         => key,
+              :created_by => User.new(client, name: values[:created_by])
+          }
+        end
+      end
+
       # Add the subreddit to the user's subscribed subreddits.
       def subscribe(action: :sub, skip_initial_defaults: false)
         client.post(

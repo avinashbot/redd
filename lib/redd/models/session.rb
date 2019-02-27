@@ -162,6 +162,29 @@ module Redd
         client.get('/api/saved_categories').body
       end
 
+      # @return [Array<Hash>] a list of "snoomojis" available on all subreddits
+      # @example
+      #   session.emojis
+      #   => [
+      #     {
+      #       "url":"https://emoji.redditmedia.com/46kel8lf1guz_t5_3nqvj/cake",
+      #       "id":"cake",
+      #       "created_by":"#<Redd::Models::User:0x0000000003d0a2c0>"
+      #     }
+      #     ...
+      #   ]
+      def emojis
+        # Accessing the default set of emojis requires accessing a subreddit.
+        # /r/all does not work for this, so I chose the most popular subreddit.
+        client.get("/api/v1/AskReddit/emojis/all").body[:snoomojis].map do |key, values|
+          out = {
+              :url        => values[:url],
+              :id         => key,
+              :created_by => User.new(client, name: values[:created_by])
+          }
+        end
+      end
+
       # Return a listing of the user's subreddits.
       #
       # @param type ['subscriber', 'contributor', 'moderator'] the type of subreddits
