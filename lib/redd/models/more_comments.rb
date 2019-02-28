@@ -8,7 +8,7 @@ module Redd
     class MoreComments < Model
       # Expand the object's children into a listing of Comments and MoreComments.
       # @param link [Submission] the submission the object belongs to
-      # @return [Listing<Comment, MoreComments>] the expanded children
+      # @return [ModelListing<Comment, MoreComments>] the expanded children
       def expand(link:)
         expand_recursive(link: link, lookup: {})
       end
@@ -85,7 +85,7 @@ module Redd
 
       # Expand the object's children into a listing of Comments and MoreComments.
       # @param link [Submission] the submission the object belongs to
-      # @return [Listing<Comment, MoreComments>] the expanded children
+      # @return [ModelListing<Comment, MoreComments>] the expanded children
       def expand_one(link:)
         params = { link_id: link.name, children: read_attribute(:children).join(',') }
         params[:sort] = link.sort_order if link.sort_order

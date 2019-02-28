@@ -12,7 +12,7 @@ module Redd
       # @option params [String] :before return results before the given fullname
       # @option params [Integer] :count the number of items already seen in the listing
       # @option params [1..100] :limit the maximum number of things to return
-      # @return [Listing]
+      # @return [ModelListing]
       def updates(**params)
         client.model(:get, "/live/#{read_attribute(:id)}", params)
       end
@@ -66,7 +66,7 @@ module Redd
       # @option params [Integer] :count the number of items already seen in the listing
       # @option params [1..100] :limit the maximum number of things to return
       #
-      # @return [Listing<Submission>]
+      # @return [ModelListing<Submission>]
       def discussions(**params)
         client.model(:get, "/live/#{read_attribute(:id)}/discussions", params)
       end

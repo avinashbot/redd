@@ -4,7 +4,8 @@ require_relative 'model'
 
 module Redd
   module Models
-    # A backward-expading listing of items.
+    # A backward-expading listing of hash objects.
+    # Used in the case where the listing is not built from Models.
     # @see Stream
     class Listing < Model
       include Enumerable
@@ -46,7 +47,7 @@ module Redd
 
       # @!attribute [r] children
       #   @return [Array<Model>] the listing's children
-      property :children, :required, with: ->(a) { a.map { |m| client.unmarshal(m) } }
+      property :children, :required
     end
   end
 end

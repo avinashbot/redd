@@ -33,7 +33,7 @@ module Redd
       #   when sorting
       #
       # @note The option :time only applies to the top and controversial sorts.
-      # @return [Listing<Submission, Comment>]
+      # @return [ModelListing<Submission, Comment>]
       def listing(sort, **options)
         options[:t] = options.delete(:time) if options.key?(:time)
         PaginatedListing.new(client, options) do |**req_options|
@@ -68,7 +68,7 @@ module Redd
       # @option params [1..100] :limit the maximum number of things to return
       # @option params [:links, :comments] :only the type of objects required
       #
-      # @return [Listing<Submission, Comment>]
+      # @return [ModelListing<Submission, Comment>]
       def moderator_listing(type, **params)
         client.model(:get, "/r/#{read_attribute(:display_name)}/about/#{type}", params)
       end
@@ -278,7 +278,7 @@ module Redd
       # @option params [1..100] :limit the maximum number of things to return
       # @option params [String] :type filter events to a specific type
       #
-      # @return [Listing<ModAction>]
+      # @return [ModelListing<ModAction>]
       def mod_log(**params)
         client.model(:get, "/r/#{read_attribute(:display_name)}/about/log", params)
       end

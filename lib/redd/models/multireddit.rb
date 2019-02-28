@@ -18,7 +18,7 @@ module Redd
       #   when sorting.
       #
       # @note The option :time only applies to the top and controversial sorts.
-      # @return [Listing<Submission>]
+      # @return [ModelListing<Submission>]
       def listing(sort, **params)
         params[:t] = params.delete(:time) if params.key?(:time)
         client.model(:get, "#{read_attribute(:path)}#{sort}", params)
