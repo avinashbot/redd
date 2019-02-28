@@ -191,8 +191,11 @@ module Redd
       #
       # @return [Listing<Hash<Symbol, String>>]
       def flair_listing(**params)
-        res = client.get("/r/#{read_attribute(:display_name)}/api/flairlist", params).body
-        Listing.new(client, children: res[:users], before: res[:prev], after: res[:next])
+        options[:t] = options.delete(:time) if options.key?(:time)
+        PaginatedListing.new(client, options) do |**req_options|
+          res = client.get("/r/#{read_attribute(:display_name)}/api/flairlist", options.merge(req_options)).body
+          Listing.new(client, children: res[:users], before: res[:prev], after: res[:next])
+        end
       end
 
       # Get the user's flair data.
