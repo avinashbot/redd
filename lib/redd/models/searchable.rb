@@ -18,7 +18,7 @@ module Redd
       #   search results by
       # @option params [:relevance, :hot, :top, :new, :comments] :sort the sort order of results
       # @option params [String] :restrict_to restrict by subreddit (prefer {Subreddit#search})
-      # @return [Listing<Comment, Submission>] the search results
+      # @return [ModelListing<Comment, Submission>] the search results
       def search(query, **params)
         params[:q] = query
         params[:t] = params.delete(:time) if params.key?(:time)

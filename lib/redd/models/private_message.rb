@@ -41,8 +41,8 @@ module Redd
       property :subreddit, with: ->(s) { Subreddit.new(client, display_name: s) if s }
 
       # @!attribute [r] replies
-      #   @return [Listing<PrivateMessage>]
-      property :replies, with: ->(l) { Listing.new(client, l[:data]) if l.is_a?(Hash) }
+      #   @return [ModelListing<PrivateMessage>]
+      property :replies, with: ->(l) { ModelListing.new(client, l[:data]) if l.is_a?(Hash) }
 
       # @!attribute [r] id
       #   @return [String] the message id

@@ -69,7 +69,7 @@ module Redd
 
       # Get submissions or comments by their fullnames.
       # @param fullnames [String, Array<String>] one or an array of fullnames (e.g. t3_abc1234)
-      # @return [Listing<Submission, Comment>]
+      # @return [ModelListing<Submission, Comment>]
       # @deprecated Try the lazier {#from_fullnames} instead.
       def from_ids(*fullnames)
         client.model(:get, '/api/info', id: fullnames.join(','))
@@ -109,7 +109,7 @@ module Redd
       # @option params [String] :before return results before the given fullname
       # @option params [Integer] :count (0) the number of items already seen in the listing
       # @option params [1..100] :limit (25) the maximum number of things to return
-      # @return [Listing<Comment, PrivateMessage>]
+      # @return [ModelListing<Comment, PrivateMessage>]
       def my_messages(category: 'inbox', mark: false, **params)
         client.model(:get, "/message/#{category}.json", params.merge(mark: mark))
       end
@@ -170,7 +170,7 @@ module Redd
       # @option params [String] :before return results before the given fullname
       # @option params [Integer] :count (0) the number of items already seen in the listing
       # @option params [1..100] :limit (25) the maximum number of things to return
-      # @return [Listing<Subreddit>]
+      # @return [ModelListing<Subreddit>]
       def my_subreddits(type, **params)
         client.model(:get, "/subreddits/mine/#{type}", params)
       end

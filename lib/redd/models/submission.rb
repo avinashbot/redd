@@ -39,7 +39,7 @@ module Redd
       # @option params [String] :before return results before the given fullname
       # @option params [Integer] :count (0) the number of items already seen in the listing
       # @option params [1..100] :limit (25) the maximum number of things to return
-      # @return [Listing<Submission>]
+      # @return [ModelListing<Submission>]
       def duplicates(**params)
         client.unmarshal(client.get("/duplicates/#{read_attribute(:id)}", params).body[1])
       end

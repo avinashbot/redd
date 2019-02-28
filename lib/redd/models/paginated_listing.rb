@@ -38,7 +38,7 @@ module Redd
       # @option options [Integer] :limit the maximum number of items to fetch
       # @yieldparam after [String] the fullname of the item to fetch after
       # @yieldparam limit [Integer] the number of items to fetch (max 100)
-      # @yieldreturn [Listing] the listing to return
+      # @yieldreturn [ModelListing] the listing to return
       def initialize(client, **options, &block)
         raise ArgumentError, 'block must be provided' unless block_given?
 

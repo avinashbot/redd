@@ -23,7 +23,7 @@ module Redd
       # @option options [:given] :show whether to show the gildings given
       #
       # @note The option :time only applies to the top and controversial sorts.
-      # @return [Listing<Submission>]
+      # @return [ModelListing<Submission>]
       def listing(type, **options)
         options[:t] = options.delete(:time) if options.key?(:time)
         PaginatedListing.new(client, options) do |**req_opts|

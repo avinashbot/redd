@@ -48,9 +48,9 @@ module Redd
       property :upvoted?, from: :likes
 
       # @!attribute [r] replies
-      #   @return [Listing<Comment>] the comment replies
+      #   @return [ModelListing<Comment>] the comment replies
       property :replies,
-               with: ->(r) { r.is_a?(Hash) ? Listing.new(client, r[:data]) : Listing.empty(client) }
+               with: ->(r) { r.is_a?(Hash) ? ModelListing.new(client, r[:data]) : ModelListing.empty(client) }
 
       # @!attribute [r] user_reports
       #   @return [Array<String>] user reports
