@@ -193,6 +193,34 @@ module Redd
       def trending_subreddits
         client.get('/api/trending_subreddits').body
       end
+
+      # Return a listing of subreddits
+      #
+      # @param order ['default', 'popular', 'new', 'gold'] the order of returned subreddits
+      # @param params [Hash] a list of optional params to be send with the request
+      # @option params [String] :after return results after the given fullname
+      # @option params [String] :before return results before the given fullname
+      # @option params [Integer] :count (0) the number of items already seen in the listing
+      # @option params [1..100] :limit (25) the maximum number of things to return
+      # @return [Listing<Subreddit>]
+      def list_subreddits(order = 'default', **params)
+        client.model(:get, "/subreddits/#{order}", params)
+      end
+
+      # Search subreddits
+      #
+      # @param query [String] the search query
+      # @param params [Hash] the search params
+      # @option params [String] :after return results after the given fullname
+      # @option params [String] :before return results before the given fullname
+      # @option params [Integer] :count the number of items already seen in the listing
+      # @option params [1..100] :limit the maximum number of things to return
+      # @option params [:relevance, :activity] :sort the sort order of results
+      # @return [Listing<Subreddit>] the search results
+      def search_subreddits(query, **params)
+        params[:q] = query
+        client.model(:get, '/subreddits/search', params)
+      end
     end
   end
 end
