@@ -101,7 +101,7 @@ module Redd
 
     def script(opts = {})
       return unless %i[client_id secret username password].all? { |o| opts.include?(o) }
-      auth = AuthStrategies::Script.new(filter_auth(opts))
+      auth = AuthStrategies::Script.new(**filter_auth(opts))
       api = APIClient.new(auth, **filter_api(opts))
       api.tap(&:authenticate)
     end
@@ -115,7 +115,7 @@ module Redd
 
     def userless(opts = {})
       return unless %i[client_id secret].all? { |o| opts.include?(o) }
-      auth = AuthStrategies::Userless.new(filter_auth(opts))
+      auth = AuthStrategies::Userless.new(**filter_auth(opts))
       api = APIClient.new(auth, **filter_api(opts))
       api.tap(&:authenticate)
     end
