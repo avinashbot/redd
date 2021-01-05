@@ -33,7 +33,7 @@ module Redd
       # @return [PaginatedListing<Submission>]
       def listing(sort, **options)
         options[:t] = options.delete(:time) if options.key?(:time)
-        PaginatedListing.new(client, options) do |**req_options|
+        PaginatedListing.new(client, **options) do |**req_options|
           client.model(:get, "/#{sort}", options.merge(req_options))
         end
       end
