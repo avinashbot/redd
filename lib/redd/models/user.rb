@@ -26,7 +26,7 @@ module Redd
       # @return [Listing<Submission>]
       def listing(type, **options)
         options[:t] = options.delete(:time) if options.key?(:time)
-        PaginatedListing.new(client, options) do |**req_opts|
+        PaginatedListing.new(client, **options) do |**req_opts|
           client.model(:get, "/user/#{read_attribute(:name)}/#{type}.json", options.merge(req_opts))
         end
       end
