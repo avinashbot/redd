@@ -23,3 +23,6 @@ Metrics/ParameterLists:
 Metrics/BlockLength:
   Exclude:
     - spec/**/*_spec.rb
+
+Naming/FileName:
+  Enabled: false

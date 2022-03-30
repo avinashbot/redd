@@ -91,7 +91,7 @@ module Redd
       refresh if @access.expired? && @auto_refresh && @auth && @auth.refreshable?(@access)
     end
 
-    def handle_retryable_errors
+    def handle_retryable_errors # rubocop:disable Metrics/MethodLength
       response = yield
     rescue Errors::ServerError, HTTP::TimeoutError => e
       # FIXME: maybe only retry GET requests, for obvious reasons?

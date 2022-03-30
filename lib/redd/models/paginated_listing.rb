@@ -20,12 +20,12 @@ module Redd
           @pointer = 0
         end
 
-        def include?(el)
-          @backing_array.include?(el)
+        def include?(element)
+          @backing_array.include?(element)
         end
 
-        def add(el)
-          @backing_array[@pointer] = el
+        def add(element)
+          @backing_array[@pointer] = element
           @pointer = (@pointer + 1) % @size
         end
       end
@@ -73,7 +73,7 @@ module Redd
 
       # Go backward through the listing.
       # @yield [Object] the object returned in the listings
-      def _stream
+      def _stream # rubocop:disable Metrics/MethodLength
         buffer = RingBuffer.new(100)
         remaining = @limit > 0 ? reverse_each.to_a : []
 

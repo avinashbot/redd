@@ -7,7 +7,7 @@ require_relative 'searchable'
 module Redd
   module Models
     # A subreddit.
-    class Subreddit < Model
+    class Subreddit < Model # rubocop:disable Metrics/ClassLength
       include Messageable
       include Searchable
 

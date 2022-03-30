@@ -68,8 +68,8 @@ module Redd
 
       # Unblock a previously blocked user.
       # @param me [User] (optional) the person doing the unblocking
-      def unblock(me: nil)
-        my_id = 't2_' + (me.is_a?(User) ? user.id : client.get('/api/v1/me').body[:id])
+      def unblock(me: nil) # rubocop:disable Naming/MethodParameterName
+        my_id = "t2_ #{me.is_a?(User ? user.id : client.get('/api/v1/me').body[:id])}"
         # Talk about an unintuitive endpoint
         client.post('/api/unfriend', container: my_id, name: read_attribute(:name), type: 'enemy')
       end

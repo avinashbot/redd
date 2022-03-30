@@ -78,7 +78,7 @@ module Redd
       # Create lazily-loaded objects from their fullnames (e.g. t1_abc123).
       # @param fullnames [String] fullname for a submission, comment, or subreddit.
       # @return [Array<Submission, Comment, User, Subreddit>]
-      def from_fullnames(*fullnames)
+      def from_fullnames(*fullnames) # rubocop:disable Metrics/MethodLength
         fullnames.map do |name|
           if name.start_with?('t1_')
             Comment.new(client, name: name)

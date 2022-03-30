@@ -13,7 +13,7 @@ require_relative 'subreddit'
 module Redd
   module Models
     # A text or link post.
-    class Submission < Model
+    class Submission < Model # rubocop:disable Metrics/ClassLength
       include Gildable
       include Moderatable
       include Postable
@@ -384,7 +384,7 @@ module Redd
 
       private
 
-      def lazer_reload
+      def lazer_reload # rubocop:disable Metrics/AbcSize
         fully_loaded!
 
         # Ensure we have the link's id.

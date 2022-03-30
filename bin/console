@@ -5,6 +5,8 @@ require 'webrick'
 require 'pry'
 require_relative '../lib/redd'
 
+USER_AGENT = "Ruby:Redd-Quickstart:v#{Redd::VERSION} (by /u/Mustermind)"
+
 # The REPL session to initialize Pry in.
 class Reddit
   attr_accessor :session
@@ -18,7 +20,7 @@ if File.exist?(redd_file_path)
     redirect_uri: 'http://localhost:8000/redirect'
   )
   access = Redd::Models::Access.new(refresh_token: File.read(redd_file_path))
-  client = Redd::APIClient.new(auth, user_agent: "Ruby:Redd-Quickstart:v#{Redd::VERSION} (by /u/Mustermind)")
+  client = Redd::APIClient.new(auth, user_agent: USER_AGENT)
   client.access = auth.refresh(access)
   reddit.session = Redd::Models::Session.new(client)
 else
