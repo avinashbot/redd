@@ -80,14 +80,16 @@ module Redd
     # @return [String] the generated url
     def url(client_id:, redirect_uri:, response_type: 'code', state: '', scope: ['identity'],
             duration: 'temporary')
-      'https://www.reddit.com/api/v1/authorize?' + URI.encode_www_form(
-        client_id: client_id,
-        redirect_uri: redirect_uri,
-        state: state,
-        scope: scope.join(','),
-        response_type: response_type,
-        duration: duration
-      )
+      "https://www.reddit.com/api/v1/authorize?#{
+        URI.encode_www_form(
+          client_id: client_id,
+          redirect_uri: redirect_uri,
+          state: state,
+          scope: scope.join(','),
+          response_type: response_type,
+          duration: duration
+        )
+      }"
     end
 
     private
