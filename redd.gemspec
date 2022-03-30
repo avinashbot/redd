@@ -12,7 +12,7 @@ Gem::Specification.new do |spec| # rubocop:disable Metrics/BlockLength
   spec.summary  = 'A batteries-included API wrapper for reddit.'
   spec.homepage = 'https://github.com/avinashbot/redd'
   spec.license  = 'MIT'
-  spec.required_ruby_version = '>= 2.1.0'
+  spec.required_ruby_version = '>= 2.6'
 
   spec.files = `git ls-files -z`.split("\x0").reject do |f|
     f.match(%r{^(test|spec|features)/})
