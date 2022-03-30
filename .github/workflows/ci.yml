@@ -1,0 +1,49 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { ruby: 2.6.7 }
+          - { ruby: 2.7.3 }
+          - { ruby: 3.0.1 }
+          - { ruby: head, allow-failure: true }
+          - { ruby: jruby-9.2.17.0 }
+          - { ruby: jruby-head, allow-failure: true }
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Setup Ruby ${{ matrix.ruby }}
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: ${{ matrix.ruby }}
+        bundler-cache: true
+
+    - name: Run tests
+      run: bundle exec rake
+
+  install:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Setup Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: '3.0.1'
+
+    - name: Build and install gem
+      run: gem build spinels-redd
+      run: gem install *.gem
