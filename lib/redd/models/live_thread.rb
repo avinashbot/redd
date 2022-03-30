@@ -77,7 +77,7 @@ module Redd
 
       # @!attribute [r] name
       #   @return [String] the thread fullname
-      property :name, default: ->() { "LiveUpdateEvent_#{read_attribute(:id)}" }
+      property :name, default: -> { "LiveUpdateEvent_#{read_attribute(:id)}" }
 
       # @!attribute [r] description
       #   @return [String] the live thread description

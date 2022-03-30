@@ -38,6 +38,7 @@ module Redd
       def invalid_access_error(res)
         return nil unless res.code == 401 && res.headers[AUTH_HEADER] &&
                           res.headers[AUTH_HEADER].include?(INVALID_TOKEN)
+
         Errors::InvalidAccess.new(res)
       end
 
@@ -45,6 +46,7 @@ module Redd
       def insufficient_scope_error(res)
         return nil unless res.code == 403 && res.headers[AUTH_HEADER] &&
                           res.headers[AUTH_HEADER].include?(INSUFFICIENT_SCOPE)
+
         Errors::InsufficientScope.new(res)
       end
 
@@ -55,6 +57,7 @@ module Redd
 
       def rate_limit_error(res)
         return nil unless res.body.is_a?(Hash) && res.body[:json] && res.body[:json][:ratelimit]
+
         Errors::RateLimitError.new(res)
       end
 
@@ -62,6 +65,7 @@ module Redd
       def other_api_error(res)
         return nil unless res.body.is_a?(Hash) && res.body[:json] && res.body[:json][:errors] &&
                           !res.body[:json][:errors].empty?
+
         Errors::APIError.new(res)
       end
     end

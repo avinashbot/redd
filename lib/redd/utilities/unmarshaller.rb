@@ -7,18 +7,18 @@ module Redd
       # Contains the mapping from 'kind' strings to classes.
       # TODO: UserList type!
       MAPPING = {
-        'Listing'      => Models::Listing,
-        't1'           => Models::Comment,
-        't2'           => Models::User,
-        't3'           => Models::Submission,
-        't4'           => Models::PrivateMessage,
-        't5'           => Models::Subreddit,
-        't6'           => Models::Trophy,
-        'more'         => Models::MoreComments,
-        'wikipage'     => Models::WikiPage,
-        'modaction'    => Models::ModAction,
+        'Listing' => Models::Listing,
+        't1' => Models::Comment,
+        't2' => Models::User,
+        't3' => Models::Submission,
+        't4' => Models::PrivateMessage,
+        't5' => Models::Subreddit,
+        't6' => Models::Trophy,
+        'more' => Models::MoreComments,
+        'wikipage' => Models::WikiPage,
+        'modaction' => Models::ModAction,
         'LabeledMulti' => Models::Multireddit,
-        'LiveUpdate'   => Models::LiveUpdate
+        'LiveUpdate' => Models::LiveUpdate
       }
 
       def initialize(client)
@@ -29,6 +29,7 @@ module Redd
         # I'm loving the hell out of this pattern.
         model = js_listing(res) || js_model(res) || api_model(res)
         raise "cannot unmarshal: #{res.inspect}" if model.nil?
+
         model
       end
 
@@ -38,6 +39,7 @@ module Redd
       def js_listing(res)
         # One day I'll get to deprecate Ruby 2.2 and jump into the world of Hash#dig.
         return nil unless res[:json] && res[:json][:data] && res[:json][:data][:things]
+
         Models::Listing.new(@client, children: res[:json][:data][:things])
       end
 
@@ -51,6 +53,7 @@ module Redd
       # Unmarshal API-provided listings.
       def api_listing(res)
         return nil unless res[:kind] == 'Listing'
+
         attributes = res[:data]
         attributes[:children].map! { |child| unmarshal(child) }
         Models::Listing.new(@client, attributes)
@@ -59,6 +62,7 @@ module Redd
       # Unmarshal API-provided model.
       def api_model(res)
         return nil unless MAPPING[res[:kind]]
+
         MAPPING[res[:kind]].new(@client, res[:data])
       end
     end

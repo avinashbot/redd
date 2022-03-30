@@ -81,7 +81,7 @@ module Redd
     # Do any cleanup or changes after calling the application.
     def after_call
       env_session = @request.env['redd.session']
-      if env_session && env_session.client.access
+      if env_session&.client&.access
         # Make sure to flush any changes made to the Session client to the browser.
         @request.session[:redd_session] = env_session.client.access.to_h
       else
@@ -106,14 +106,14 @@ module Redd
       # Try to get a code (the rescue block will also prevent crazy crashes)
       access = @strategy.authenticate(@request.GET['code'])
       @request.session[:redd_session] = access.to_h
-    rescue Errors::TokenRetrievalError, Errors::ResponseError => error
-      @request.env['redd.error'] = error
+    rescue Errors::TokenRetrievalError, Errors::ResponseError => e
+      @request.env['redd.error'] = e
     end
 
     # Return a {Redd::Models::Session} based on the hash saved into the browser's session.
     def parse_session
-      parsed_session = @request.session[:redd_session]
-                               .each_with_object({}) { |(k, v), h| h[k.to_sym] = v }
+      parsed_session = @request.session[:redd_session].transform_keys(&to_sym)
+
       client = Redd::APIClient.new(@strategy,
                                    user_agent: @user_agent,
                                    limit_time: 0,

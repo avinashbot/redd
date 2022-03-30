@@ -46,7 +46,7 @@ module Redd
       # @yieldparam comment [Comment] the comment to filter
       # @yieldreturn [:keep, :delete, :skip] whether to keep, delete, or check again later
       # @return [Array<String>] the deleted item fullnames
-      def delete_if
+      def delete_if # rubocop:disable Metrics/MethodLength
         deleted = []
         @queue.delete_if do |fullname|
           comment = Models::Comment.new(@client, name: fullname).reload
@@ -55,7 +55,7 @@ module Redd
             comment.delete
             deleted << fullname
           end
-          action == :keep || action == :delete
+          %i[keep delete].include?(action)
         end
         deleted
       end

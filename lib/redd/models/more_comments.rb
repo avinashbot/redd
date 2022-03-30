@@ -49,7 +49,7 @@ module Redd
       # @param link [Submission] the object's submission
       # @param lookup [Hash] a hash of comments to add future replies to
       # @return [Array<Comment, MoreComments>] the expanded comments or self if past depth
-      def expand_recursive(link:, lookup:)
+      def expand_recursive(link:, lookup:) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
         return [self] if depth == 0
 
         expand_one(link: link).each_with_object([]) do |thing, coll|

@@ -1,5 +1,6 @@
 AllCops:
-  TargetRubyVersion: 2.1
+  TargetRubyVersion: 2.6
+  NewCops: enable
 
 Metrics/LineLength:
   Max: 100
@@ -23,3 +24,6 @@ Metrics/ParameterLists:
 Metrics/BlockLength:
   Exclude:
     - spec/**/*_spec.rb
+
+Naming/FileName:
+  Enabled: false

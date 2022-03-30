@@ -5,15 +5,15 @@ require 'uri'
 # Redd Version
 require_relative 'redd/version'
 # Models
-Dir[File.join(__dir__, 'redd', 'models', '*.rb')].each { |f| require f }
+Dir[File.join(__dir__, 'redd', 'models', '*.rb')].sort.each { |f| require f }
 # Authentication Clients
-Dir[File.join(__dir__, 'redd', 'auth_strategies', '*.rb')].each { |f| require f }
+Dir[File.join(__dir__, 'redd', 'auth_strategies', '*.rb')].sort.each { |f| require f }
 # Error Classes
 require_relative 'redd/errors'
 # Regular Client
 require_relative 'redd/api_client'
 # Assists
-Dir[File.join(__dir__, 'redd', 'assist', '*.rb')].each { |f| require f }
+Dir[File.join(__dir__, 'redd', 'assist', '*.rb')].sort.each { |f| require f }
 
 # Redd is a simple and intuitive API wrapper.
 module Redd
@@ -65,6 +65,7 @@ module Redd
     def it(opts = {})
       api_client = script(opts) || web(opts) || userless(opts)
       raise "couldn't guess app type" unless api_client
+
       Models::Session.new(api_client)
     end
 
@@ -79,14 +80,16 @@ module Redd
     # @return [String] the generated url
     def url(client_id:, redirect_uri:, response_type: 'code', state: '', scope: ['identity'],
             duration: 'temporary')
-      'https://www.reddit.com/api/v1/authorize?' + URI.encode_www_form(
-        client_id: client_id,
-        redirect_uri: redirect_uri,
-        state: state,
-        scope: scope.join(','),
-        response_type: response_type,
-        duration: duration
-      )
+      "https://www.reddit.com/api/v1/authorize?#{
+        URI.encode_www_form(
+          client_id: client_id,
+          redirect_uri: redirect_uri,
+          state: state,
+          scope: scope.join(','),
+          response_type: response_type,
+          duration: duration
+        )
+      }"
     end
 
     private
@@ -101,6 +104,7 @@ module Redd
 
     def script(opts = {})
       return unless %i[client_id secret username password].all? { |o| opts.include?(o) }
+
       auth = AuthStrategies::Script.new(filter_auth(**opts))
       api = APIClient.new(auth, **filter_api(opts))
       api.tap(&:authenticate)
@@ -108,6 +112,7 @@ module Redd
 
     def web(opts = {})
       return unless %i[client_id redirect_uri code].all? { |o| opts.include?(o) }
+
       auth = AuthStrategies::Web.new(**filter_auth(opts))
       api = APIClient.new(auth, **filter_api(opts))
       api.tap { |c| c.authenticate(opts[:code]) }
@@ -115,6 +120,7 @@ module Redd
 
     def userless(opts = {})
       return unless %i[client_id secret].all? { |o| opts.include?(o) }
+
       auth = AuthStrategies::Userless.new(**filter_auth(opts))
       api = APIClient.new(auth, **filter_api(opts))
       api.tap(&:authenticate)
