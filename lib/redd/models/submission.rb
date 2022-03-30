@@ -29,6 +29,7 @@ module Redd
       # @param new_order [:confidence, :top, :controversial, :old, :qa] the sort order
       def update_sort_order(new_order)
         return self if new_order == read_attribute(:sort_order)
+
         write_attribute(:sort_order, new_order)
         reload
       end
@@ -347,7 +348,7 @@ module Redd
       # @!attribute [r] subreddit_name_prefixed
       #   @return [String] r/[subreddit name]
       property :subreddit_name_prefixed,
-               default: ->() { "r/#{read_attribute(:subreddit).display_name}" }
+               default: -> { "r/#{read_attribute(:subreddit).display_name}" }
 
       # @!attribute [r] distinguished?
       #   @return [Boolean] whether the post is distinguished

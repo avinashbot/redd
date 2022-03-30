@@ -202,6 +202,7 @@ module Redd
         # We have to do this because reddit returns all flairs if given a nonexistent user
         flair = flair_listing(name: user.name).first
         return flair if flair && flair[:user].casecmp(user.name).zero?
+
         nil
       end
 
@@ -394,6 +395,7 @@ module Redd
         unless %w[img header icon banner].include?(upload_type)
           raise ArgumentError, 'unknown upload_type'
         end
+
         params = {}
         params[:name] = image_name if upload_type.to_s == 'img'
         client.post("/r/#{read_attribute(:display_name)}/api/delete_sr_#{upload_type}", params)
@@ -546,7 +548,7 @@ module Redd
       # @!attribute [r] display_name_prefixed
       #   @return [String] the display name, prefixed with a "r/".
       #   @deprecated not really deprecated, but prefer just using the display_name directly
-      property :display_name_prefixed, default: ->() { "r/#{read_attribute(:display_name)}" }
+      property :display_name_prefixed, default: -> { "r/#{read_attribute(:display_name)}" }
 
       # @!attribute [r] submit_link_label
       #   @return [String] the label text on the submit link button
@@ -586,7 +588,7 @@ module Redd
 
       # @!attribute [r] url
       #   @return [String] the subreddit's **relative** url (e.g. /r/Redd/)
-      property :url, default: ->() { "/r/#{read_attribute(:display_name)}/" }
+      property :url, default: -> { "/r/#{read_attribute(:display_name)}/" }
 
       # @!attribute [r] quarantined?
       #   @return [Boolean] whether the subreddit is quarantined
@@ -652,6 +654,7 @@ module Redd
       def load_from_fullname
         response = client.get('/api/info', id: read_attribute(:name))
         raise Errors::NotFound.new(response) if response.body[:data][:children].empty?
+
         response.body[:data][:children][0][:data]
       end
 

@@ -44,7 +44,7 @@ module Redd
 
       # @!attribute [r] created_at
       #   @return [Time] the time the access was created
-      property :created_at, default: ->() { @creation_time }
+      property :created_at, default: -> { @creation_time }
 
       # @!attribute [r] scope
       #   @return [Array<String>] the scopes that the user is allowed to access

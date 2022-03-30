@@ -12,7 +12,7 @@ module Redd
 
       # @!attribute [r] name
       #   @return [String] the update fullname
-      property :name, default: ->() { "LiveUpdate_#{read_attribute(:id)}" }
+      property :name, default: -> { "LiveUpdate_#{read_attribute(:id)}" }
 
       # @!attribute [r] body
       #   @return [String] the update body

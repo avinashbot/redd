@@ -54,6 +54,7 @@ module Redd
       # @return [Enumerator] if a block wasn't provided
       def each(&block)
         return _each(&block) if block_given?
+
         enum_for(:_each)
       end
 
@@ -64,6 +65,7 @@ module Redd
       # @return [Enumerator] if a block wasn't provided
       def stream(&block)
         return _stream(&block) if block_given?
+
         enum_for(:_stream)
       end
 
@@ -79,6 +81,7 @@ module Redd
           remaining.push(*fetch_prev_listing)
           remaining.reverse_each do |o|
             next if buffer.include?(o.id)
+
             buffer.add(o.id)
             yield o
           end
@@ -91,8 +94,10 @@ module Redd
       def _each(&block)
         loop do
           return if @limit == 0
+
           remaining = fetch_next_listing
           return if remaining.children.empty? # if the fetched listing is empty
+
           remaining.each(&block)
           return if remaining.after.nil? # if there's no link to the next item
         end
