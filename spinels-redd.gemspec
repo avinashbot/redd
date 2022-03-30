@@ -5,12 +5,12 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'redd/version'
 
 Gem::Specification.new do |spec| # rubocop:disable Metrics/BlockLength
-  spec.name     = 'redd'
+  spec.name     = 'spinels-redd'
   spec.version  = Redd::VERSION
   spec.authors  = ['Avinash Dwarapu']
   spec.email    = ['avinash@dwarapu.me']
   spec.summary  = 'A batteries-included API wrapper for reddit.'
-  spec.homepage = 'https://github.com/avinashbot/redd'
+  spec.homepage = 'https://github.com/spinels/redd'
   spec.license  = 'MIT'
   spec.required_ruby_version = '>= 2.6'
 
