@@ -25,7 +25,7 @@ Gem::Specification.new do |spec| # rubocop:disable Metrics/BlockLength
   spec.add_dependency 'lazy_lazer', '~> 0.8.1'
 
   spec.add_development_dependency 'pry', '~> 0.10'
-  spec.add_development_dependency 'bundler', '~> 1.14'
+  spec.add_development_dependency 'bundler', '~> 2.0'
   spec.add_development_dependency 'rake', '~> 12.0'
   spec.add_development_dependency 'yard', '~> 0.9.9'
   spec.add_development_dependency 'rubocop', '~> 0.50'
