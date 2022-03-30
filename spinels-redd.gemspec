@@ -5,14 +5,14 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'redd/version'
 
 Gem::Specification.new do |spec| # rubocop:disable Metrics/BlockLength
-  spec.name     = 'redd'
+  spec.name     = 'spinels-redd'
   spec.version  = Redd::VERSION
   spec.authors  = ['Avinash Dwarapu']
   spec.email    = ['avinash@dwarapu.me']
   spec.summary  = 'A batteries-included API wrapper for reddit.'
-  spec.homepage = 'https://github.com/avinashbot/redd'
+  spec.homepage = 'https://github.com/spinels/redd'
   spec.license  = 'MIT'
-  spec.required_ruby_version = '>= 2.1.0'
+  spec.required_ruby_version = '>= 2.6'
 
   spec.files = `git ls-files -z`.split("\x0").reject do |f|
     f.match(%r{^(test|spec|features)/})
@@ -25,7 +25,7 @@ Gem::Specification.new do |spec| # rubocop:disable Metrics/BlockLength
   spec.add_dependency 'lazy_lazer', '~> 0.8.1'
 
   spec.add_development_dependency 'pry', '~> 0.10'
-  spec.add_development_dependency 'bundler', '~> 1.14'
+  spec.add_development_dependency 'bundler', '~> 2.0'
   spec.add_development_dependency 'rake', '~> 12.0'
   spec.add_development_dependency 'yard', '~> 0.9.9'
   spec.add_development_dependency 'rubocop', '~> 0.50'
