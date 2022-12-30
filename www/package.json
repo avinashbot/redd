@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "dependencies": {
-    "gatsby": "^1.9.22",
+    "gatsby": "^5.3.3",
     "gatsby-link": "^1.6.16",
     "gatsby-plugin-catch-links": "^1.0.9",
     "gatsby-plugin-nprogress": "^1.0.7",
