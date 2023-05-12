@@ -150,7 +150,7 @@ module Redd
       #   posted there before (you monster)
       # @param sendreplies [Boolean] whether to send the replies to your inbox
       # @return [Submission] The returned object (url, id and name)
-      def submit(title, text: nil, url: nil, resubmit: false, sendreplies: true)
+      def submit(title, text: nil, url: nil, resubmit: false, sendreplies: true, flair_id: nil)
         params = {
           title: title, sr: read_attribute(:display_name),
           resubmit: resubmit, sendreplies: sendreplies
@@ -158,6 +158,7 @@ module Redd
         params[:kind] = url ? 'link' : 'self'
         params[:url]  = url  if url
         params[:text] = text if text
+        params[:flair_id] = flair_id if flair_id
         Submission.new(client, client.post('/api/submit', params).body[:json][:data])
       end
 
@@ -174,6 +175,7 @@ module Redd
       # @param thing [User, Submission] the object whose flair to edit
       # @param text [String] a string no longer than 64 characters
       # @param css_class [String] the css class to assign to the flair
+
       def set_flair(thing, text, css_class: nil)
         key = thing.is_a?(User) ? :name : :link
         params = { :text => text, key => thing.name }
@@ -181,18 +183,8 @@ module Redd
         client.post("/r/#{read_attribute(:display_name)}/api/flair", params)
       end
 
-      # Get a listing of all user flairs.
-      # @param params [Hash] a list of params to send with the request
-      # @option params [String] :after return results after the given fullname
-      # @option params [String] :before return results before the given fullname
-      # @option params [Integer] :count the number of items already seen in the listing
-      # @option params [String] :name prefer {#get_flair}
-      # @option params [:links, :comments] :only the type of objects required
-      #
-      # @return [Listing<Hash<Symbol, String>>]
-      def flair_listing(**params)
-        res = client.get("/r/#{read_attribute(:display_name)}/api/flairlist", params).body
-        Listing.new(client, children: res[:users], before: res[:prev], after: res[:next])
+      def flair_listings
+        client.get("/r/#{read_attribute(:display_name)}/api/link_flair_v2").body
       end
 
       # Get the user's flair data.
